@@ -1,4 +1,4 @@
-import type { StatusUpdate, StatusListTypes } from "../types";
+import type { StatusListTypes } from "../types";
 
 // Displays system status updates with color-coding based on status type
 // - Green for healthy

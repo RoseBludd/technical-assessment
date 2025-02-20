@@ -1,7 +1,12 @@
 import gsap from 'gsap';
+import { RefObject } from 'react';
 
 export const sidebarAnimation = {
-  open: (sidebarRef: any, mainContentRef: any, hamburgerRef: any) => {
+  open: (
+    sidebarRef: RefObject<HTMLElement>,
+    mainContentRef: RefObject<HTMLElement>,
+    hamburgerRef: RefObject<HTMLElement>
+  )  => {
     gsap.to(sidebarRef.current, {
       x: 0,
       duration: 0.5,
@@ -19,7 +24,11 @@ export const sidebarAnimation = {
       ease: "power3.out"
     });
   },
-  close: (sidebarRef: any, mainContentRef: any, hamburgerRef: any) => {
+  close: (
+    sidebarRef: RefObject<HTMLElement>,
+    mainContentRef: RefObject<HTMLElement>,
+    hamburgerRef: RefObject<HTMLElement>
+  ) => {
     gsap.to(sidebarRef.current, {
       x: "-240px",
       duration: 0.5,

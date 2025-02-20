@@ -50,4 +50,12 @@ export type SidebarTypes = {
     isOpen: boolean;
     sidebarRef: React.RefObject<HTMLDivElement>;
   }
-  
+
+export type CustomTooltipTypes = {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+    [key: string]: string | number;
+  }>;
+  label?: string;
+}

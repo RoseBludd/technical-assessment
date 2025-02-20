@@ -10,7 +10,7 @@ import {
   Tooltip,
   CartesianGrid
 } from "recharts";
-import type { MetricsChartTypes } from "../types";
+import type { MetricsChartTypes, CustomTooltipTypes } from "../types";
 import { formatTime } from "../utils";
 
 
@@ -25,7 +25,7 @@ export default function MetricsChart({ data }: MetricsChartTypes) {
   }, [data]);
 
   // Custom tooltip component for better data visualization
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: CustomTooltipTypes) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-gray-800 border border-gray-700 p-3 rounded-lg shadow-lg">

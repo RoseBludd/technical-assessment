@@ -9,7 +9,6 @@ import StatusList from "./StatusList";
 import TimeRangeSelector from "./TimeRangeSelector";
 import { useEffect, useState, useRef } from "react";
 import { sidebarAnimation } from '../animations';
-import SkeletonLoader from "./generics/SkeletonLoader";
 import Sidebar from "./Sidebar";
 
 export default function MetricsDashboard() {

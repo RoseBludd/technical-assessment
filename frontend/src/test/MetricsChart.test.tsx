@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import MetricsChart from '../components/MetricsChart';
 import { createMockTimeSeriesData } from '../utils/testUtils';
+import type { TimeSeriesData } from '../types';
 
 // Mock Recharts components with proper SVG elements
 jest.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  AreaChart: ({ children }: any) => <svg>{children}</svg>,
+  ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  AreaChart: ({ children }: { children: React.ReactNode }) => <svg>{children}</svg>,
   Area: () => <path data-testid="area" />,
   XAxis: () => <g data-testid="x-axis" />,
   YAxis: () => <g data-testid="y-axis" />,
@@ -14,7 +15,7 @@ jest.mock('recharts', () => ({
 }));
 
 describe('MetricsChart Component', () => {
-  const mockData = createMockTimeSeriesData(24);
+  const mockData: TimeSeriesData[] = createMockTimeSeriesData(24);
 
   it('renders chart components', () => {
     render(<MetricsChart data={mockData} />);

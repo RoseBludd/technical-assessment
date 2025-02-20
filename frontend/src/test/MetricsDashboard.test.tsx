@@ -2,14 +2,15 @@ import { render, screen } from '@testing-library/react';
 import MetricsDashboard from '../components/MetricsDashboard';
 import { useMetricsData } from '../hooks/useMetricData';
 import { createMockTimeSeriesData, createMockStatusUpdates } from '../utils/testUtils';
+import type { TimeSeriesData } from '../types';
 
 // Mock the entire hooks module
 jest.mock('../hooks/useMetricData');
 
 // Mock Recharts to avoid ResizeObserver and hook issues
 jest.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => children,
-  AreaChart: ({ children }: any) => <div data-testid="area-chart">{children}</div>,
+  ResponsiveContainer: ({ children }: { children: React.ReactNode }) => children,
+  AreaChart: ({ children }: { children: React.ReactNode }) => <div data-testid="area-chart">{children}</div>,
   Area: () => <div data-testid="area" />,
   XAxis: () => <div data-testid="x-axis" />,
   YAxis: () => <div data-testid="y-axis" />,
@@ -25,7 +26,7 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 }));
 
 describe('MetricsDashboard', () => {
-  const mockMetrics = createMockTimeSeriesData(24);
+  const mockMetrics: TimeSeriesData[] = createMockTimeSeriesData(24);
   const mockStatus = createMockStatusUpdates(3);
 
   beforeEach(() => {
