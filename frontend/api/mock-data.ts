@@ -1,14 +1,6 @@
-export interface TimeSeriesData {
-  timestamp: string;
-  value: number;
-}
+import type { TimeSeriesData, StatusUpdate } from "../src/types";
 
-export interface StatusUpdate {
-  id: string;
-  status: "healthy" | "warning" | "error";
-  message: string;
-  timestamp: string;
-}
+// Remove the types from the file and use the types from the types folder
 
 export async function fetchMetrics(
   timeRange: "hour" | "day" | "week" = "day"
