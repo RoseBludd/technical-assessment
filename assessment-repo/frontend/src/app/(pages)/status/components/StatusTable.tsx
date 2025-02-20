@@ -93,11 +93,11 @@ const StatusTable = ({ statusData }: StatusTableProps) => {
 
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-xs uppercase border-b bg-black dark:bg-transparent">
             <tr>
               {headers.map((header) => (
                 <th scope="col" className="px-6 py-3" key={header}>
-                  <Text>{header}</Text>
+                  <Text className="text-gray-50 dark:text-b">{header}</Text>
                 </th>
               ))}
             </tr>

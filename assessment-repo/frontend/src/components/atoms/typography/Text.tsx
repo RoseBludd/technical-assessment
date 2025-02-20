@@ -7,7 +7,11 @@ export interface TextProps {
 }
 
 const Text = ({ children, className }: TextProps) => {
-  return <span className={clsx(className, "text-primary")}>{children}</span>;
+  return (
+    <span className={clsx(className, "dark:text-gray-50 text-primary")}>
+      {children}
+    </span>
+  );
 };
 
 export default Text;
