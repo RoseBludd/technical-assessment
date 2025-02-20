@@ -1,10 +1,6 @@
-import { fetchMetrics, fetchStatus } from "@/api/mock-data";
 import React from "react";
 
-const Dashboard = async () => {
-  const data = await fetchStatus();
-  const metrics = await fetchMetrics("day");
-  console.log(metrics);
+const Dashboard = () => {
   return (
     <div>
       <div className="relative overflow-x-auto">
