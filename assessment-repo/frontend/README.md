@@ -1,193 +1,36 @@
-# Frontend Specialist Assessment
-
-## Objective
-
-Create a modern, responsive dashboard using Next.js 14 that demonstrates your frontend expertise.
-
-## Project Overview
-
-You'll be building a metrics dashboard that:
-
-- Displays real-time and historical data
-- Implements responsive layouts
-- Handles loading and error states
-- Uses modern React patterns
-
-## Tasks
-
-### 1. Dashboard Implementation (40 points)
-
-```tsx
-// Example component structure provided
-import { Suspense } from "react";
-import { MetricsChart, DataGrid, StatusCards } from "./components";
-
-export default function Dashboard() {
-  return (
-    <div className="dashboard-layout">
-      <Suspense fallback={<Loading />}>
-        {/* Implement your dashboard here */}
-      </Suspense>
-    </div>
-  );
-}
-```
-
-Requirements:
-
-- Use Next.js 14 App Router
-- Implement Server and Client Components appropriately
-- Create reusable components
-- Add proper loading states
-- Handle errors gracefully
-- Make it responsive (mobile-first)
-
-### 2. Data Integration (30 points)
-
-We provide a mock API in `api/mock-data.ts`:
-
-```typescript
-// Example usage
-const data = await fetchMetrics(); // Returns mock time-series data
-const status = await fetchStatus(); // Returns mock status updates
-```
-
-Requirements:
-
-- Implement data fetching using provided mock API
-- Add proper TypeScript types
-- Handle loading states
-- Implement error boundaries
-- Add retry logic
-- Cache responses appropriately
-
-### 3. Performance & Testing (30 points)
-
-Requirements:
-
-- Add component tests using React Testing Library
-- Implement performance monitoring
-- Optimize bundle size
-- Add error tracking
-- Document performance decisions
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-1. Setup project:
+First, run the development server:
 
 ```bash
-# Everything is local - no external services needed
-npm install
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-2. Available Scripts:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-npm run dev        # Start development server
-npm run test      # Run tests
-npm run lint      # Check code quality
-npm run build     # Production build
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-3. Project Structure:
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-```
-frontend/
-├── app/                # Next.js 14 app directory
-├── components/         # Reusable components
-├── lib/               # Utilities and helpers
-├── api/               # Mock API endpoints
-└── tests/             # Test files
-```
+## Learn More
 
-## Provided Resources
+To learn more about Next.js, take a look at the following resources:
 
-- Mock API with TypeScript types
-- Basic component templates
-- Test setup and examples
-- ESLint configuration
-- Example data structures
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Requirements
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-### Technical
+## Deploy on Vercel
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- React Testing Library
-- ESLint + Prettier
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-### Features
-
-- Metrics visualization
-- Data tables
-- Status indicators
-- Search/filter functionality
-- Responsive design
-- Dark/light mode
-
-### Testing
-
-- Component tests
-- Integration tests
-- Performance tests
-- Accessibility tests
-
-## Evaluation Criteria
-
-### Code Quality (30%)
-
-- Clean, maintainable code
-- TypeScript usage
-- Error handling
-- Code organization
-
-### UI/UX (30%)
-
-- Responsive design
-- Loading states
-- Error states
-- Visual consistency
-
-### Performance (20%)
-
-- Load time optimization
-- Bundle size
-- Render optimization
-- Caching strategy
-
-### Testing (20%)
-
-- Test coverage
-- Test quality
-- Edge cases
-- Accessibility testing
-
-## Tips
-
-- Start with component structure
-- Use provided mock data
-- Focus on core functionality first
-- Document key decisions
-- Consider edge cases
-- Test thoroughly
-
-## Submission Checklist
-
-- [ ] All features implemented
-- [ ] Tests passing
-- [ ] Performance optimized
-- [ ] Documentation complete
-- [ ] Code linting clean
-- [ ] Responsive design working
-- [ ] Dark/light mode working
-
-## Notes
-
-- All data is mocked locally - no external services needed
-- No authentication required
-- No backend integration needed
-- Focus on frontend implementation
-- Document any assumptions made
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
