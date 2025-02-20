@@ -1,5 +1,5 @@
 import React from "react";
-import Text, { TextProps } from "./Text";
+import { TextProps, Text } from "./Text";
 import clsx from "clsx";
 
 interface HeaderProps extends TextProps {

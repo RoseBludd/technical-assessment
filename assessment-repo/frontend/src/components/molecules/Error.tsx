@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Text } from "./typography";
-import { Button } from "./button";
+import { Text } from "../atoms/typography";
+import { Button } from "../atoms/button";
 import { useRouter } from "next/navigation";
 
 interface ErrorProps {

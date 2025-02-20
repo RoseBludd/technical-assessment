@@ -1,7 +1,8 @@
 "use client";
 
 import { TimeSeriesData } from "@/api/mock-data";
-import { Error, Loader, Paragraph, Text } from "@/components/atoms";
+import { Loader, Text } from "@/components/atoms";
+import { Error } from "@/components/molecules";
 import { formatTimestamp } from "@/lib";
 import React from "react";
 

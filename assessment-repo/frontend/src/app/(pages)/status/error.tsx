@@ -1,6 +1,6 @@
 "use client";
 
-import { Error as ErrorComponent } from "@/components/atoms";
+import { Error as ErrorComponent } from "@/components/molecules";
 
 interface ErrorProps {
   reset: () => void;
