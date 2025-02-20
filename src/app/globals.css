@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 17, 24, 39;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,7 +15,32 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+  }
+}
+
+/* Form styles */
+@layer components {
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-multiselect {
+    @apply block w-full rounded-md border-gray-600 bg-gray-700 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500;
+  }
+
+  .form-checkbox,
+  .form-radio {
+    @apply rounded border-gray-600 bg-gray-700 text-indigo-600 focus:ring-indigo-500;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-200;
+  }
 }

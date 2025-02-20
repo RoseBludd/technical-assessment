@@ -1,0 +1,43 @@
+name: Assessment Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Determine Assessment Type
+      id: assessment-type
+      run: |
+        PR_BRANCH=${{ github.head_ref }}
+        if [[ $PR_BRANCH == assessment/frontend/* ]]; then
+          echo "type=frontend" >> $GITHUB_OUTPUT
+        elif [[ $PR_BRANCH == assessment/backend/* ]]; then
+          echo "type=backend" >> $GITHUB_OUTPUT
+        elif [[ $PR_BRANCH == assessment/integration/* ]]; then
+          echo "type=integration" >> $GITHUB_OUTPUT
+        elif [[ $PR_BRANCH == assessment/infrastructure/* ]]; then
+          echo "type=infrastructure" >> $GITHUB_OUTPUT
+        elif [[ $PR_BRANCH == assessment/qa/* ]]; then
+          echo "type=qa" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Install Dependencies
+      run: |
+        cd ${{ steps.assessment-type.outputs.type }}
+        npm install
+        
+    - name: Run Tests
+      run: |
+        cd ${{ steps.assessment-type.outputs.type }}
+        npm test
