@@ -4,6 +4,8 @@ import { Header } from "../atoms";
 interface PageTemplateProps {
   title: string;
   children: ReactNode;
+  isLoading?: boolean;
+  isError?: boolean;
 }
 
 const PageTemplate = ({ title, children }: PageTemplateProps) => {
