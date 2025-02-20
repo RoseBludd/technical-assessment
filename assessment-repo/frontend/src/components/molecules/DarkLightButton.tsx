@@ -17,14 +17,12 @@ const DarkLightButton = () => {
     return <Button variant="outline" size="icon" aria-label="Toggle theme" />;
   }
 
+  const handleToggleMode = () => {
+    setTheme((prevState) => (prevState === "light" ? "dark" : "light"));
+  };
+
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() =>
-        setTheme((prevState) => (prevState === "light" ? "dark" : "light"))
-      }
-    >
+    <Button variant="outline" size="icon" onClick={handleToggleMode}>
       {theme === "light" ? <MoonIcon className="text-black" /> : <SunIcon />}
     </Button>
   );

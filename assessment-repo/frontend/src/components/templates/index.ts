@@ -1,2 +1,2 @@
-export { default as BasicTemplate } from "./BasicTemplate";
+export { default as GlobalTemplate } from "./GlobalTemplate";
 export { default as ThemeProvider } from "./ThemProvider";

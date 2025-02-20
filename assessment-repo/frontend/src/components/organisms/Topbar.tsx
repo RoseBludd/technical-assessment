@@ -1,13 +1,14 @@
 import React from "react";
 import { Header } from "../atoms";
-import { DarkLightButton } from "../molecules";
+import { DarkLightButton, TopbarMenu } from "../molecules";
 
 const Topbar = () => {
   return (
-    <div className="bg-black text-white py-3">
+    <div className="text-white py-3 border-b">
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <Header variant="h3">Title</Header>
-        <div>
+        <Header variant="h3">CompanyX</Header>
+        <div className="flex items-center gap-6 divide-solid">
+          <TopbarMenu />
           <DarkLightButton />
         </div>
       </div>

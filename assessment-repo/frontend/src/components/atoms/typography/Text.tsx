@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { ReactNode } from "react";
 
 export interface TextProps {
@@ -6,7 +7,7 @@ export interface TextProps {
 }
 
 const Text = ({ children, className }: TextProps) => {
-  return <div className={className}>{children}</div>;
+  return <span className={clsx(className, "text-primary")}>{children}</span>;
 };
 
 export default Text;
