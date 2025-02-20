@@ -10,7 +10,7 @@ interface PageTemplateProps {
 
 const PageTemplate = ({ title, children }: PageTemplateProps) => {
   return (
-    <div>
+    <div className="mt-16">
       <Header variant="h3">{title}</Header>
       <div className="mt-10">{children}</div>
     </div>
