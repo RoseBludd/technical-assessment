@@ -4,7 +4,7 @@ This document outlines key architectural and design decisions made in the projec
 
 ## UI Component Library: ShadCN
 
-**Decision:** We chose [ShadCN](https://ui.shadcn.com/) as our UI component library.
+**Decision:** We chose [ShadCN](https://ui.shadcn.com/) as our UI component library
 
 ### Why ShadCN?
 
