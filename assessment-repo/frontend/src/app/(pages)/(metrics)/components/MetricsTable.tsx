@@ -1,21 +1,21 @@
 "use client";
 
 import { TimeSeriesData } from "@/api/mock-data";
-import { Loader, Paragraph, Text } from "@/components/atoms";
+import { Error, Loader, Paragraph, Text } from "@/components/atoms";
 import { formatTimestamp } from "@/lib";
 import React from "react";
 
 interface MetricsTableProps {
   metricsData: TimeSeriesData[];
   loading: boolean;
-  error: boolean;
+  error: string | null;
 }
 
 const MetricsTable = ({ metricsData, loading, error }: MetricsTableProps) => {
   const headers = ["Value", "TimeStamp"];
 
   if (loading) return <Loader text="Metrics" />;
-  if (error) return <Paragraph className="text-red-500">{error}</Paragraph>;
+  if (error) return <Error message={error} />;
 
   return (
     <div>

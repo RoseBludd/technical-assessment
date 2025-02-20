@@ -55,7 +55,6 @@ const StatusTable = ({ statusData }: StatusTableProps) => {
   };
 
   const handleStatusFilterChange = (status: string) => {
-    console.log(status);
     handleFilterState("status", status);
   };
 

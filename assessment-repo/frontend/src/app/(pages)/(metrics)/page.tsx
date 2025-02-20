@@ -71,11 +71,7 @@ const Metrics = () => {
           <Button onClick={handleResetFilters}>Reset Filters</Button>
         </div>
       </div>
-      <MetricsTable
-        metricsData={metricsData}
-        error={!!error}
-        loading={loading}
-      />
+      <MetricsTable metricsData={metricsData} error={error} loading={loading} />
     </PageTemplate>
   );
 };
