@@ -10,11 +10,15 @@ import TimeRangeSelector from "./TimeRangeSelector";
 import { useEffect, useState, useRef } from "react";
 import { sidebarAnimation } from '../animations';
 import Sidebar from "./Sidebar";
+import ThemeToggle from './ThemeToggle';
+import { useTheme } from '../providers/ThemeContext';
+
 
 export default function MetricsDashboard() {
   const { timeRange, setTimeRange } = useTimeRange();
   const { metrics, status, loading, error } = useMetricsData(timeRange);
   const [isOpen, setIsOpen] = useState(true);
+  const { theme } = useTheme();
 
   // Refs for GSAP animations
   const sidebarRef = useRef(null);
@@ -35,6 +39,9 @@ export default function MetricsDashboard() {
 
   return (
     <div className="relative min-h-screen">
+      <div className="flex justify-end p-4">
+        <ThemeToggle />
+      </div>
       <Sidebar isOpen={isOpen} sidebarRef={sidebarRef} />
 
       {/* Toggle Button */}
@@ -59,7 +66,7 @@ export default function MetricsDashboard() {
       >
         <div className="space-y-6 p-4">
           <div className="flex-between flex-wrap gap-2 md:gap-4">
-            <h1 className="text-2xl font-bold h-10 ml-12">Metrics Dashboard</h1>
+            <h1 className={`text-2xl font-bold h-10 ml-12 ${theme === 'dark' ? 'text-white' : 'text-primary'}`}>Metrics Dashboard</h1>
             <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
           </div>
 
