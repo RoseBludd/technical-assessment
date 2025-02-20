@@ -1,7 +1,7 @@
 "use client";
 
 import { StatusUpdate } from "@/api/mock-data";
-import { Button, Input, StatusType, Text } from "@/components/atoms";
+import { Button, Input, Text } from "@/components/atoms";
 import { ChangeEvent, useMemo, useState } from "react";
 import StatusTableBody from "./StatusTableBody";
 import { IOption, SelectField } from "@/components/molecules";
@@ -102,9 +102,8 @@ const StatusTable = ({ statusData }: StatusTableProps) => {
               ))}
             </tr>
           </thead>
-          <tbody>
-            <StatusTableBody filteredStatusData={filteredStatusData} />
-          </tbody>
+
+          <StatusTableBody filteredStatusData={filteredStatusData} />
         </table>
       </div>
     </div>

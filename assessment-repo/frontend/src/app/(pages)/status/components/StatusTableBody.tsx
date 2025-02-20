@@ -8,16 +8,18 @@ interface StatusTableBodyProps {
 const StatusTableBody = ({ filteredStatusData }: StatusTableBodyProps) => {
   if (filteredStatusData.length === 0) {
     return (
-      <tr>
-        <td colSpan={3} className="text-center py-4 text-gray-500">
-          Empty Data..
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <td colSpan={3} className="text-center py-4 text-gray-500">
+            Empty Data..
+          </td>
+        </tr>
+      </tbody>
     );
   }
 
   return (
-    <>
+    <tbody>
       {filteredStatusData.map((data) => (
         <tr
           className="border-b dark:border-gray-700 border-gray-200"
@@ -37,7 +39,7 @@ const StatusTableBody = ({ filteredStatusData }: StatusTableBodyProps) => {
           </td>
         </tr>
       ))}
-    </>
+    </tbody>
   );
 };
 
