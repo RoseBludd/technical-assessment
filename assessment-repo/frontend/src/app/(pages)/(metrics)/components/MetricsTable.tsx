@@ -21,7 +21,7 @@ const MetricsTable = ({ metricsData, loading, error }: MetricsTableProps) => {
     <div>
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs uppercase border-b bg-black dark:bg-transparent">
+          <thead className="text-xs uppercase border-b bg-black">
             <tr>
               {headers.map((header) => (
                 <th scope="col" className="px-6 py-3" key={header}>

@@ -3,8 +3,8 @@
 import { fetchMetrics, TimeSeriesData } from "@/api/mock-data";
 import PageTemplate from "@/components/templates/PageTemplate";
 import MetricsTable from "./components/MetricsTable";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/atoms";
+import { Suspense, useEffect, useState } from "react";
+import { Button, Loader } from "@/components/atoms";
 import { IOption, SelectField } from "@/components/molecules";
 
 export type ITimeRange = "hour" | "day" | "week";
@@ -59,20 +59,26 @@ const Metrics = () => {
   };
 
   return (
-    <PageTemplate title="Metrics">
-      <div className="space-y-6 mb-6">
-        <SelectField
-          options={timeRangeOptions}
-          placeholder="Select Time Range"
-          value={timeRange}
-          onValueChange={handleTimeRangeChange}
-        />
-        <div className="text-right">
-          <Button onClick={handleResetFilters}>Reset Filters</Button>
+    <Suspense fallback={<Loader text="Metrics" />}>
+      <PageTemplate title="Metrics">
+        <div className="space-y-6 mb-6">
+          <SelectField
+            options={timeRangeOptions}
+            placeholder="Select Time Range"
+            value={timeRange}
+            onValueChange={handleTimeRangeChange}
+          />
+          <div className="text-right">
+            <Button onClick={handleResetFilters}>Reset Filters</Button>
+          </div>
         </div>
-      </div>
-      <MetricsTable metricsData={metricsData} error={error} loading={loading} />
-    </PageTemplate>
+        <MetricsTable
+          metricsData={metricsData}
+          error={error}
+          loading={loading}
+        />
+      </PageTemplate>
+    </Suspense>
   );
 };
 

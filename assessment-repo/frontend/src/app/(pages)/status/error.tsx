@@ -2,8 +2,12 @@
 
 import { Error as ErrorComponent } from "@/components/atoms";
 
-const Error = () => {
-  return <ErrorComponent />;
+interface ErrorProps {
+  reset: () => void;
+}
+
+const Error = ({ reset }: ErrorProps) => {
+  return <ErrorComponent reset={reset} />;
 };
 
 export default Error;
