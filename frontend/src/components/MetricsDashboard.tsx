@@ -1,48 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { TimeSeriesData, StatusUpdate, fetchMetrics, fetchStatus } from "../../api/mock-data";
+import { useTimeRange } from '../hooks/useTimeRange';
+import { useMetricsData } from '../hooks/useMetricData';
 import Loading from "./generics/Loading";
-import ErrorBoundary from "../components/ErrorBoundary";
-import MetricsChart from "../components/MetricsChart";
-import StatusList from "../components/StatusList";
-import TimeRangeSelector from "../components/TimeRangeSelector";
-
-export type TimeRange = "hour" | "day" | "week";
+import ErrorBoundary from "./ErrorBoundary";
+import MetricsChart from "./MetricsChart";
+import StatusList from "./StatusList";
+import TimeRangeSelector from "./TimeRangeSelector";
 
 export default function MetricsDashboard() {
-  const [timeRange, setTimeRange] = useState<TimeRange>("day");
-  const [metrics, setMetrics] = useState<TimeSeriesData[]>([]);
-  const [status, setStatus] = useState<StatusUpdate[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const [metricsData, statusData] = await Promise.all([
-          fetchMetrics(timeRange),
-          fetchStatus()
-        ]);
-        
-        setMetrics(metricsData);
-        setStatus(statusData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-    
-    // Set up polling every 30 seconds
-    const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
-  }, [timeRange]);
+  const { timeRange, setTimeRange } = useTimeRange();
+  const { metrics, status, loading, error } = useMetricsData(timeRange);
 
   if (loading) return <Loading />;
   if (error) return <div className="text-red-500">Error: {error}</div>;

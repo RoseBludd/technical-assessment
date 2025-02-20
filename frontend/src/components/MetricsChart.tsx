@@ -10,20 +10,15 @@ import {
   Tooltip,
   CartesianGrid
 } from "recharts";
-import { TimeSeriesData } from "../../api/mock-data";
+import type { MetricsChartTypes } from "../types";
+import { formatTime } from "../utils";
 
-interface MetricsChartProps {
-  data: TimeSeriesData[];
-}
 
-export default function MetricsChart({ data }: MetricsChartProps) {
+export default function MetricsChart({ data }: MetricsChartTypes) {
   const formattedData = useMemo(() => {
     return data.map(item => ({
       ...item,
-      formattedTime: new Date(item.timestamp).toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+      formattedTime: formatTime(item.timestamp)
     }));
   }, [data]);
 

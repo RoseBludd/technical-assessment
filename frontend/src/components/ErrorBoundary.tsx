@@ -1,44 +1,46 @@
 "use client";
 
-import { Component, ErrorInfo, ReactNode } from "react";
+import { useState, useEffect } from "react";
+import type { ErrorBoundaryTypes } from "../types";
 
-interface Props {
-  children: ReactNode;
-}
+export default function ErrorBoundary({ children, fallback }: ErrorBoundaryTypes) {
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-interface State {
-  hasError: boolean;
-  error?: Error;
-}
+  useEffect(() => {
+    const handleError = (error: ErrorEvent) => {
+      console.error("Caught error:", error);
+      setError(error.error);
+      setHasError(true);
+    };
 
-export default class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false
+    window.addEventListener("error", handleError);
+    return () => window.removeEventListener("error", handleError);
+  }, []);
+
+  const handleReset = () => {
+    setError(null);
+    setHasError(false);
   };
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  if (hasError) {
+    return fallback || (
+      <div className="p-4 bg-red-900 rounded-lg">
+        <h2 className="text-red-200 font-bold mb-2">Something went wrong</h2>
+        {error && (
+          <p className="text-red-200 mb-4">
+            {error.message || "An unexpected error occurred"}
+          </p>
+        )}
+        <button
+          className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+          onClick={handleReset}
+        >
+          Try again
+        </button>
+      </div>
+    );
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
-  }
-
-  public render() {
-    if (this.state.hasError) {
-      return (
-        <div className="p-4 bg-red-900 rounded-lg">
-          <h2 className="text-red-200 font-bold mb-2">Something went wrong</h2>
-          <button
-            className="bg-red-700 text-white px-4 py-2 rounded"
-            onClick={() => this.setState({ hasError: false })}
-          >
-            Try again
-          </button>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
+  return children;
 }

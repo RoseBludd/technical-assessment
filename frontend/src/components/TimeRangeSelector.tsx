@@ -1,9 +1,6 @@
-interface TimeRangeSelectorProps {
-    value: "hour" | "day" | "week";
-    onChange: (value: "hour" | "day" | "week") => void;
-  }
-  
-  export default function TimeRangeSelector({ value, onChange }: TimeRangeSelectorProps) {
+import type { TimeRangeSelectorTypes } from "../types";
+
+export default function TimeRangeSelector({ value, onChange }: TimeRangeSelectorTypes) {
     return (
       <div className="flex gap-2">
         {["hour", "day", "week"].map((range) => (

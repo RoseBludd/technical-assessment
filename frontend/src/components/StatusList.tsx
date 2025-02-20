@@ -1,10 +1,6 @@
-import { StatusUpdate } from "../../api/mock-data";
+import type { StatusUpdate, StatusListTypes } from "../types";
 
-interface StatusListProps {
-  updates: StatusUpdate[];
-}
-
-export default function StatusList({ updates }: StatusListProps) {
+export default function StatusList({ updates }: StatusListTypes) {
   return (
     <div className="space-y-4">
       {updates.map((update) => (
