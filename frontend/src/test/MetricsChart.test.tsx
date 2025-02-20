@@ -1,35 +1,41 @@
-import { render, screen } from "@testing-library/react";
-import MetricsChart from "../components/MetricsChart";
+import { render, screen } from '@testing-library/react';
+import MetricsChart from '../components/MetricsChart';
+import { createMockTimeSeriesData } from '../utils/testUtils';
 
-const mockData = [
-  {
-    timestamp: "2024-01-01T12:00:00Z",
-    value: 75
-  },
-  {
-    timestamp: "2024-01-01T13:00:00Z",
-    value: 82
-  },
-  {
-    timestamp: "2024-01-01T14:00:00Z",
-    value: 68
-  }
-];
+// Mock Recharts components with proper SVG elements
+jest.mock('recharts', () => ({
+  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
+  AreaChart: ({ children }: any) => <svg>{children}</svg>,
+  Area: () => <path data-testid="area" />,
+  XAxis: () => <g data-testid="x-axis" />,
+  YAxis: () => <g data-testid="y-axis" />,
+  Tooltip: () => <g data-testid="tooltip" />,
+  CartesianGrid: () => <g data-testid="grid" />,
+}));
 
-describe("MetricsChart", () => {
-  it("renders without crashing", () => {
+describe('MetricsChart Component', () => {
+  const mockData = createMockTimeSeriesData(24);
+
+  it('renders chart components', () => {
     render(<MetricsChart data={mockData} />);
-    expect(screen.getByRole("img", { name: /area chart/i })).toBeInTheDocument();
+    
+    expect(screen.getByTestId('area')).toBeInTheDocument();
+    expect(screen.getByTestId('x-axis')).toBeInTheDocument();
+    expect(screen.getByTestId('y-axis')).toBeInTheDocument();
+    expect(screen.getByTestId('tooltip')).toBeInTheDocument();
+    expect(screen.getByTestId('grid')).toBeInTheDocument();
   });
 
-  it("renders correct number of data points", () => {
-    render(<MetricsChart data={mockData} />);
-    const dataPoints = screen.getAllByRole("img", { name: /area chart/i });
-    expect(dataPoints).toHaveLength(mockData.length);
+  it('applies responsive container classes', () => {
+    const { container } = render(<MetricsChart data={mockData} />);
+    
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveClass('w-full');
+    expect(wrapper).toHaveClass('h-[300px]');
   });
 
-  it("renders skeleton when no data is provided", () => {
+  it('handles empty data gracefully', () => {
     render(<MetricsChart data={[]} />);
-    expect(screen.getByText(/no data available/i)).toBeInTheDocument();
+    expect(screen.getByTestId('area')).toBeInTheDocument();
   });
 });

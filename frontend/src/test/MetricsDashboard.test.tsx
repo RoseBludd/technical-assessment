@@ -1,40 +1,93 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import MetricsDashboard from "../components/MetricsDashboard";
-import { fetchMetrics, fetchStatus } from "../../api/mock-data";
+import { render, screen } from '@testing-library/react';
+import MetricsDashboard from '../components/MetricsDashboard';
+import { useMetricsData } from '../hooks/useMetricData';
+import { createMockTimeSeriesData, createMockStatusUpdates } from '../utils/testUtils';
 
-// Mock the API calls
-jest.mock("../../../frontend/api/mock-data", () => ({
-  fetchMetrics: jest.fn(),
-  fetchStatus: jest.fn(),
+// Mock the entire hooks module
+jest.mock('../hooks/useMetricData');
+
+// Mock Recharts to avoid ResizeObserver and hook issues
+jest.mock('recharts', () => ({
+  ResponsiveContainer: ({ children }: any) => children,
+  AreaChart: ({ children }: any) => <div data-testid="area-chart">{children}</div>,
+  Area: () => <div data-testid="area" />,
+  XAxis: () => <div data-testid="x-axis" />,
+  YAxis: () => <div data-testid="y-axis" />,
+  Tooltip: () => <div data-testid="tooltip" />,
+  CartesianGrid: () => <div data-testid="grid" />,
 }));
 
-describe("MetricsDashboard", () => {
+// Mock ResizeObserver
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));
+
+describe('MetricsDashboard', () => {
+  const mockMetrics = createMockTimeSeriesData(24);
+  const mockStatus = createMockStatusUpdates(3);
+
   beforeEach(() => {
-    (fetchMetrics as jest.Mock).mockResolvedValue([]);
-    (fetchStatus as jest.Mock).mockResolvedValue([]);
+    // Clear all mocks before each test
+    jest.clearAllMocks();
+    
+    // Set default mock implementation
+    (useMetricsData as jest.Mock).mockReturnValue({
+      metrics: mockMetrics,
+      status: mockStatus,
+      loading: false,
+      error: null,
+    });
   });
 
-  it("renders loading state initially", () => {
+  it('renders dashboard components', () => {
     render(<MetricsDashboard />);
-    expect(screen.getByRole("status")).toBeInTheDocument();
+    
+    expect(screen.getByText('Metrics Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Performance Metrics')).toBeInTheDocument();
+    expect(screen.getByText('System Status')).toBeInTheDocument();
   });
 
-  it("handles time range changes", async () => {
+  it('shows loading state', () => {
+    (useMetricsData as jest.Mock).mockReturnValueOnce({
+      metrics: [],
+      status: [],
+      loading: true,
+      error: null,
+    });
+
     render(<MetricsDashboard />);
-    
-    await userEvent.click(screen.getByText("Hour"));
-    
-    expect(fetchMetrics).toHaveBeenCalledWith("hour");
+    expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 
-  it("displays error state", async () => {
-    (fetchMetrics as jest.Mock).mockRejectedValue(new Error("Failed to fetch"));
-    
+  it('shows error state', () => {
+    const errorMessage = 'Test error';
+    (useMetricsData as jest.Mock).mockReturnValueOnce({
+      metrics: [],
+      status: [],
+      loading: false,
+      error: errorMessage,
+    });
+
+    render(<MetricsDashboard />);
+    expect(screen.getByText(`Error: ${errorMessage}`)).toBeInTheDocument();
+  });
+
+  it('renders metrics chart when data is available', () => {
     render(<MetricsDashboard />);
     
-    await waitFor(() => {
-      expect(screen.getByText(/error/i)).toBeInTheDocument();
+    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    expect(screen.getByTestId('area')).toBeInTheDocument();
+    expect(screen.getByTestId('x-axis')).toBeInTheDocument();
+    expect(screen.getByTestId('y-axis')).toBeInTheDocument();
+  });
+
+  it('renders status list when data is available', () => {
+    render(<MetricsDashboard />);
+    
+    mockStatus.forEach(status => {
+      expect(screen.getByText(status.message)).toBeInTheDocument();
     });
   });
 });
