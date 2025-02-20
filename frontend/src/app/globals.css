@@ -29,7 +29,11 @@ body {
 }
 
 .flexible-text {
-  @apply text-[10px] sm:text-[12px] md:text-[14px] lg:text-[16px] xl:text-[18px] 2xl:text-[20px];
+  @apply text-[10px] sm:text-[12px] md:text-[14px];
+}
+
+.flexible-header {
+  @apply text-[12px] sm:text-[14px] md:text-[16px];
 }
 
 .flexible-padding {

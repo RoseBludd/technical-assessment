@@ -37,11 +37,11 @@ export default function MetricsChart({ data }: MetricsChartTypes) {
   };
 
   return (
-    <div className="w-full h-[400px]">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="w-full h-[300px] sm:h-[350px] md:h-[400px]">
+      <ResponsiveContainer  width="100%" height="100%">
         <AreaChart
           data={formattedData}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 30, left: -10, bottom: 0 }}
         >
           <defs>
             <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
@@ -54,11 +54,13 @@ export default function MetricsChart({ data }: MetricsChartTypes) {
             stroke="#6b7280"
             tick={{ fill: '#9ca3af' }}
             tickLine={{ stroke: '#6b7280' }}
+            className="flexible-text"
           />
           <YAxis
             stroke="#6b7280"
             tick={{ fill: '#9ca3af' }}
             tickLine={{ stroke: '#6b7280' }}
+            className="flexible-text"
           />
           <CartesianGrid
             strokeDasharray="3 3"

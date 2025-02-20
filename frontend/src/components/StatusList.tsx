@@ -15,14 +15,14 @@ export default function StatusList({ updates }: StatusListTypes) {
           } border`}
         >
           <div className="flex-between">
-            <span className="font-medium">
+            <span className="font-bold flexible-header">
               {update.status.charAt(0).toUpperCase() + update.status.slice(1)}
             </span>
-            <span className="text-sm opacity-75">
+            <span className="flexible-text opacity-75">
               {new Date(update.timestamp).toLocaleTimeString()}
             </span>
           </div>
-          <p className="mt-2 text-sm">{update.message}</p>
+          <p className="mt-2 flexible-text">{update.message}</p>
         </div>
       ))}
     </div>

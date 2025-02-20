@@ -38,4 +38,9 @@ export type TimeRangeSelectorTypes = {
     value: "hour" | "day" | "week";
     onChange: (value: "hour" | "day" | "week") => void;
   }
+
+export type SidebarTypes = {
+    isOpen: boolean;
+    sidebarRef: React.RefObject<HTMLDivElement>;
+  }
   
