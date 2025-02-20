@@ -2,6 +2,8 @@
 
 Welcome to our technical assessment! This repository contains role-specific assessments for various positions. Please follow the instructions below to complete your assessment.
 
+TIME CONSTRAINTS ARE NOT STRICT
+
 ## Getting Started
 
 1. **Fork this Repository**
