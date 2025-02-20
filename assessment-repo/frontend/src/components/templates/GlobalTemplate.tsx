@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Topbar } from "../organisms";
-import ThemeProvider from "./ThemProvider";
+import ThemeProvider from "./ThemeProvider";
 
 interface BasicTemplateProps {
   children: ReactNode;
