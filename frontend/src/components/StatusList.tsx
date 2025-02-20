@@ -1,5 +1,9 @@
 import type { StatusUpdate, StatusListTypes } from "../types";
 
+// Displays system status updates with color-coding based on status type
+// - Green for healthy
+// - Yellow for warnings
+// - Red for errors
 export default function StatusList({ updates }: StatusListTypes) {
   return (
     <div className="space-y-4">

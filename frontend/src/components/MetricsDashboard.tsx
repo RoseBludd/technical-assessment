@@ -16,10 +16,13 @@ export default function MetricsDashboard() {
   const { timeRange, setTimeRange } = useTimeRange();
   const { metrics, status, loading, error } = useMetricsData(timeRange);
   const [isOpen, setIsOpen] = useState(true);
+
+  // Refs for GSAP animations
   const sidebarRef = useRef(null);
   const mainContentRef = useRef(null);
   const hamburgerRef = useRef(null);
   
+  // Trigger sidebar animation when isOpen state changes
   useEffect(() => {
     if (isOpen) {
       sidebarAnimation.open(sidebarRef, mainContentRef, hamburgerRef);

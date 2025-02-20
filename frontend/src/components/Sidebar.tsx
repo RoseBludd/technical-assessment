@@ -1,5 +1,7 @@
 import type { SidebarTypes } from "../types";
   
+// Collapsible sidebar component with navigation links
+// Uses transform for smooth animations and better performance
   export default function Sidebar({ isOpen, sidebarRef }: SidebarTypes) {
     return (
       <div 

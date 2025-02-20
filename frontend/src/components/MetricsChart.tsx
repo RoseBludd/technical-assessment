@@ -15,6 +15,8 @@ import { formatTime } from "../utils";
 
 
 export default function MetricsChart({ data }: MetricsChartTypes) {
+
+  // Memoize data formatting to prevent unnecessary recalculations
   const formattedData = useMemo(() => {
     return data.map(item => ({
       ...item,
@@ -22,6 +24,7 @@ export default function MetricsChart({ data }: MetricsChartTypes) {
     }));
   }, [data]);
 
+  // Custom tooltip component for better data visualization
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (

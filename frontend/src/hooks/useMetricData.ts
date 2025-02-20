@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
 import { fetchMetrics, fetchStatus } from '../../api/mock-data';
-import type { TimeRange, TimeSeriesData, StatusUpdate } from '../types';
+import type { TimeRange, MetricsDataState } from '../types';
 
-type MetricsDataState = {
-  metrics: TimeSeriesData[];
-  status: StatusUpdate[];
-  loading: boolean;
-  error: string | null;
-};
 
+// Hook to fetch the metrics and status data, it's used in the MetricsDashboard component
 export function useMetricsData(timeRange: TimeRange) {
   const [state, setState] = useState<MetricsDataState>({
     metrics: [],

@@ -9,12 +9,19 @@ export type TimeSeriesData = {
     value: number;
   }
   
-  export type StatusUpdate = {
-    id: string;
-    status: "healthy" | "warning" | "error";
-    message: string;
-    timestamp: string;
-  }
+export type StatusUpdate = {
+  id: string;
+  status: "healthy" | "warning" | "error";
+  message: string;
+  timestamp: string;
+}
+
+export type MetricsDataState = {
+  metrics: TimeSeriesData[];
+  status: StatusUpdate[];
+  loading: boolean;
+  error: string | null;
+};
   
 
 // Component Types

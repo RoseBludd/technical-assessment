@@ -7,8 +7,8 @@ import Loading from "../components/generics/Loading";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Long Term Developers",
-  description: "Apply for long-term developer positions at RestoreMasters",
+  title: "Donaire's Metrics Dashboard",
+  description: "Metrics Dashboard for Donaire's Metrics Dashboard",
 };
 
 export default function RootLayout({

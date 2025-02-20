@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import type { ErrorBoundaryTypes } from "../types";
 
+
+// Error boundary component to gracefully handle and display runtime errors
+// Prevents entire app from crashing when components fail
 export default function ErrorBoundary({ children, fallback }: ErrorBoundaryTypes) {
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState<Error | null>(null);

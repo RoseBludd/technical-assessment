@@ -1,5 +1,8 @@
 import type { TimeRangeSelectorTypes } from "../types";
 
+
+// Time range filter component for metrics data
+// Allows switching between hour/day/week views
 export default function TimeRangeSelector({ value, onChange }: TimeRangeSelectorTypes) {
     return (
       <div className="flex gap-2">
