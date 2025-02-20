@@ -97,7 +97,7 @@ const StatusTable = ({ statusData }: StatusTableProps) => {
             <tr>
               {headers.map((header) => (
                 <th scope="col" className="px-6 py-3" key={header}>
-                  <Text className="text-gray-50 dark:text-b">{header}</Text>
+                  <Text className="text-gray-50">{header}</Text>
                 </th>
               ))}
             </tr>

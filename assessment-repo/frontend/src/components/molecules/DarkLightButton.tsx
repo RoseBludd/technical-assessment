@@ -1,9 +1,9 @@
 "use client";
 
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Button } from "../atoms";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Button } from "../atoms";
+import { Moon, Sun } from "lucide-react";
 
 const DarkLightButton = () => {
   const { setTheme, theme } = useTheme();
@@ -23,7 +23,7 @@ const DarkLightButton = () => {
 
   return (
     <Button variant="outline" size="icon" onClick={handleToggleMode}>
-      {theme === "light" ? <MoonIcon className="text-black" /> : <SunIcon />}
+      {theme === "light" ? <Moon className="text-black" /> : <Sun />}
     </Button>
   );
 };

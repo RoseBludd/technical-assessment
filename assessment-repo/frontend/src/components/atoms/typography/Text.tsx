@@ -1,17 +1,15 @@
 import clsx from "clsx";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 export interface TextProps {
   children: ReactNode;
   className?: string;
 }
 
-const Text = ({ children, className }: TextProps) => {
+export const Text = ({ children, className }: TextProps) => {
   return (
-    <span className={clsx(className, "dark:text-gray-50 text-primary")}>
+    <span className={clsx(className, "dark:text-gray-50 text-black")}>
       {children}
     </span>
   );
 };
-
-export default Text;

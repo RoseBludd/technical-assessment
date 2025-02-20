@@ -1,3 +1,3 @@
 export { default as Header } from "./Header";
-export { default as Text } from "./Text";
+export * from "./Text";
 export { default as Paragraph } from "./Paragraph";

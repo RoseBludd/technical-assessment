@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Text, { TextProps } from "./Text";
+import { TextProps, Text } from "./Text";
 
 type ParagraphProps = TextProps;
 

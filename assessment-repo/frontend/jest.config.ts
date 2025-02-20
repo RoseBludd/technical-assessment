@@ -12,6 +12,11 @@ const config: Config = {
   testEnvironment: "jest-environment-jsdom",
   // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  transformIgnorePatterns: ["node_modules/(?!(lucide-react)/)"],
+  moduleNameMapper: {
+    "^lucide-react$": "<rootDir>/__mocks__/lucide-react.js",
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
