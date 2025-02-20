@@ -1,7 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
+
+interface ProjectSubmission {
+  githubUrl: string;
+  prUrl: string;
+  timeSpent: string;
+  implementation: {
+    component: string;
+    api: string;
+    tests: string;
+  };
+}
 
 interface TestResult {
   id: string;
@@ -10,177 +20,284 @@ interface TestResult {
     email: string;
     role: string;
   };
-  test: {
-    title: string;
-  };
+  submission: ProjectSubmission;
   score: number;
   status: string;
-  completed_at: string;
-  ai_feedback: {
+  completedAt: string;
+  aiFeedback: {
     overallFeedback: string;
-    questionScores: Array<{
-      questionId: string;
-      score: number;
-      feedback: string;
-    }>;
+    technicalAssessment: {
+      architecture: { score: number; feedback: string };
+      codeQuality: { score: number; feedback: string };
+      testing: { score: number; feedback: string };
+      performance: { score: number; feedback: string };
+    };
+    strengths: string[];
+    improvements: string[];
+    productionReadiness: {
+      security: number;
+      reliability: number;
+      maintainability: number;
+      scalability: number;
+    };
   };
 }
 
+// Mock data for demonstration
+const submissions: TestResult[] = [
+  {
+    id: "1",
+    developer: {
+      name: "Test Developer",
+      email: "test@example.com",
+      role: "frontend_specialist",
+    },
+    submission: {
+      githubUrl: "https://github.com/candidate/metrics-dashboard",
+      prUrl: "https://github.com/restoremasters/dev-assessment/pull/42",
+      timeSpent: "3.5 hours",
+      implementation: {
+        component: "// MetricsDashboard implementation",
+        api: "// API implementation",
+        tests: "// Tests implementation",
+      },
+    },
+    score: 92,
+    status: "completed",
+    completedAt: "2024-02-19T19:08:36.000Z",
+    aiFeedback: {
+      overallFeedback:
+        "Exceptional implementation of the metrics dashboard with strong attention to production readiness",
+      technicalAssessment: {
+        architecture: {
+          score: 95,
+          feedback:
+            "Excellent component architecture with proper separation of concerns. Good use of TypeScript, error boundaries, and real-time updates.",
+        },
+        codeQuality: {
+          score: 94,
+          feedback:
+            "Clean, maintainable code with proper TypeScript types. Good error handling and loading states.",
+        },
+        testing: {
+          score: 90,
+          feedback:
+            "Comprehensive test coverage with proper mocking and error scenarios. Could add more edge cases.",
+        },
+        performance: {
+          score: 88,
+          feedback:
+            "Good use of caching and rate limiting. Consider implementing virtualization for large datasets.",
+        },
+      },
+      strengths: [
+        "Production-ready implementation with error boundaries",
+        "Real-time updates with proper cleanup",
+        "Strong TypeScript usage throughout",
+        "Comprehensive error handling",
+        "Clean code structure",
+        "Good test coverage",
+      ],
+      improvements: [
+        "Consider implementing data virtualization for large datasets",
+        "Add end-to-end tests with Cypress",
+        "Implement client-side caching with SWR or React Query",
+        "Add performance monitoring",
+        "Consider implementing WebSocket for real-time updates",
+      ],
+      productionReadiness: {
+        security: 95,
+        reliability: 92,
+        maintainability: 94,
+        scalability: 88,
+      },
+    },
+  },
+];
+
 export default function TestResultsPage() {
-  const [results, setResults] = useState<TestResult[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedResult, setSelectedResult] = useState<TestResult | null>(null);
-
-  useEffect(() => {
-    fetchResults();
-  }, []);
-
-  const fetchResults = async () => {
-    try {
-      const response = await fetch("/api/admin/test-results");
-      const data = await response.json();
-      setResults(data);
-    } catch (error) {
-      console.error("Failed to fetch results:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-64px)]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
-    );
-  }
+  const [selectedSubmission, setSelectedSubmission] =
+    useState<TestResult | null>(null);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-white">
-        Test Results Dashboard
-      </h1>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Results List */}
-        <div className="lg:col-span-1 bg-gray-800 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4 text-white">
-            Recent Submissions
-          </h2>
-          <div className="space-y-4">
-            {results.map((result) => (
-              <motion.div
-                key={result.id}
-                whileHover={{ scale: 1.02 }}
-                className={`p-4 rounded-lg cursor-pointer transition-colors ${
-                  selectedResult?.id === result.id
-                    ? "bg-indigo-700"
-                    : "bg-gray-700 hover:bg-gray-600"
-                }`}
-                onClick={() => setSelectedResult(result)}
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-semibold text-white">
-                      {result.developer.name}
-                    </h3>
-                    <p className="text-sm text-gray-300">
-                      {result.developer.role}
-                    </p>
-                  </div>
-                  <div
-                    className={`px-2 py-1 rounded text-sm ${
-                      result.score >= 70 ? "bg-green-600" : "bg-red-600"
-                    }`}
-                  >
-                    {result.score}%
-                  </div>
-                </div>
-                <p className="text-xs text-gray-400 mt-2">
-                  Completed:{" "}
-                  {new Date(result.completed_at).toLocaleDateString()}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Detailed View */}
-        <div className="lg:col-span-2">
-          {selectedResult ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-gray-800 rounded-lg p-6"
+    <div className="grid grid-cols-12 gap-6">
+      {/* Submissions List */}
+      <div className="col-span-4 space-y-4">
+        <h2 className="text-xl font-semibold mb-4">Recent Submissions</h2>
+        <div className="space-y-4">
+          {submissions.map((submission) => (
+            <div
+              key={submission.id}
+              className="p-4 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors"
+              onClick={() => setSelectedSubmission(submission)}
             >
-              <div className="flex justify-between items-start mb-6">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-white">
-                    {selectedResult.developer.name}
-                  </h2>
-                  <p className="text-gray-300">
-                    {selectedResult.developer.email}
+                  <h3 className="font-medium">{submission.developer.name}</h3>
+                  <p className="text-sm text-gray-400">
+                    {submission.developer.role}
                   </p>
-                  <p className="text-indigo-400">{selectedResult.test.title}</p>
                 </div>
-                <div
-                  className={`px-4 py-2 rounded-lg text-lg font-semibold ${
-                    selectedResult.score >= 70 ? "bg-green-600" : "bg-red-600"
-                  }`}
-                >
-                  Score: {selectedResult.score}%
+                <div className="text-right">
+                  <span className="inline-block px-2 py-1 text-sm rounded bg-green-900 text-green-200">
+                    {submission.score}%
+                  </span>
                 </div>
               </div>
-
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-2 text-white">
-                  Overall Feedback
-                </h3>
-                <p className="bg-gray-700 rounded-lg p-4 text-gray-300">
-                  {selectedResult.ai_feedback.overallFeedback}
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-4 text-white">
-                  Question Breakdown
-                </h3>
-                <div className="space-y-4">
-                  {selectedResult.ai_feedback.questionScores.map(
-                    (question, index) => (
-                      <div
-                        key={question.questionId}
-                        className="bg-gray-700 rounded-lg p-4"
-                      >
-                        <div className="flex justify-between items-center mb-2">
-                          <h4 className="font-semibold text-white">
-                            Question {index + 1}
-                          </h4>
-                          <span
-                            className={`px-2 py-1 rounded ${
-                              question.score >= 70
-                                ? "bg-green-600"
-                                : "bg-red-600"
-                            }`}
-                          >
-                            {question.score}%
-                          </span>
-                        </div>
-                        <p className="text-gray-300">{question.feedback}</p>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            <div className="bg-gray-800 rounded-lg p-6 flex items-center justify-center h-full">
-              <p className="text-gray-400">
-                Select a submission to view details
+              <p className="text-sm text-gray-500 mt-2">
+                Completed: {new Date(submission.completedAt).toLocaleString()}
               </p>
             </div>
-          )}
+          ))}
         </div>
+      </div>
+
+      {/* Submission Details */}
+      <div className="col-span-8">
+        {selectedSubmission ? (
+          <div className="space-y-6">
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4">Project Details</h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-gray-400">GitHub Repository</p>
+                  <a
+                    href={selectedSubmission.submission.githubUrl}
+                    className="text-blue-400 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Repository
+                  </a>
+                </div>
+                <div>
+                  <p className="text-gray-400">Pull Request</p>
+                  <a
+                    href={selectedSubmission.submission.prUrl}
+                    className="text-blue-400 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View PR
+                  </a>
+                </div>
+                <div>
+                  <p className="text-gray-400">Time Spent</p>
+                  <p>{selectedSubmission.submission.timeSpent}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4">
+                Technical Assessment
+              </h2>
+              <div className="space-y-4">
+                {Object.entries(
+                  selectedSubmission.aiFeedback.technicalAssessment
+                ).map(([category, data]) => (
+                  <div key={category} className="border-b border-gray-700 pb-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-medium capitalize">
+                        {category.replace(/([A-Z])/g, " $1").trim()}
+                      </h3>
+                      <span className="px-2 py-1 rounded bg-blue-900 text-blue-200">
+                        {data.score}%
+                      </span>
+                    </div>
+                    <p className="text-gray-400 mt-2">{data.feedback}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-gray-800 rounded-lg p-6">
+                <h2 className="text-xl font-semibold mb-4">Strengths</h2>
+                <ul className="list-disc list-inside space-y-2">
+                  {selectedSubmission.aiFeedback.strengths.map(
+                    (strength, index) => (
+                      <li key={index} className="text-gray-300">
+                        {strength}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+
+              <div className="bg-gray-800 rounded-lg p-6">
+                <h2 className="text-xl font-semibold mb-4">Improvements</h2>
+                <ul className="list-disc list-inside space-y-2">
+                  {selectedSubmission.aiFeedback.improvements.map(
+                    (improvement, index) => (
+                      <li key={index} className="text-gray-300">
+                        {improvement}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4">
+                Production Readiness
+              </h2>
+              <div className="grid grid-cols-4 gap-4">
+                {Object.entries(
+                  selectedSubmission.aiFeedback.productionReadiness
+                ).map(([metric, score]) => (
+                  <div key={metric} className="text-center">
+                    <div className="text-2xl font-bold">{score}%</div>
+                    <p className="text-sm text-gray-400 capitalize">{metric}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h2 className="text-xl font-semibold mb-4">
+                Implementation Details
+              </h2>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium mb-2">
+                    Component Implementation
+                  </h3>
+                  <pre className="bg-gray-900 p-4 rounded overflow-auto">
+                    <code className="text-sm">
+                      {selectedSubmission.submission.implementation.component}
+                    </code>
+                  </pre>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium mb-2">
+                    API Implementation
+                  </h3>
+                  <pre className="bg-gray-900 p-4 rounded overflow-auto">
+                    <code className="text-sm">
+                      {selectedSubmission.submission.implementation.api}
+                    </code>
+                  </pre>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium mb-2">
+                    Tests Implementation
+                  </h3>
+                  <pre className="bg-gray-900 p-4 rounded overflow-auto">
+                    <code className="text-sm">
+                      {selectedSubmission.submission.implementation.tests}
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full text-gray-400">
+            Select a submission to view details
+          </div>
+        )}
       </div>
     </div>
   );
