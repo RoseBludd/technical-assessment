@@ -1,7 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-
 import { StatusUpdate } from "@/api/mock-data";
 import StatusTableBody from "@/app/(pages)/status/components/StatusTableBody";
 
