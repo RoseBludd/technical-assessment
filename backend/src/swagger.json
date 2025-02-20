@@ -1,0 +1,215 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API",
+    "version": "1.0.0",
+    "description": "A RESTful API for managing tasks and users"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "status": { 
+            "type": "string",
+            "enum": ["TODO", "IN_PROGRESS", "COMPLETED"]
+          },
+          "due_date": { "type": "string", "format": "date-time" },
+          "created_by": { "type": "integer" },
+          "assigned_to": { "type": "integer" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "email", "password"],
+                "properties": {
+                  "username": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": { "$ref": "#/components/schemas/User" },
+                    "token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": { "$ref": "#/components/schemas/User" },
+                    "token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Get all tasks",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["TODO", "IN_PROGRESS", "COMPLETED"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_by",
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "query",
+            "name": "assigned_to",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tasks": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Task" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Create a new task",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "status": {
+                    "type": "string",
+                    "enum": ["TODO", "IN_PROGRESS", "COMPLETED"]
+                  },
+                  "due_date": { "type": "string", "format": "date-time" },
+                  "assigned_to": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "task": { "$ref": "#/components/schemas/Task" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 
