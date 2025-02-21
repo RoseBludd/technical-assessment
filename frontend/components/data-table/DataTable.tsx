@@ -2,8 +2,10 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -20,6 +22,8 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "../data-table-pagination/DataTablePagination";
 import { useState } from "react";
+import { Input } from "../ui/input";
+import { SearchCheck, SearchIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,6 +35,7 @@ export default function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -39,13 +44,29 @@ export default function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   });
 
   return (
     <div>
+      <div className="flex items-center py-4">
+        <div className="bg-purple-600 dark:bg-purple-700 p-2 text-white border border-purple-600 dark:border-purple-700">
+          <SearchIcon />
+        </div>
+        <Input
+          placeholder="Search for a message..."
+          value={(table.getColumn("message")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("message")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm py-5 px-5"
+        />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
