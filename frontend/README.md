@@ -191,3 +191,28 @@ frontend/
 - No backend integration needed
 - Focus on frontend implementation
 - Document any assumptions made
+
+
+# 🚀 Next.js 14 Metrics Dashboard
+
+A modern, responsive dashboard built with **Next.js 14**, **React Query**, and **Recharts** to visualize real-time and historical data.
+
+## Features
+
+**Real-time & Historical Data Visualization** (Charts & Tables)  
+**Responsive Design** (Mobile-first)  
+**Data Fetching with React Query**  
+**Loading & Error States Handling**  
+**Reusable UI Components**  
+**Unit Testing with Jest & React Testing Library**   
+
+---
+
+## Technologies Used
+
+ Technology  
+ **Next.js 14** - React-based framework with server-side rendering (App Router) 
+ **React Query** - Efficient data fetching, caching & state management 
+ **Recharts** - Interactive data visualization with SVG charts 
+ **Tailwind CSS** - Utility-first CSS framework for styling 
+ **Jest & React Testing Library** -  Unit testing framework 
