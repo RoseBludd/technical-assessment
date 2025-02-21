@@ -1,13 +1,19 @@
-module.exports = {
+const nextJest = require("next/jest");
+
+const createJestConfig = nextJest({
+  dir: "./",
+});
+
+const config = {
+  coverageProvider: "v8",
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {
     "^@/components/(.*)$": "<rootDir>/components/$1",
     "^@/api/(.*)$": "<rootDir>/api/$1",
+    "^@/lib/(.*)$": "<rootDir>/lib/$1",
     "^@/(.*)$": "<rootDir>/$1",
   },
-  transform: {
-    "^.+\\.(ts|tsx|js|jsx)$": "ts-jest",
-  },
-  transformIgnorePatterns: ["<rootDir>/node_modules/"],
 };
+
+// Ensure Jest loads the Next.js config
+module.exports = createJestConfig(config);
