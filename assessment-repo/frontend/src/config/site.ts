@@ -1,10 +1,9 @@
-export type SiteConfig = typeof siteConfig;
+export interface SiteConfig {
+  name: string;
+  description: string;
+}
 
-export const siteConfig = {
+export const siteConfig: SiteConfig = {
   name: 'Dashboard',
   description: 'Frontend technical assessment',
-  links: {
-    github: 'https://github.com/Roenan12/technical-assessment',
-    docs: '',
-  },
 };
