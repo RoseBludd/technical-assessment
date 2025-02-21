@@ -19,3 +19,7 @@ I didn’t overcomplicate it. A **global in-page error boundary** does the trick
 ### For Optimization
 
 I made the data tables cachable, and will revalidate for 60 secs. For the metrics , I made it not cachable because the data change with respect to time.
+
+### UI/UX
+
+I opt to make it simple, I choosed purple which is great in dark/light mode.
