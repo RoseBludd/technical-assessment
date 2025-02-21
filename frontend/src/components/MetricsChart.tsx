@@ -19,14 +19,12 @@ export default function MetricsChart({
   const { data, isLoading, refetch, error } = useQuery({
     queryKey: ["metrics", timeRange],
     queryFn: async ({ queryKey: [_, timeRange] }) => {
-      console.log(timeRange);
       return fetchMetrics(timeRange as TimeRange);
     },
     initialData: metricsData,
     refetchOnMount: false,
     staleTime: 60000,
   });
-  console.log(isLoading, metricsData, timeRange);
 
   const handleTimeRangeChange = useCallback((range: TimeRange) => {
     setTimeRange(() => range);
