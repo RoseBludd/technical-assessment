@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import { fetchMetrics, fetchStatus } from '@/lib/mock-data';
-import type { TimeSeriesData, StatusData } from '@/types/metrics';
+import type {
+  TimeSeriesData,
+  StatusData,
+  TimeRange,
+  MetricsError,
+} from '@/types/metrics';
 
 const RETRY_COUNT = 3;
 const RETRY_DELAY = 1000;
 
-export function useMetrics() {
+export function useMetrics(timeRange: TimeRange = 'day') {
   const [metrics, setMetrics] = useState<TimeSeriesData[]>([]);
   const [status, setStatus] = useState<StatusData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<MetricsError | null>(null);
+  const [isRefetching, setIsRefetching] = useState(false);
 
   async function fetchWithRetry(
     fn: () => Promise<any>,
@@ -26,27 +32,43 @@ export function useMetrics() {
     }
   }
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
+  const fetchData = async (showFullLoading = true) => {
+    try {
+      if (showFullLoading) {
         setIsLoading(true);
-        const [metricsData, statusData] = await Promise.all([
-          fetchWithRetry(() => fetchMetrics()),
-          fetchWithRetry(() => fetchStatus()),
-        ]);
-        setMetrics(metricsData);
-        setStatus(statusData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error('Failed to fetch data')
-        );
-      } finally {
-        setIsLoading(false);
+      } else {
+        setIsRefetching(true);
       }
+
+      const [metricsData, statusData] = await Promise.all([
+        fetchMetrics(timeRange),
+        fetchStatus(),
+      ]);
+
+      setMetrics(metricsData);
+      setStatus(statusData);
+      setError(null);
+    } catch (err) {
+      setError({
+        message: 'Failed to fetch metrics data',
+        code: 'FETCH_ERROR',
+      });
+    } finally {
+      setIsLoading(false);
+      setIsRefetching(false);
     }
+  };
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    fetchData(false);
+  }, [timeRange]);
 
-  return { metrics, status, isLoading, error };
+  return {
+    metrics,
+    status,
+    isLoading,
+    isRefetching,
+    error,
+    refetch: () => fetchData(true),
+  };
 }

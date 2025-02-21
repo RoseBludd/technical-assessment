@@ -24,13 +24,28 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { TimeSeriesData } from '@/types/metrics';
+import { TimeSeriesData, TimeRange } from '@/types/metrics';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface MetricsChartProps {
   data: TimeSeriesData[];
+  timeRange: TimeRange;
+  onTimeRangeChange: (range: TimeRange) => void;
+  isRefetching?: boolean;
 }
 
-const MetricsChart: React.FC<MetricsChartProps> = ({ data }) => {
+const MetricsChart = ({
+  data,
+  timeRange,
+  onTimeRangeChange,
+  isRefetching = false,
+}: MetricsChartProps) => {
   const calculateTrend = () => {
     if (data.length < 2) return 0;
     const latest = data[data.length - 1].value;
@@ -48,15 +63,55 @@ const MetricsChart: React.FC<MetricsChartProps> = ({ data }) => {
     },
   } satisfies ChartConfig;
 
+  const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    switch (timeRange) {
+      case 'hour':
+        return date.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      case 'day':
+        return date.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      case 'week':
+        return date.toLocaleDateString([], {
+          month: 'short',
+          day: 'numeric',
+        });
+    }
+  };
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Metrics Overview</CardTitle>
-        <CardDescription>Real-time metrics data visualization</CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle>
+          Metrics Overview
+          {isRefetching && (
+            <span className="ml-2 text-sm text-muted-foreground">
+              Updating...
+            </span>
+          )}
+        </CardTitle>
+        <Select
+          defaultValue={timeRange}
+          onValueChange={(value: TimeRange) => onTimeRangeChange(value)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select time range" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="hour">Last Hour</SelectItem>
+            <SelectItem value="day">Last 24 Hours</SelectItem>
+            <SelectItem value="week">Last Week</SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={400}>
             <AreaChart
               data={data}
               margin={{
@@ -72,12 +127,7 @@ const MetricsChart: React.FC<MetricsChartProps> = ({ data }) => {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                tickFormatter={(timestamp) =>
-                  new Date(timestamp).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                }
+                tickFormatter={formatDate}
               />
               <YAxis
                 tickLine={false}

@@ -1,3 +1,5 @@
+export type TimeRange = 'hour' | 'day' | 'week';
+
 export interface TimeSeriesData {
   timestamp: string;
   value: number;
@@ -19,8 +21,6 @@ export interface MetricsError {
   message: string;
   code?: string;
 }
-
-export type TimeRange = 'hour' | 'day' | 'week';
 
 export interface MetricsState {
   metrics: TimeSeriesData[];

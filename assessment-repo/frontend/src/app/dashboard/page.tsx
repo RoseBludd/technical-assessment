@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import Loading from '@/components/ui/loading';
 import { useMetrics } from '@/hooks/use-metrics';
@@ -10,13 +10,20 @@ import StatusCards from '@/components/StatusCards';
 import { StatusCardsSkeleton } from '@/components/LoadingSkeletons';
 import { MetricsChartSkeleton } from '@/components/LoadingSkeletons';
 import { DataGridSkeleton } from '@/components/LoadingSkeletons';
+import type { TimeRange } from '@/types/metrics';
 
 function DashboardContent() {
-  const { metrics, status, isLoading, error } = useMetrics();
+  const [timeRange, setTimeRange] = useState<TimeRange>('day');
+  const { metrics, status, isLoading, isRefetching, error, refetch } =
+    useMetrics(timeRange);
 
   if (error) {
     throw error;
   }
+
+  const handleTimeRangeChange = (newRange: TimeRange) => {
+    setTimeRange(newRange);
+  };
 
   if (isLoading) {
     return (
@@ -36,7 +43,12 @@ function DashboardContent() {
         <StatusCards data={status} />
       </div>
       <div className="grid gap-6 md:grid-cols-2">
-        <MetricsChart data={metrics} />
+        <MetricsChart
+          data={metrics}
+          timeRange={timeRange}
+          onTimeRangeChange={handleTimeRangeChange}
+          isRefetching={isRefetching}
+        />
         <DataGrid data={status} />
       </div>
     </div>
