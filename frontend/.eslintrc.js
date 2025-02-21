@@ -12,5 +12,11 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: "module",
   },
-  rules: {},
+  rules: {
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+  },
+  env: {
+    jest: true,
+  },
 };
