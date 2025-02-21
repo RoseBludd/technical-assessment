@@ -10,7 +10,19 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+/**
+ * DataGrid Component
+ * Displays status updates in a filterable and searchable table format.
+ *
+ * Features:
+ * - Full-text search across all fields
+ * - Status-based filtering
+ * - Fixed header with scrollable content
+ * - Responsive layout
+ */
+
 interface DataGridProps {
+  /** Array of status updates to display */
   data: StatusData[];
 }
 
@@ -18,6 +30,7 @@ const DataGrid: React.FC<DataGridProps> = ({ data }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
+  // Filter data based on search query and status selection
   const filteredData = data.filter((item) => {
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch =
@@ -32,6 +45,7 @@ const DataGrid: React.FC<DataGridProps> = ({ data }) => {
     return matchesSearch && matchesStatus;
   });
 
+  // Get appropriate color classes based on status
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'healthy':

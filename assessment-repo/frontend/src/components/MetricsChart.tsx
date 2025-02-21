@@ -33,10 +33,25 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+/**
+ * MetricsChart Component
+ * Displays time-series data with configurable time ranges and trend indicators.
+ *
+ * Features:
+ * - Interactive time range selection (hour/day/week)
+ * - Trend calculation and visualization
+ * - Responsive chart layout
+ * - Loading state indication during data fetches
+ */
+
 interface MetricsChartProps {
+  /** Time series data points to display in the chart */
   data: TimeSeriesData[];
+  /** Current selected time range (hour/day/week) */
   timeRange: TimeRange;
+  /** Callback function when time range changes */
   onTimeRangeChange: (range: TimeRange) => void;
+  /** Optional loading state for data refetching */
   isRefetching?: boolean;
 }
 
@@ -46,6 +61,7 @@ const MetricsChart = ({
   onTimeRangeChange,
   isRefetching = false,
 }: MetricsChartProps) => {
+  // Calculate trend percentage between latest two data points
   const calculateTrend = () => {
     if (data.length < 2) return 0;
     const latest = data[data.length - 1].value;
@@ -63,6 +79,7 @@ const MetricsChart = ({
     },
   } satisfies ChartConfig;
 
+  // Format timestamp based on selected time range
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp);
     switch (timeRange) {
