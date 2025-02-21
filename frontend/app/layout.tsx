@@ -1,3 +1,6 @@
+import { ThemeProvider } from "@/components/theme-provider/ThemeProvider";
+import ThemeSwitcher from "@/components/theme-switcher/ThemeSwitcher";
+
 export const metadata = {
   title: "Frontend Specialist Assessment",
   description:
@@ -10,8 +13,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <main>
+              <div>{children}</div>
+            </main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </>
   );
 }
