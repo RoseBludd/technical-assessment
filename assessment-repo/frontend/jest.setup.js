@@ -13,13 +13,3 @@ jest.mock('next/router', () => ({
     };
   },
 }));
-
-// Add custom matchers if needed
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeInTheDocument(): R;
-      // Add other custom matchers here if needed
-    }
-  }
-}
