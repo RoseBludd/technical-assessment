@@ -2,6 +2,8 @@ import express from 'express';
 import routes from './routes/index';
 import cors from 'cors';
 import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from '../docs/swagger';
 
 const app = express();
 
@@ -19,7 +21,11 @@ app.get('/', (req, res) => {
     });
 });
 
+
 // Routes
 app.use('/api', routes);
+
+// Swagger documentation route
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default app;

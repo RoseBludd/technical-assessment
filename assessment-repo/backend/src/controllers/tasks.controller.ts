@@ -7,9 +7,7 @@ const prisma = new PrismaClient();
 export class TasksController {
   async create(req: Request, res: Response) {
     try {
-      const { title, description, status, dueDate } = req.body;
-    //   const userId = req.user.id; // Assuming you have authentication middleware
-    const userId = 1;
+      const { title, description, status, dueDate, userId } = req.body;
 
       const task = await prisma.task.create({
         data: {
@@ -29,10 +27,7 @@ export class TasksController {
 
   async getAll(req: Request, res: Response) {
     try {
-    //   const userId = req.user.id; // Assuming you have authentication middleware
-    const userId = 1;
       const tasks = await prisma.task.findMany({
-        where: { userId },
         orderBy: { createdAt: 'desc' },
       });
 
@@ -45,11 +40,9 @@ export class TasksController {
   async getOne(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      // const userId = req.user.id;
-      const userId = 1;
 
       const task = await prisma.task.findFirst({
-        where: { id : parseInt(id), userId },
+        where: { id : parseInt(id) },
       });
 
       if (!task) {
@@ -94,11 +87,9 @@ export class TasksController {
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      // const userId = req.user.id;
-      const userId = 1;
 
       const task = await prisma.task.findFirst({
-        where: { id: parseInt(id), userId },
+        where: { id: parseInt(id)  },
       });
 
       if (!task) {

@@ -7,10 +7,10 @@ export { UsersController };
 const router = Router();
 const usersController = new UsersController();
 
-router.post('/users', validate(createUserSchema), usersController.create);
-router.get('/users', usersController.findAll);
-router.get('/users/:id', usersController.findOne);
-router.put('/users/:id', validate(updateUserSchema), usersController.update);
-router.delete('/users/:id', usersController.delete);
+router.post('/', validate(createUserSchema), usersController.create);
+router.get('/', usersController.findAll);
+router.get('/:id', usersController.findOne);
+router.put('/:id', validate(updateUserSchema), usersController.update);
+router.delete('/:id', usersController.delete);
 
 export default router; 
