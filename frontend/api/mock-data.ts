@@ -11,7 +11,7 @@ export interface StatusUpdate {
 }
 
 export async function fetchMetrics(
-  timeRange: "hour" | "day" | "week" = "day"
+  timeRange: "hour" | "day" | "week" = "day",
 ): Promise<TimeSeriesData[]> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
