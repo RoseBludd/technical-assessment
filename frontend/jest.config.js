@@ -2,11 +2,12 @@ module.exports = {
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1",
+    "^@/components/(.*)$": "<rootDir>/components/$1",
+    "^@/api/(.*)$": "<rootDir>/api/$1",
+    "^@/(.*)$": "<rootDir>/$1",
   },
-  testMatch: ["<rootDir>/**/*.test.tsx", "<rootDir>/**/*.test.ts"],
   transform: {
-    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(ts|tsx|js|jsx)$": "ts-jest",
   },
-  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts"],
+  transformIgnorePatterns: ["<rootDir>/node_modules/"],
 };

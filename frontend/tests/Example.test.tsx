@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import Example from "./Example";
+import Example from "../components/Example";
+import "@testing-library/jest-dom";
 
 describe("Example Component", () => {
   it("renders correctly", () => {
