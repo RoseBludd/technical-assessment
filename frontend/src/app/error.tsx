@@ -1,3 +1,4 @@
+// nextjs component
 'use client';
 
 const Error = ({ error, reset }) => (
