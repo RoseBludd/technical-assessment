@@ -1,0 +1,17 @@
+@layer components {
+  .input-select {
+    @apply px-3 py-2 rounded-md bg-background border border-input hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .metrics-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  .status-card {
+    @apply bg-card p-4 rounded-lg shadow-sm border border-border;
+  }
+
+  .card {
+    @apply bg-card p-6 rounded-lg shadow-sm border border-border;
+  }
+}
