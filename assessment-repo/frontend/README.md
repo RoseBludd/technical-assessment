@@ -8,7 +8,7 @@ A modern, responsive dashboard built with Next.js 14 for real-time system metric
 - Status monitoring with visual indicators
 - Searchable and filterable data
 - Responsive design and optimized loading states
-- Light/dark mode
+- Light/dark mode feature
 
 ## Component Architecture
 
