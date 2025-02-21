@@ -25,7 +25,7 @@ export default async function MetricsDataTwo() {
   const chartConfig = {
     value: {
       label: "value",
-      color: "hsl(var(--chart-1))",
+      color: "hsl(var(--chart-6))",
     },
   } satisfies ChartConfig;
 
