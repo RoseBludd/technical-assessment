@@ -70,10 +70,10 @@ const DataGrid: React.FC<DataGridProps> = ({ data }) => {
           </Select>
         </div>
       </CardHeader>
-      <CardContent className="flex-1">
-        <div className="relative h-full overflow-auto">
+      <CardContent className="flex-1 pb-10">
+        <div className="relative h-[400px] overflow-auto">
           <table className="w-full caption-bottom text-sm">
-            <thead className="border-b">
+            <thead className="sticky top-0 border-b bg-card">
               <tr className="border-b transition-colors hover:bg-muted/50">
                 <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
                   Status

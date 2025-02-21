@@ -8,6 +8,30 @@ interface StatusCardsProps {
 }
 
 const StatusCards: React.FC<StatusCardsProps> = ({ data }) => {
+  const statusCounts = {
+    healthy: data.filter((item) => item.status === 'healthy').length,
+    warning: data.filter((item) => item.status === 'warning').length,
+    error: data.filter((item) => item.status === 'error').length,
+  };
+
+  const statusConfig = [
+    {
+      status: 'healthy',
+      message: 'Systems Operational',
+      icon: CheckCircle,
+    },
+    {
+      status: 'warning',
+      message: 'Systems Need Attention',
+      icon: AlertTriangle,
+    },
+    {
+      status: 'error',
+      message: 'Systems Critical',
+      icon: XCircle,
+    },
+  ];
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'healthy':
@@ -21,40 +45,25 @@ const StatusCards: React.FC<StatusCardsProps> = ({ data }) => {
     }
   };
 
-  const statusCounts = {
-    healthy: data.filter((item) => item.status === 'healthy').length,
-    warning: data.filter((item) => item.status === 'warning').length,
-    error: data.filter((item) => item.status === 'error').length,
-  };
-
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item) => (
-        <Card key={item.id}>
+      {statusConfig.map(({ status, message, icon: Icon }) => (
+        <Card key={status}>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3
-                  className={`mb-2 text-lg font-semibold ${getStatusColor(item.status)}`}
+                  className={`mb-2 text-lg font-semibold ${getStatusColor(status)}`}
                 >
-                  {item.status}
+                  {status}
                   <span className="ml-2 text-sm">
-                    ({statusCounts[item.status]})
+                    ({statusCounts[status as keyof typeof statusCounts]})
                   </span>
                 </h3>
-                <p className="text-sm text-card-foreground">{item.message}</p>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {new Date(item.timestamp).toLocaleString()}
-                </p>
+                <p className="text-sm text-card-foreground">{message}</p>
               </div>
-              <div className={getStatusColor(item.status)}>
-                {item.status === 'healthy' && (
-                  <CheckCircle className="h-6 w-6" />
-                )}
-                {item.status === 'warning' && (
-                  <AlertTriangle className="h-6 w-6" />
-                )}
-                {item.status === 'error' && <XCircle className="h-6 w-6" />}
+              <div className={getStatusColor(status)}>
+                <Icon className="h-6 w-6" />
               </div>
             </div>
           </CardContent>
