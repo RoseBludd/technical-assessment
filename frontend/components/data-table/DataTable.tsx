@@ -23,7 +23,7 @@ import {
 import { DataTablePagination } from "../data-table-pagination/DataTablePagination";
 import { useState } from "react";
 import { Input } from "../ui/input";
-import { SearchCheck, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
