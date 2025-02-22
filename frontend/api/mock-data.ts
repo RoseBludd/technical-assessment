@@ -31,6 +31,8 @@ export async function fetchMetrics(
     });
   }
 
+  // throw new Error();
+
   return data;
 }
 
