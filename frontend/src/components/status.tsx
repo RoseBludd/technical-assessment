@@ -1,3 +1,4 @@
+import pRetry from 'p-retry';
 import { formatRelative } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { StatusUpdate } from '@/app/api/status/route';
@@ -8,11 +9,12 @@ const host = process.env.NEXT_PUBLIC_API_HOST;
 const fetchData = async (): Promise<StatusUpdate[]> => {
   const res = await fetch(`${host}/api/status`);
   const data = await res.json();
+
   return data;
 };
 
 export default async function () {
-  const data: StatusUpdate[] = await fetchData();
+  const data: StatusUpdate[] = await pRetry(fetchData, { retries: 3 });
 
   return (
     <>
