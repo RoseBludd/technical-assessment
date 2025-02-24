@@ -67,3 +67,7 @@ docker-volumes/
 *.tmp
 *.temp
 .cache/
+
+# Large files
+postgresql_installer.exe
+**/node_modules/@next/swc-win32-x64-msvc/next-swc.win32-x64-msvc.node
