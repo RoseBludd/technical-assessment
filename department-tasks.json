@@ -1,0 +1,649 @@
+{
+  "version": "1.0.0",
+  "file_review_tasks": {
+    "core_components": [
+      {
+        "id": "FR-T2",
+        "title": "Document Processing System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Build document processing system for handling various file types and formats",
+        "requirements": [
+          "PDF document processing",
+          "Image file handling",
+          "OCR integration",
+          "Document classification",
+          "Version control system"
+        ],
+        "acceptance_criteria": [
+          "Processes all required file types",
+          "OCR accuracy > 95%",
+          "Proper version control",
+          "Performance requirements met",
+          "Integration tests passed"
+        ]
+      },
+      {
+        "id": "FR-T3",
+        "title": "Validation Service Implementation",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create validation service for file review process",
+        "requirements": [
+          "Rule engine implementation",
+          "Custom validation rules",
+          "Validation workflow",
+          "Error handling",
+          "Reporting system"
+        ],
+        "acceptance_criteria": [
+          "Rule engine working",
+          "Custom rules functional",
+          "Error handling complete",
+          "Reports generated correctly",
+          "Integration tests passed"
+        ]
+      },
+      {
+        "id": "FR-T4",
+        "title": "File Review Notification System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement notification system for file review process",
+        "requirements": [
+          "Real-time notifications",
+          "Email integration",
+          "SMS notifications",
+          "Notification preferences",
+          "Escalation system"
+        ],
+        "acceptance_criteria": [
+          "Real-time updates working",
+          "Email notifications sending",
+          "SMS system functional",
+          "Preferences working",
+          "Escalation rules working"
+        ]
+      }
+    ],
+    "integration_points": [
+      {
+        "id": "FR-I1",
+        "title": "Sales Department Integration",
+        "category": "INTEGRATION",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Implement integration between File Review and Sales departments",
+        "requirements": [
+          "Data synchronization",
+          "Status updates",
+          "Document sharing",
+          "Notification system",
+          "Error handling"
+        ],
+        "acceptance_criteria": [
+          "Data syncs correctly",
+          "Status updates real-time",
+          "Documents shared properly",
+          "Notifications working",
+          "Error handling functional"
+        ]
+      }
+    ]
+  },
+  "estimating_tasks": {
+    "core_components": [
+      {
+        "id": "EST-T1",
+        "title": "Estimating Dashboard System",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Build comprehensive dashboard system for estimating team",
+        "requirements": [
+          "Team overview dashboard",
+          "Individual metrics view",
+          "Manager dashboard",
+          "Real-time status tracking",
+          "Performance monitoring"
+        ],
+        "acceptance_criteria": [
+          "All dashboards functional",
+          "Real-time updates working",
+          "Metrics accurately tracked",
+          "Filtering system working",
+          "Performance requirements met"
+        ]
+      },
+      {
+        "id": "EST-T2",
+        "title": "Update Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create system for managing and tracking updates",
+        "requirements": [
+          "Update status tracking",
+          "Due date monitoring",
+          "Automated notifications",
+          "Response tracking",
+          "Performance metrics"
+        ],
+        "acceptance_criteria": [
+          "Status tracking working",
+          "Due dates monitored",
+          "Notifications sending",
+          "Responses tracked",
+          "Metrics accurate"
+        ]
+      },
+      {
+        "id": "EST-T3",
+        "title": "Estimate Processing System",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Build system for processing and managing estimates",
+        "requirements": [
+          "Damage level assessment",
+          "Strategy tracking",
+          "Insurance coordination",
+          "Document management",
+          "Status tracking"
+        ],
+        "acceptance_criteria": [
+          "Assessment system working",
+          "Strategy tracking functional",
+          "Insurance coordination working",
+          "Documents managed properly",
+          "Status updates accurate"
+        ]
+      },
+      {
+        "id": "EST-T4",
+        "title": "Claims Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Implement comprehensive claims management system",
+        "requirements": [
+          "Coverage status tracking",
+          "Claim status monitoring",
+          "Carrier communication",
+          "Depreciation handling",
+          "Documentation system"
+        ],
+        "acceptance_criteria": [
+          "Status tracking accurate",
+          "Monitoring functional",
+          "Communication working",
+          "Depreciation handled",
+          "Documentation complete"
+        ]
+      },
+      {
+        "id": "EST-T5",
+        "title": "Financial Integration System",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Create financial tracking and integration system",
+        "requirements": [
+          "QuickBooks integration",
+          "Cost tracking",
+          "Revenue monitoring",
+          "Profit analysis",
+          "Reporting system"
+        ],
+        "acceptance_criteria": [
+          "QuickBooks connected",
+          "Costs tracked",
+          "Revenue monitored",
+          "Analysis accurate",
+          "Reports generated"
+        ]
+      },
+      {
+        "id": "EST-T6",
+        "title": "Supplement Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Build system for managing supplements and approvals",
+        "requirements": [
+          "Supplement tracking",
+          "Approval workflow",
+          "Documentation system",
+          "Performance tracking",
+          "Status monitoring"
+        ],
+        "acceptance_criteria": [
+          "Tracking functional",
+          "Workflow working",
+          "Documentation complete",
+          "Performance tracked",
+          "Status monitored"
+        ]
+      }
+    ],
+    "integration_points": [
+      {
+        "id": "EST-I1",
+        "title": "Insurance Carrier Integration",
+        "category": "INTEGRATION",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Implement integration with insurance carrier systems",
+        "requirements": [
+          "Carrier portal integration",
+          "Claim status sync",
+          "Document exchange",
+          "Communication system",
+          "Status tracking"
+        ],
+        "acceptance_criteria": [
+          "Portal integrated",
+          "Claims synced",
+          "Documents exchanged",
+          "Communication working",
+          "Status tracked"
+        ]
+      },
+      {
+        "id": "EST-I2",
+        "title": "Production System Integration",
+        "category": "INTEGRATION",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create integration with production system",
+        "requirements": [
+          "Handoff workflow",
+          "Status synchronization",
+          "Document sharing",
+          "Team communication",
+          "Progress tracking"
+        ],
+        "acceptance_criteria": [
+          "Workflow functional",
+          "Sync working",
+          "Documents shared",
+          "Communication working",
+          "Progress tracked"
+        ]
+      }
+    ],
+    "ai_features": [
+      {
+        "id": "EST-AI1",
+        "title": "Estimate Analysis AI",
+        "category": "AUTOMATION",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Implement AI features for estimate analysis",
+        "requirements": [
+          "Damage assessment automation",
+          "Cost estimation support",
+          "Supplement identification",
+          "Risk assessment",
+          "Pattern recognition"
+        ],
+        "acceptance_criteria": [
+          "Assessment accurate",
+          "Estimation reliable",
+          "Supplements identified",
+          "Risks assessed",
+          "Patterns recognized"
+        ]
+      },
+      {
+        "id": "EST-AI2",
+        "title": "Document Processing AI",
+        "category": "AUTOMATION",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Create AI system for document processing",
+        "requirements": [
+          "Policy analysis",
+          "Claim review",
+          "Supplement justification",
+          "Coverage verification",
+          "Document classification"
+        ],
+        "acceptance_criteria": [
+          "Analysis accurate",
+          "Reviews reliable",
+          "Justification valid",
+          "Verification working",
+          "Classification accurate"
+        ]
+      }
+    ]
+  },
+  "storm_opportunity_tasks": {
+    "core_components": [
+      {
+        "id": "SO-T2",
+        "title": "Territory Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement territory management and planning system",
+        "requirements": [
+          "Geographic mapping",
+          "Territory assignment",
+          "Coverage analysis",
+          "Resource planning",
+          "Optimization tools"
+        ],
+        "acceptance_criteria": [
+          "Mapping accurate",
+          "Assignments working",
+          "Analysis tools functional",
+          "Resource planning effective",
+          "Optimization working"
+        ]
+      },
+      {
+        "id": "SO-T3",
+        "title": "Resource Allocation System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Build system for managing and allocating resources",
+        "requirements": [
+          "Resource tracking",
+          "Assignment system",
+          "Availability management",
+          "Scheduling tools",
+          "Performance tracking"
+        ],
+        "acceptance_criteria": [
+          "Tracking accurate",
+          "Assignments working",
+          "Availability updated",
+          "Scheduling functional",
+          "Performance monitored"
+        ]
+      }
+    ]
+  },
+  "production_tasks": {
+    "core_components": [
+      {
+        "id": "PROD-T2",
+        "title": "Resource Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Create comprehensive resource management system",
+        "requirements": [
+          "Team management",
+          "Equipment tracking",
+          "Material management",
+          "Schedule optimization",
+          "Cost tracking"
+        ],
+        "acceptance_criteria": [
+          "Team management working",
+          "Equipment tracked",
+          "Materials managed",
+          "Schedule optimized",
+          "Costs tracked accurately"
+        ]
+      },
+      {
+        "id": "PROD-T3",
+        "title": "Quality Control System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement quality control and inspection system",
+        "requirements": [
+          "Inspection checklists",
+          "Photo documentation",
+          "Issue tracking",
+          "Resolution system",
+          "Reporting tools"
+        ],
+        "acceptance_criteria": [
+          "Checklists functional",
+          "Photos managed properly",
+          "Issues tracked",
+          "Resolution system working",
+          "Reports generated"
+        ]
+      }
+    ]
+  },
+  "customer_updates_tasks": {
+    "core_components": [
+      {
+        "id": "CU-T1",
+        "title": "Customer Portal Core Infrastructure",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Build the core customer portal infrastructure with authentication and basic features",
+        "requirements": [
+          "User authentication system",
+          "Role-based access control",
+          "Multi-property support",
+          "Basic dashboard layout",
+          "Security implementation"
+        ],
+        "acceptance_criteria": [
+          "Authentication working",
+          "Role system functional",
+          "Property management working",
+          "Dashboard responsive",
+          "Security tests passed"
+        ]
+      },
+      {
+        "id": "CU-T2",
+        "title": "Property Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement comprehensive property management features",
+        "requirements": [
+          "Multi-property portfolio view",
+          "Document management system",
+          "Team assignment features",
+          "Status tracking",
+          "Timeline management"
+        ],
+        "acceptance_criteria": [
+          "Portfolio view functional",
+          "Document system working",
+          "Team assignments working",
+          "Status tracking accurate",
+          "Timeline updates real-time"
+        ]
+      },
+      {
+        "id": "CU-T3",
+        "title": "Update Management System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create system for managing and scheduling customer updates",
+        "requirements": [
+          "Update scheduling system",
+          "Template management",
+          "Multi-channel delivery",
+          "Response tracking",
+          "Automation rules"
+        ],
+        "acceptance_criteria": [
+          "Scheduling working",
+          "Templates functional",
+          "Delivery successful",
+          "Tracking accurate",
+          "Automation working"
+        ]
+      },
+      {
+        "id": "CU-T4",
+        "title": "Communication Hub",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Build centralized communication system for customer interactions",
+        "requirements": [
+          "Team chat implementation",
+          "Notification system",
+          "Email integration",
+          "Message threading",
+          "File sharing"
+        ],
+        "acceptance_criteria": [
+          "Chat system working",
+          "Notifications functional",
+          "Email integration complete",
+          "Threading working",
+          "File sharing functional"
+        ]
+      },
+      {
+        "id": "CU-T5",
+        "title": "Customer Onboarding System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement automated customer onboarding process",
+        "requirements": [
+          "Account setup workflow",
+          "Property registration",
+          "Team connection system",
+          "Verification process",
+          "Documentation system"
+        ],
+        "acceptance_criteria": [
+          "Workflow functional",
+          "Registration working",
+          "Team connections working",
+          "Verification successful",
+          "Documentation complete"
+        ]
+      },
+      {
+        "id": "CU-T6",
+        "title": "Analytics & Reporting",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Create comprehensive analytics and reporting system",
+        "requirements": [
+          "Usage tracking",
+          "Engagement metrics",
+          "Performance analytics",
+          "Customer satisfaction tracking",
+          "Report generation"
+        ],
+        "acceptance_criteria": [
+          "Tracking accurate",
+          "Metrics functional",
+          "Analytics working",
+          "Satisfaction tracked",
+          "Reports generated"
+        ]
+      }
+    ],
+    "integration_points": [
+      {
+        "id": "CU-I1",
+        "title": "Sales System Integration",
+        "category": "INTEGRATION",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Integrate customer updates with sales system",
+        "requirements": [
+          "Lead status sync",
+          "Property data sync",
+          "Communication history",
+          "Team assignments",
+          "Status updates"
+        ],
+        "acceptance_criteria": [
+          "Lead sync working",
+          "Property sync accurate",
+          "History maintained",
+          "Assignments working",
+          "Updates real-time"
+        ]
+      },
+      {
+        "id": "CU-I2",
+        "title": "Production Integration",
+        "category": "INTEGRATION",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Integrate with production system for status updates",
+        "requirements": [
+          "Timeline synchronization",
+          "Status updates",
+          "Team coordination",
+          "Document sharing",
+          "Progress tracking"
+        ],
+        "acceptance_criteria": [
+          "Timeline synced",
+          "Status accurate",
+          "Coordination working",
+          "Documents shared",
+          "Progress tracked"
+        ]
+      },
+      {
+        "id": "CU-I3",
+        "title": "External Systems Integration",
+        "category": "INTEGRATION",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Integrate with external systems (CRM, email, etc.)",
+        "requirements": [
+          "CRM integration",
+          "Email service connection",
+          "Analytics platform",
+          "Notification services",
+          "API management"
+        ],
+        "acceptance_criteria": [
+          "CRM connected",
+          "Email working",
+          "Analytics integrated",
+          "Notifications functional",
+          "APIs managed"
+        ]
+      }
+    ],
+    "ai_features": [
+      {
+        "id": "CU-AI1",
+        "title": "AI Communication Enhancement",
+        "category": "AUTOMATION",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Implement AI features for communication optimization",
+        "requirements": [
+          "Update summarization",
+          "Response analysis",
+          "Content personalization",
+          "Sentiment analysis",
+          "Engagement prediction"
+        ],
+        "acceptance_criteria": [
+          "Summarization accurate",
+          "Analysis working",
+          "Personalization effective",
+          "Sentiment tracked",
+          "Predictions reliable"
+        ]
+      }
+    ]
+  }
+}

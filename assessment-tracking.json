@@ -1,0 +1,226 @@
+{
+  "version": "1.0.0",
+  "active_assessments": {
+    "trial": {
+      "max_concurrent": 4,
+      "current_assignments": [],
+      "completed": [],
+      "departments": {
+        "customer_updates": {
+          "available_tasks": ["CU-TR1", "CU-TR2", "CU-TR3"],
+          "in_progress": [],
+          "completed": []
+        },
+        "estimating": {
+          "available_tasks": ["EST-TR1", "EST-TR2", "EST-TR3"],
+          "in_progress": [],
+          "completed": []
+        },
+        "file_review": {
+          "available_tasks": ["FR-TR1"],
+          "in_progress": [],
+          "completed": []
+        },
+        "storm_opportunity": {
+          "available_tasks": ["SO-TR1"],
+          "in_progress": [],
+          "completed": []
+        },
+        "production": {
+          "available_tasks": ["PROD-TR1"],
+          "in_progress": [],
+          "completed": []
+        }
+      }
+    },
+    "advanced": {
+      "max_concurrent": 3,
+      "current_assignments": [],
+      "completed": [],
+      "departments": {
+        "customer_updates": {
+          "available_tasks": ["CU-AD1", "CU-AD2", "CU-AD3", "CU-AD4"],
+          "in_progress": [],
+          "completed": []
+        },
+        "estimating": {
+          "available_tasks": ["EST-AD1", "EST-AD2", "EST-AD3", "EST-AD4"],
+          "in_progress": [],
+          "completed": []
+        },
+        "file_review": {
+          "available_tasks": ["FR-AD1", "FR-AD2", "FR-AD3"],
+          "in_progress": [],
+          "completed": []
+        },
+        "storm_opportunity": {
+          "available_tasks": ["SO-AD1", "SO-AD2", "SO-AD3"],
+          "in_progress": [],
+          "completed": []
+        },
+        "production": {
+          "available_tasks": ["PROD-AD1", "PROD-AD2", "PROD-AD3"],
+          "in_progress": [],
+          "completed": []
+        }
+      }
+    },
+    "sprint": {
+      "max_concurrent": 2,
+      "current_assignments": [],
+      "completed": [],
+      "departments": {
+        "customer_updates": {
+          "available_tasks": [
+            "CU-T1",
+            "CU-T2",
+            "CU-T3",
+            "CU-T4",
+            "CU-T5",
+            "CU-T6"
+          ],
+          "in_progress": [],
+          "completed": []
+        },
+        "estimating": {
+          "available_tasks": ["EST-T1"],
+          "in_progress": [],
+          "completed": []
+        },
+        "file_review": {
+          "available_tasks": ["FR-T1"],
+          "in_progress": [],
+          "completed": []
+        }
+      }
+    },
+    "integration": {
+      "max_concurrent": 2,
+      "current_assignments": [],
+      "completed": [],
+      "departments": {
+        "customer_updates": {
+          "available_tasks": ["CU-I1"],
+          "in_progress": [],
+          "completed": []
+        },
+        "estimating": {
+          "available_tasks": ["EST-I1"],
+          "in_progress": [],
+          "completed": []
+        },
+        "file_review": {
+          "available_tasks": ["FR-I1", "FR-I2"],
+          "in_progress": [],
+          "completed": []
+        },
+        "storm_opportunity": {
+          "available_tasks": ["SO-I1", "SO-I2"],
+          "in_progress": [],
+          "completed": []
+        },
+        "production": {
+          "available_tasks": ["PROD-I1", "PROD-I2"],
+          "in_progress": [],
+          "completed": []
+        }
+      }
+    }
+  },
+  "candidate_template": {
+    "id": "",
+    "name": "",
+    "email": "",
+    "github": "",
+    "current_tier": "",
+    "current_task": "",
+    "current_department": "",
+    "start_date": "",
+    "due_date": "",
+    "evaluation": {
+      "speed": 0,
+      "accuracy": 0,
+      "communication": 0,
+      "problem_solving": 0,
+      "code_quality": 0,
+      "independence": 0,
+      "alignment": 0,
+      "efficiency": 0,
+      "initiative": 0,
+      "collaboration": 0
+    },
+    "progress": {
+      "completed_tasks": [],
+      "current_status": "",
+      "department_progress": {
+        "customer_updates": {
+          "completed": [],
+          "in_progress": null
+        },
+        "estimating": {
+          "completed": [],
+          "in_progress": null
+        },
+        "file_review": {
+          "completed": [],
+          "in_progress": null
+        },
+        "storm_opportunity": {
+          "completed": [],
+          "in_progress": null
+        },
+        "production": {
+          "completed": [],
+          "in_progress": null
+        }
+      },
+      "notes": [],
+      "payment_status": ""
+    }
+  },
+  "metrics": {
+    "total_candidates": 0,
+    "trial_completion_rate": 0,
+    "advanced_completion_rate": 0,
+    "sprint_completion_rate": 0,
+    "department_metrics": {
+      "customer_updates": {
+        "trial_tasks_completed": 0,
+        "advanced_tasks_completed": 0,
+        "sprint_tasks_completed": 0,
+        "integration_tasks_completed": 0
+      },
+      "estimating": {
+        "trial_tasks_completed": 0,
+        "advanced_tasks_completed": 0,
+        "sprint_tasks_completed": 0,
+        "integration_tasks_completed": 0
+      },
+      "file_review": {
+        "trial_tasks_completed": 0,
+        "advanced_tasks_completed": 0,
+        "sprint_tasks_completed": 0,
+        "integration_tasks_completed": 0
+      },
+      "storm_opportunity": {
+        "trial_tasks_completed": 0,
+        "advanced_tasks_completed": 0,
+        "sprint_tasks_completed": 0,
+        "integration_tasks_completed": 0
+      },
+      "production": {
+        "trial_tasks_completed": 0,
+        "advanced_tasks_completed": 0,
+        "sprint_tasks_completed": 0,
+        "integration_tasks_completed": 0
+      }
+    },
+    "average_task_completion_time": {
+      "trial": 0,
+      "advanced": 0,
+      "sprint": 0,
+      "integration": 0
+    },
+    "total_paid": 0
+  }
+}

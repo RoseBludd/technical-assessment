@@ -1,21 +1,18 @@
 "use client";
 
+import AdminNavigation from "../components/AdminNavigation";
+
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-900">
-      <nav className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="text-white font-semibold">RestoreMasters</div>
-            <div className="text-white font-semibold">Admin Dashboard</div>
-          </div>
-        </div>
-      </nav>
-      <main>{children}</main>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      <AdminNavigation />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="card backdrop-blur-sm bg-gray-900/50">{children}</div>
+      </div>
     </div>
   );
 }

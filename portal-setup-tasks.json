@@ -1,0 +1,213 @@
+{
+  "version": "1.0.0",
+  "portal_setup_tasks": {
+    "base_functionality": [
+      {
+        "id": "POR-T1",
+        "title": "Developer Portal Authentication System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement authentication and authorization system for the Developer Portal",
+        "requirements": [
+          "User registration and login",
+          "Role-based access control",
+          "GitHub integration",
+          "Session management",
+          "Security best practices"
+        ],
+        "acceptance_criteria": [
+          "Secure authentication flow",
+          "GitHub OAuth integration",
+          "Role management system",
+          "Session handling",
+          "Security testing passed"
+        ]
+      },
+      {
+        "id": "POR-T2",
+        "title": "Task Assignment and Tracking UI",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create the UI for task assignment and progress tracking",
+        "requirements": [
+          "Task list view with filters",
+          "Task detail view",
+          "Progress tracking interface",
+          "Status update system",
+          "Real-time updates"
+        ],
+        "acceptance_criteria": [
+          "Responsive design",
+          "Real-time updates working",
+          "Filter system functional",
+          "Progress tracking accurate",
+          "Performance requirements met"
+        ]
+      },
+      {
+        "id": "POR-T3",
+        "title": "Assessment Evaluation System",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Build the system for evaluating developer assessments and tracking progress",
+        "requirements": [
+          "Evaluation criteria implementation",
+          "Scoring system",
+          "Progress tracking",
+          "Performance metrics",
+          "Automated evaluation features"
+        ],
+        "acceptance_criteria": [
+          "Accurate evaluation tracking",
+          "Automated scoring working",
+          "Progress visualization",
+          "Performance analytics",
+          "Integration with task system"
+        ]
+      }
+    ],
+    "department_integration": [
+      {
+        "id": "POR-D1",
+        "title": "Department Task Pool Integration",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create system to integrate department-specific tasks into the portal",
+        "requirements": [
+          "Task pool management",
+          "Department configuration",
+          "Task categorization",
+          "Priority management",
+          "Assignment rules"
+        ],
+        "acceptance_criteria": [
+          "Task pool system working",
+          "Department integration complete",
+          "Priority system functional",
+          "Assignment rules working",
+          "Integration tests passed"
+        ]
+      },
+      {
+        "id": "POR-D2",
+        "title": "Department Progress Dashboard",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Build dashboard for tracking department-specific progress and metrics",
+        "requirements": [
+          "Department metrics display",
+          "Progress visualization",
+          "Task completion tracking",
+          "Performance indicators",
+          "Real-time updates"
+        ],
+        "acceptance_criteria": [
+          "Dashboard functional",
+          "Metrics accurate",
+          "Real-time updates working",
+          "Performance requirements met",
+          "Department filtering working"
+        ]
+      }
+    ],
+    "payment_system": [
+      {
+        "id": "POR-P1",
+        "title": "Payment Tracking and Processing",
+        "category": "NEW_FEATURE",
+        "complexity": "high",
+        "compensation": 500,
+        "description": "Implement system for tracking and processing developer payments",
+        "requirements": [
+          "Payment calculation",
+          "Transaction tracking",
+          "Payment status management",
+          "Integration with task completion",
+          "Payment history"
+        ],
+        "acceptance_criteria": [
+          "Payment tracking accurate",
+          "Status management working",
+          "History tracking complete",
+          "Integration functional",
+          "Security requirements met"
+        ]
+      }
+    ]
+  },
+  "department_task_checklist": {
+    "file_review": {
+      "core_components": [
+        "File Status Dashboard ✓",
+        "Document Processing System",
+        "Validation Service",
+        "Notification System",
+        "Team Assignment System"
+      ],
+      "integration_points": [
+        "Sales Department Handoff",
+        "Estimating Department Routing",
+        "External Service Connections"
+      ]
+    },
+    "estimating": {
+      "core_components": [
+        "Estimate Calculator ✓",
+        "Insurance Processing System",
+        "Material Database Integration",
+        "Pricing Engine",
+        "Quality Control System"
+      ],
+      "integration_points": [
+        "Production Department Connection",
+        "Vendor Integration",
+        "Customer Updates System"
+      ]
+    },
+    "storm_opportunity": {
+      "core_components": [
+        "Storm Tracking System ✓",
+        "Territory Management",
+        "Team Deployment Planning",
+        "Resource Allocation System"
+      ],
+      "integration_points": [
+        "Sales Team Integration",
+        "Weather Service Connection",
+        "Mobile Team Updates"
+      ]
+    },
+    "production": {
+      "core_components": [
+        "Project Dashboard ✓",
+        "Resource Management",
+        "Schedule Optimization",
+        "Quality Control System",
+        "Vendor Management"
+      ],
+      "integration_points": [
+        "Estimating Connection",
+        "Customer Updates",
+        "Vendor Communication"
+      ]
+    },
+    "customer_updates": {
+      "core_components": [
+        "Communication Platform ✓",
+        "Update Management System",
+        "Customer Portal",
+        "Notification Engine"
+      ],
+      "integration_points": [
+        "Production Status Integration",
+        "Estimating Updates",
+        "Customer Feedback System"
+      ]
+    }
+  }
+}

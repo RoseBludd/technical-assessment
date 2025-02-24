@@ -1,0 +1,410 @@
+{
+  "version": "1.0.0",
+  "assessmentTiers": {
+    "trial": {
+      "compensation": 100,
+      "maxTime": "3 days",
+      "tasks": [
+        {
+          "id": "FR-T1",
+          "department": "file-review",
+          "title": "Build File Status Dashboard Component",
+          "description": "Create a React component showing file review status with real-time updates",
+          "requirements": [
+            "Status visualization",
+            "Real-time updates",
+            "Filter capabilities",
+            "Basic metrics display"
+          ],
+          "acceptance_criteria": [
+            "Component renders correctly",
+            "Updates in real-time",
+            "Follows UI guidelines",
+            "Includes unit tests"
+          ],
+          "category": "NEW_FEATURE",
+          "complexity": "low"
+        },
+        {
+          "id": "EST-T1",
+          "department": "estimating",
+          "title": "Create Estimate Calculator Module",
+          "description": "Build a module for calculating basic estimate components",
+          "requirements": [
+            "Material cost calculation",
+            "Labor cost calculation",
+            "Profit margin computation",
+            "Basic validation"
+          ],
+          "acceptance_criteria": [
+            "Accurate calculations",
+            "Input validation",
+            "Error handling",
+            "Unit test coverage"
+          ],
+          "category": "NEW_FEATURE",
+          "complexity": "low"
+        }
+      ]
+    },
+    "advanced": {
+      "compensation": 250,
+      "maxTime": "5 days",
+      "tasks": [
+        {
+          "id": "FR-A1",
+          "department": "file-review",
+          "title": "Implement Complete File Review Workflow",
+          "description": "Create an end-to-end workflow for file review process",
+          "requirements": [
+            "File upload and validation",
+            "Review process workflow",
+            "Status tracking",
+            "Team assignment",
+            "Quality control integration"
+          ],
+          "acceptance_criteria": [
+            "Complete workflow implementation",
+            "Status management",
+            "Team integration",
+            "Performance optimization",
+            "Full test coverage"
+          ],
+          "category": "NEW_FEATURE",
+          "complexity": "medium"
+        },
+        {
+          "id": "SO-A1",
+          "department": "storm-opportunity",
+          "title": "Storm Tracking System Integration",
+          "description": "Implement storm tracking and team deployment system",
+          "requirements": [
+            "Real-time storm data integration",
+            "Team deployment planning",
+            "Resource allocation",
+            "Territory mapping"
+          ],
+          "acceptance_criteria": [
+            "Accurate storm tracking",
+            "Efficient team deployment",
+            "Resource optimization",
+            "Integration tests"
+          ],
+          "category": "NEW_FEATURE",
+          "complexity": "medium"
+        }
+      ]
+    },
+    "sprint": {
+      "compensation": 500,
+      "maxTime": "10 days",
+      "tasks": [
+        {
+          "id": "PROD-S1",
+          "department": "production",
+          "title": "Production Management System",
+          "description": "Build complete production management system with all integrations",
+          "requirements": [
+            "Project dashboard",
+            "Resource management",
+            "Schedule optimization",
+            "Quality control system",
+            "Vendor management",
+            "Analytics dashboard"
+          ],
+          "acceptance_criteria": [
+            "Full system implementation",
+            "All integrations working",
+            "Performance optimization",
+            "Comprehensive testing",
+            "Documentation complete"
+          ],
+          "category": "NEW_FEATURE",
+          "complexity": "high"
+        },
+        {
+          "id": "CU-S1",
+          "department": "customer-updates",
+          "title": "Customer Communication Platform",
+          "description": "Implement complete customer communication and update system",
+          "requirements": [
+            "Multi-channel communication",
+            "Automated updates",
+            "Customer portal",
+            "Analytics system",
+            "Integration with other departments"
+          ],
+          "acceptance_criteria": [
+            "Full platform implementation",
+            "All channels working",
+            "Analytics dashboard",
+            "Performance metrics",
+            "Security compliance"
+          ],
+          "category": "NEW_FEATURE",
+          "complexity": "high"
+        }
+      ]
+    }
+  },
+  "evaluation_criteria": {
+    "trial": {
+      "speed": 0.25,
+      "accuracy": 0.25,
+      "communication": 0.25,
+      "problem_solving": 0.25
+    },
+    "advanced": {
+      "code_quality": 0.3,
+      "independence": 0.4,
+      "alignment": 0.3
+    },
+    "sprint": {
+      "efficiency": 0.3,
+      "initiative": 0.4,
+      "collaboration": 0.3
+    }
+  },
+  "trial_tasks": {
+    "customer_updates": [
+      {
+        "id": "CU-TR1",
+        "title": "Basic Customer Dashboard UI",
+        "category": "NEW_FEATURE",
+        "complexity": "low",
+        "compensation": 100,
+        "description": "Create the basic customer dashboard UI component",
+        "requirements": [
+          "Basic dashboard layout",
+          "Property card component",
+          "Status indicator component",
+          "Simple navigation",
+          "Responsive design"
+        ],
+        "acceptance_criteria": [
+          "Dashboard renders correctly",
+          "Property cards display properly",
+          "Status indicators working",
+          "Navigation functional",
+          "Mobile responsive"
+        ],
+        "parent_task": "CU-T1"
+      },
+      {
+        "id": "CU-TR2",
+        "title": "Customer Update Template Editor",
+        "category": "NEW_FEATURE",
+        "complexity": "low",
+        "compensation": 100,
+        "description": "Build template editor for customer updates",
+        "requirements": [
+          "Basic text editor",
+          "Template variables",
+          "Preview functionality",
+          "Save/load templates",
+          "Basic formatting"
+        ],
+        "acceptance_criteria": [
+          "Editor functional",
+          "Variables working",
+          "Preview working",
+          "Save/load working",
+          "Formatting applied"
+        ],
+        "parent_task": "CU-T3"
+      },
+      {
+        "id": "CU-TR3",
+        "title": "Property Document Viewer",
+        "category": "NEW_FEATURE",
+        "complexity": "low",
+        "compensation": 100,
+        "description": "Create document viewer for property files",
+        "requirements": [
+          "PDF viewer component",
+          "Image gallery",
+          "File list view",
+          "Basic search",
+          "Download functionality"
+        ],
+        "acceptance_criteria": [
+          "PDF viewing works",
+          "Gallery functional",
+          "List view working",
+          "Search operational",
+          "Downloads working"
+        ],
+        "parent_task": "CU-T2"
+      }
+    ],
+    "estimating": [
+      {
+        "id": "EST-TR1",
+        "title": "Estimate Summary Component",
+        "category": "NEW_FEATURE",
+        "complexity": "low",
+        "compensation": 100,
+        "description": "Build estimate summary display component",
+        "requirements": [
+          "Summary card layout",
+          "Key metrics display",
+          "Status indicators",
+          "Basic filtering",
+          "Export option"
+        ],
+        "acceptance_criteria": [
+          "Summary displays correctly",
+          "Metrics accurate",
+          "Status shown properly",
+          "Filtering works",
+          "Export functional"
+        ],
+        "parent_task": "EST-T1"
+      },
+      {
+        "id": "EST-TR2",
+        "title": "Damage Level Calculator",
+        "category": "NEW_FEATURE",
+        "complexity": "low",
+        "compensation": 100,
+        "description": "Create calculator for damage level assessment",
+        "requirements": [
+          "Input form",
+          "Calculation logic",
+          "Result display",
+          "Basic validation",
+          "Save functionality"
+        ],
+        "acceptance_criteria": [
+          "Form working",
+          "Calculations accurate",
+          "Results displayed",
+          "Validation functional",
+          "Save working"
+        ],
+        "parent_task": "EST-T3"
+      },
+      {
+        "id": "EST-TR3",
+        "title": "Claims Document Generator",
+        "category": "NEW_FEATURE",
+        "complexity": "low",
+        "compensation": 100,
+        "description": "Build basic claims document generator",
+        "requirements": [
+          "Document template",
+          "Form inputs",
+          "PDF generation",
+          "Basic customization",
+          "Download option"
+        ],
+        "acceptance_criteria": [
+          "Template working",
+          "Inputs functional",
+          "PDF generates",
+          "Customization works",
+          "Download working"
+        ],
+        "parent_task": "EST-T4"
+      }
+    ]
+  },
+  "advanced_tasks": {
+    "customer_updates": [
+      {
+        "id": "CU-AD1",
+        "title": "Customer Communication Center",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Implement customer communication management system",
+        "requirements": [
+          "Message composition",
+          "Contact management",
+          "Communication history",
+          "Template system",
+          "Notification handling"
+        ],
+        "acceptance_criteria": [
+          "Composition working",
+          "Contacts managed",
+          "History tracked",
+          "Templates functional",
+          "Notifications working"
+        ],
+        "parent_task": "CU-T4"
+      },
+      {
+        "id": "CU-AD2",
+        "title": "Property Timeline Manager",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create property timeline management system",
+        "requirements": [
+          "Timeline visualization",
+          "Event management",
+          "Status updates",
+          "Filter system",
+          "Export functionality"
+        ],
+        "acceptance_criteria": [
+          "Timeline visible",
+          "Events managed",
+          "Updates working",
+          "Filters functional",
+          "Export working"
+        ],
+        "parent_task": "CU-T2"
+      }
+    ],
+    "estimating": [
+      {
+        "id": "EST-AD1",
+        "title": "Insurance Carrier Portal",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Build insurance carrier interaction portal",
+        "requirements": [
+          "Carrier dashboard",
+          "Claim submission",
+          "Status tracking",
+          "Document exchange",
+          "Communication log"
+        ],
+        "acceptance_criteria": [
+          "Dashboard functional",
+          "Submissions working",
+          "Tracking accurate",
+          "Documents exchanged",
+          "Log maintained"
+        ],
+        "parent_task": "EST-I1"
+      },
+      {
+        "id": "EST-AD2",
+        "title": "Supplement Calculator System",
+        "category": "NEW_FEATURE",
+        "complexity": "medium",
+        "compensation": 250,
+        "description": "Create supplement calculation and management system",
+        "requirements": [
+          "Calculation engine",
+          "Documentation system",
+          "Approval workflow",
+          "History tracking",
+          "Report generation"
+        ],
+        "acceptance_criteria": [
+          "Calculations accurate",
+          "Documentation working",
+          "Workflow functional",
+          "History tracked",
+          "Reports generated"
+        ],
+        "parent_task": "EST-T6"
+      }
+    ]
+  }
+}

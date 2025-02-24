@@ -1,115 +1,101 @@
-# Technical Assessment Repository
+# Developer Portal - Task Pool
 
-Welcome to our technical assessment! This repository contains role-specific assessments for various positions. Please follow the instructions below to complete your assessment.
+A modern task management system for developers, built with Next.js, Prisma, and TypeScript.
 
-## Getting Started
+## Quick Start
 
-1. **Fork this Repository**
+1. Clone the repository:
 
-   - Click the "Fork" button at the top right of this repository
-   - This creates your own copy of the assessment repository
+```powershell
+git clone https://github.com/yourusername/dev-portal.git
+cd dev-portal
+```
 
-2. **Clone Your Fork**
+2. Run the setup script:
 
-   ```powershell
-   git clone https://github.com/your-username/assessment-repo.git
-   cd assessment-repo
-   ```
+```powershell
+./scripts/setup.ps1
+```
 
-3. **Create Your Assessment Branch**
+That's it! The setup script will:
 
-   ```powershell
-   # Replace [role] with: frontend, backend, integration, infrastructure, or qa
-   # Replace [your-name] with your name (e.g., john-doe)
-   git checkout -b assessment/[role]/[your-name]
-   ```
+- Install pnpm if not already installed
+- Install all dependencies
+- Set up the database automatically
+- Build the project
 
-4. **Navigate to Your Role's Directory**
+3. Start the development server:
 
-   - Frontend Specialist: `/frontend`
-   - Backend Specialist: `/backend`
-   - Integration Specialist: `/integration`
-   - DevOps Engineer: `/infrastructure`
-   - QA Engineer: `/qa`
+```powershell
+pnpm dev
+```
 
-5. **Read Role-Specific Instructions**
+## Features
 
-   - Each role directory contains a `README.md` with specific requirements
-   - Follow the instructions carefully
-   - Complete all required tasks
-   - Ensure all tests pass locally before submitting
+- Task filtering by department, complexity, and category
+- Detailed task cards with complexity indicators
+- Real-time updates
+- Modern dark theme UI
+- Responsive design
 
-6. **Submit Your Assessment**
+## Project Structure
 
-   ```powershell
-   git add .
-   git commit -m "Complete [role] assessment"
-   git push origin assessment/[role]/[your-name]
-   ```
+```
+├── src/
+│   ├── app/              # Next.js app directory
+│   ├── components/       # React components
+│   │   └── tasks/       # Task-related components
+│   ├── lib/             # Utility functions
+│   ├── types/           # TypeScript types
+│   └── styles/          # Global styles
+├── prisma/              # Database schema and migrations
+├── scripts/            # Setup and utility scripts
+├── public/             # Static assets
+└── tests/              # Test files
+```
 
-7. **Create a Pull Request**
-   - Go to the original repository
-   - Click "New Pull Request"
-   - Select your fork and branch
-   - Fill out the PR template completely
-   - **Important**: Include your application email in the PR description
+## Database Setup
 
-## Assessment Guidelines
+The project uses PostgreSQL with Prisma ORM. The default connection string in `.env` is:
 
-- **Time Limit**: 2-4 hours
+```
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dev_portal"
+```
 
-  - Focus on completing core requirements first
-  - Document any additional improvements you would make given more time
+The setup script will automatically:
 
-- **Code Quality**:
+1. Create the database if it doesn't exist
+2. Set up all required tables
+3. Apply any pending migrations
+4. Seed initial data if available
 
-  - Write clean, maintainable code
-  - Include appropriate comments and documentation
-  - Follow best practices for your role
-  - Include tests where applicable
+You just need to make sure PostgreSQL is installed and running with the default credentials (username: postgres, password: postgres).
 
-- **Submission Review**:
-  - Automated tests will run when you create the PR
-  - Our team will review your code
-  - You'll receive feedback through the PR comments
-  - Final results will be sent to your application email
+## Available Scripts
 
-## Need Help?
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm test` - Run tests
+- `pnpm lint` - Run linting
+- `pnpm prisma:studio` - Open Prisma Studio
 
-- Check the role-specific README for detailed requirements
-- Use the Issues tab to ask questions (templates provided)
-- Keep questions focused and include relevant context
-- Do not share complete solutions in questions
+## Environment Variables
 
-## Assessment Criteria
+All environment variables are included in the `.env` file. For this private repository, we keep the environment files committed for easy setup.
 
-Your submission will be evaluated on:
+## Troubleshooting
 
-1. **Functionality** (40%)
+1. If you get database connection errors:
 
-   - Completion of required features
-   - Passing automated tests
-   - Meeting acceptance criteria
+   - Make sure PostgreSQL is running
+   - Verify your PostgreSQL username and password match the `.env` file (default: postgres/postgres)
+   - If using different credentials, update the DATABASE_URL in `.env`
 
-2. **Code Quality** (30%)
+2. If you get port conflicts:
+   - The default port is 3000
+   - You can change it by running `pnpm dev -p [port-number]`
 
-   - Clean, maintainable code
-   - Best practices and patterns
-   - Error handling
-   - Documentation
+## License
 
-3. **Technical Decisions** (30%)
-   - Architecture choices
-   - Technology usage
-   - Problem-solving approach
-   - Performance considerations
-
-## Important Notes
-
-- Ensure your application email matches the one in your PR
-- Keep commits clear and well-organized
-- Document any setup steps or special instructions
-- Don't hesitate to ask clarifying questions
-- Focus on quality over quantity
-
-Good luck with your assessment! We look forward to reviewing your submission.
+MIT License - see LICENSE file for details

@@ -44,32 +44,44 @@ export default function TestCompletePage() {
           </svg>
         </motion.div>
 
-        <h1 className="text-3xl font-bold mb-4">
-          Test Submitted Successfully!
-        </h1>
+        <h1 className="text-3xl font-bold mb-4">Application Received!</h1>
 
         <div className="bg-indigo-900 border border-indigo-700 rounded-lg p-6 mb-8 text-left">
           <h2 className="text-xl font-bold text-indigo-300 mb-3">
-            🚀 Next Step for Immediate Review
+            🚀 Next Step: Technical Assessment
           </h2>
           <p className="text-gray-200 mb-4">
-            To expedite your application process, please send a text message to:
+            Please complete our technical assessment to showcase your skills:
           </p>
-          <div className="bg-indigo-800 rounded-lg p-4 mb-4 text-center">
-            <p className="text-2xl font-mono text-white">+1 (214) 476-6832</p>
+          <div className="bg-indigo-800 rounded-lg p-4 mb-4">
+            <p className="text-lg font-mono text-white break-all">
+              https://github.com/restoremasters/dev-assessment
+            </p>
           </div>
-          <p className="text-gray-200 mb-2">
-            Include the following information:
-          </p>
-          <ul className="list-disc list-inside text-gray-200 space-y-2 ml-4">
-            <li>Your full name</li>
-            <li>Confirmation of test completion</li>
-            <li>The position you applied for</li>
-          </ul>
-          <p className="mt-4 text-indigo-300 font-semibold">
-            This will trigger an immediate review by our Solution Architect for
-            a speedy interview session.
-          </p>
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-indigo-300 font-semibold mb-2">
+                Instructions:
+              </h3>
+              <ol className="list-decimal list-inside text-gray-200 space-y-2 ml-4">
+                <li>Fork the repository to your GitHub account</li>
+                <li>Clone your fork and create a new branch</li>
+                <li>Complete the assessment tasks for your role</li>
+                <li>Submit via Pull Request when ready</li>
+              </ol>
+            </div>
+            <div>
+              <h3 className="text-indigo-300 font-semibold mb-2">
+                Important Notes:
+              </h3>
+              <ul className="list-disc list-inside text-gray-200 space-y-2 ml-4">
+                <li>Take your time - there's no strict deadline</li>
+                <li>Focus on code quality and documentation</li>
+                <li>Use AI tools as you would in real work</li>
+                <li>Ask questions if anything is unclear</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
@@ -79,27 +91,26 @@ export default function TestCompletePage() {
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center mr-3 mt-1">
                 1
               </span>
-              <span>
-                Our AI system will analyze your responses and provide an initial
-                assessment.
-              </span>
+              <span>Complete the technical assessment at your own pace</span>
             </li>
             <li className="flex items-start">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center mr-3 mt-1">
                 2
               </span>
-              <span>
-                After you send the text message, our Solution Architect will
-                review your submission.
-              </span>
+              <span>Our AI system will analyze your submission</span>
             </li>
             <li className="flex items-start">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center mr-3 mt-1">
                 3
               </span>
+              <span>A senior developer will review your code</span>
+            </li>
+            <li className="flex items-start">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center mr-3 mt-1">
+                4
+              </span>
               <span>
-                You will receive a response within 24 hours to schedule your
-                interview.
+                We'll schedule a technical discussion about your solution
               </span>
             </li>
           </ul>

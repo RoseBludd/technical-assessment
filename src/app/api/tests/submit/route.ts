@@ -4,7 +4,8 @@ import { Anthropic } from "@anthropic-ai/sdk";
 
 const prisma = new PrismaClient();
 const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY || "",
+  baseURL: "https://api.anthropic.com/v1",
 });
 
 interface SubmissionBody {

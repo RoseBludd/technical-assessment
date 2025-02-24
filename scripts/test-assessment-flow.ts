@@ -9,8 +9,19 @@ interface Question {
   options?: string[];
 }
 
+interface ProjectSubmission {
+  githubUrl: string;
+  prUrl: string;
+  timeSpent: string;
+  implementation: {
+    component: string;
+    api: string;
+    tests: string;
+  };
+}
+
 interface TestAnswers {
-  [questionId: string]: string;
+  [key: string]: string | ProjectSubmission;
 }
 
 async function testAssessmentFlow() {
@@ -88,13 +99,18 @@ async function testAssessmentFlow() {
     const questions = JSON.parse(
       JSON.stringify(frontendTest.questions)
     ) as Question[];
-    const mockAnswers: TestAnswers = questions.reduce((acc, q) => {
-      acc[q.id] =
-        q.type === "multiple_choice" && q.options
-          ? q.options[0]
-          : "Test answer";
-      return acc;
-    }, {} as TestAnswers);
+    const mockAnswers: TestAnswers = {
+      project: {
+        githubUrl: "https://github.com/candidate/metrics-dashboard",
+        prUrl: "https://github.com/restoremasters/dev-assessment/pull/42",
+        timeSpent: "3.5 hours",
+        implementation: {
+          component: `/* Component implementation */`,
+          api: `/* API implementation */`,
+          tests: `/* Tests implementation */`,
+        },
+      },
+    };
 
     await prisma.test_submissions.update({
       where: { id: submission.id },
@@ -102,14 +118,53 @@ async function testAssessmentFlow() {
         answers: mockAnswers,
         status: "completed" as SkillTestSubmissionStatus,
         completed_at: new Date(),
-        score: 85,
+        score: 92,
         ai_feedback: {
-          overallFeedback: "Good attempt",
-          questionScores: questions.map((q) => ({
-            questionId: q.id,
-            score: 85,
-            feedback: "Good answer",
-          })),
+          overallFeedback:
+            "Exceptional implementation of the metrics dashboard with strong attention to production readiness",
+          technicalAssessment: {
+            architecture: {
+              score: 95,
+              feedback:
+                "Excellent component architecture with proper separation of concerns. Good use of TypeScript, error boundaries, and real-time updates. API implementation shows strong understanding of backend concepts.",
+            },
+            codeQuality: {
+              score: 94,
+              feedback:
+                "Clean, maintainable code with proper TypeScript types. Good error handling and loading states. Effective use of React hooks and modern patterns.",
+            },
+            testing: {
+              score: 90,
+              feedback:
+                "Comprehensive test coverage with proper mocking and error scenarios. Could add more edge cases and integration tests.",
+            },
+            performance: {
+              score: 88,
+              feedback:
+                "Good use of caching and rate limiting. Consider implementing virtualization for large datasets and optimizing re-renders further.",
+            },
+          },
+          strengths: [
+            "Production-ready implementation with error boundaries",
+            "Real-time updates with proper cleanup",
+            "Strong TypeScript usage throughout",
+            "Comprehensive error handling",
+            "Clean and maintainable code structure",
+            "Good test coverage",
+          ],
+          improvements: [
+            "Consider implementing data virtualization for large datasets",
+            "Add end-to-end tests with Cypress",
+            "Implement client-side caching with SWR or React Query",
+            "Add performance monitoring",
+            "Consider implementing WebSocket for real-time updates",
+          ],
+          productionReadiness: {
+            security: 95,
+            reliability: 92,
+            maintainability: 94,
+            scalability: 88,
+          },
         },
       },
     });

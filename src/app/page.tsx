@@ -2,8 +2,24 @@
 
 import Image from "next/image";
 import ApplicationForm from "./components/ApplicationForm";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
-export default function HomePage(): React.JSX.Element {
+export default function HomePage() {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (status === "authenticated") {
+    redirect("/dashboard");
+  }
+
   return (
     <main className="min-h-screen bg-gray-900">
       <nav className="bg-gray-800 border-b border-gray-700">

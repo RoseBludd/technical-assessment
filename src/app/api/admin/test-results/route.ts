@@ -5,22 +5,14 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const results = await prisma.test_submissions.findMany({
+    const testSubmissions = await prisma.test_submissions.findMany({
       where: {
-        completed_at: {
-          not: null,
-        },
+        status: "completed",
       },
       orderBy: {
         completed_at: "desc",
       },
-      take: 50,
-      select: {
-        id: true,
-        status: true,
-        score: true,
-        completed_at: true,
-        ai_feedback: true,
+      include: {
         developer: {
           select: {
             name: true,
@@ -28,33 +20,37 @@ export async function GET() {
             role: true,
           },
         },
-        skill_test: {
+        application: {
           select: {
-            title: true,
+            github_submission: true,
+            position: true,
           },
         },
       },
     });
 
-    const formattedResults = results.map((result) => ({
-      id: result.id,
-      developer: {
-        name: result.developer.name,
-        email: result.developer.email,
-        role: result.developer.role,
-      },
-      test: {
-        title: result.skill_test.title,
-      },
-      score: result.score || 0,
-      status: result.status,
-      completed_at: result.completed_at
-        ? result.completed_at.toISOString()
-        : null,
-      ai_feedback: result.ai_feedback
-        ? JSON.parse(JSON.stringify(result.ai_feedback))
-        : null,
-    }));
+    const formattedResults = testSubmissions.map((submission) => {
+      const aiFeedback = submission.ai_feedback
+        ? JSON.parse(JSON.stringify(submission.ai_feedback))
+        : null;
+
+      return {
+        id: submission.id,
+        developer: {
+          name: submission.developer.name,
+          email: submission.developer.email,
+          role: submission.developer.role,
+        },
+        test: {
+          title: "Technical Assessment",
+        },
+        score: submission.score || 0,
+        status: submission.status,
+        completed_at: submission.completed_at?.toISOString() || "",
+        ai_feedback: aiFeedback,
+        github_submission: submission.application?.github_submission || null,
+      };
+    });
 
     return NextResponse.json(formattedResults);
   } catch (error) {

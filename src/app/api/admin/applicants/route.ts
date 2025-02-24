@@ -32,12 +32,7 @@ export async function GET(request: Request) {
 
     const developers = await prisma.developers.findMany({
       where,
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        created_at: true,
+      include: {
         test_submissions: {
           orderBy: {
             created_at: "desc",
@@ -47,6 +42,19 @@ export async function GET(request: Request) {
             status: true,
             score: true,
             created_at: true,
+          },
+        },
+        developer_applications: {
+          orderBy: {
+            created_at: "desc",
+          },
+          take: 1,
+          select: {
+            id: true,
+            meeting_notes: true,
+            interest_level: true,
+            last_meeting_date: true,
+            next_meeting_date: true,
           },
         },
       },
@@ -63,6 +71,15 @@ export async function GET(request: Request) {
       status: dev.test_submissions[0]?.status || "pending",
       submittedAt: (dev.created_at || new Date()).toISOString(),
       score: dev.test_submissions[0]?.score || null,
+      meetingNotes: dev.developer_applications[0]?.meeting_notes || null,
+      interestLevel:
+        dev.developer_applications[0]?.interest_level || "undecided",
+      lastMeetingDate: dev.developer_applications[0]?.last_meeting_date
+        ? dev.developer_applications[0].last_meeting_date.toISOString()
+        : null,
+      nextMeetingDate: dev.developer_applications[0]?.next_meeting_date
+        ? dev.developer_applications[0].next_meeting_date.toISOString()
+        : null,
     }));
 
     return NextResponse.json(formattedApplicants);
@@ -70,6 +87,44 @@ export async function GET(request: Request) {
     console.error("Error fetching applicants:", error);
     return NextResponse.json(
       { error: "Failed to fetch applicants" },
+      { status: 500 }
+    );
+  }
+}
+
+// Add PUT endpoint to update meeting notes and interest level
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const {
+      applicationId,
+      meetingNotes,
+      interestLevel,
+      lastMeetingDate,
+      nextMeetingDate,
+    } = body;
+
+    const application = await prisma.developer_applications.update({
+      where: {
+        id: applicationId,
+      },
+      data: {
+        meeting_notes: meetingNotes,
+        interest_level: interestLevel,
+        last_meeting_date: lastMeetingDate
+          ? new Date(lastMeetingDate)
+          : undefined,
+        next_meeting_date: nextMeetingDate
+          ? new Date(nextMeetingDate)
+          : undefined,
+      },
+    });
+
+    return NextResponse.json(application);
+  } catch (error) {
+    console.error("Error updating applicant:", error);
+    return NextResponse.json(
+      { error: "Failed to update applicant" },
       { status: 500 }
     );
   }

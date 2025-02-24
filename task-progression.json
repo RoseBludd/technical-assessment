@@ -1,0 +1,134 @@
+{
+  "version": "1.0.0",
+  "progression_levels": {
+    "assessment": {
+      "level": 0,
+      "type": "GitHub Assessment",
+      "compensation": 0,
+      "description": "Initial GitHub-based technical assessment",
+      "requirements": [
+        "Complete provided GitHub assessment task",
+        "Follow all submission guidelines",
+        "Pass automated tests",
+        "Code quality review"
+      ],
+      "evaluation_criteria": {
+        "code_quality": 0.3,
+        "test_coverage": 0.2,
+        "documentation": 0.2,
+        "git_practices": 0.3
+      },
+      "passing_score": 0.8
+    },
+    "trial": {
+      "level": 1,
+      "type": "Paid Trial",
+      "compensation": 100,
+      "description": "First paid task - small, isolated component",
+      "task_types": [
+        "UI Components",
+        "Basic Services",
+        "Simple Integrations",
+        "Documentation"
+      ],
+      "evaluation_criteria": {
+        "speed": 0.25,
+        "accuracy": 0.25,
+        "communication": 0.25,
+        "problem_solving": 0.25
+      },
+      "passing_score": 0.85
+    },
+    "advanced": {
+      "level": 2,
+      "type": "Advanced Tasks",
+      "compensation": 250,
+      "description": "Larger system features and integrations",
+      "task_types": [
+        "Complete Features",
+        "System Integrations",
+        "Complex Components",
+        "Department-specific Tools"
+      ],
+      "evaluation_criteria": {
+        "code_quality": 0.3,
+        "independence": 0.4,
+        "alignment": 0.3
+      },
+      "passing_score": 0.85
+    },
+    "sprint": {
+      "level": 3,
+      "type": "Full Sprint",
+      "compensation": 500,
+      "description": "Complex system features and department integrations",
+      "task_types": [
+        "Department Systems",
+        "Cross-department Integration",
+        "Complex Features",
+        "System Architecture"
+      ],
+      "evaluation_criteria": {
+        "efficiency": 0.3,
+        "initiative": 0.4,
+        "collaboration": 0.3
+      },
+      "passing_score": 0.9
+    }
+  },
+  "progression_rules": {
+    "assessment_to_trial": {
+      "requirements": [
+        "Pass GitHub assessment with score >= 0.8",
+        "Complete code review",
+        "Pass technical interview"
+      ]
+    },
+    "trial_to_advanced": {
+      "requirements": [
+        "Complete trial task with score >= 0.85",
+        "Good communication record",
+        "Demonstrated problem-solving ability"
+      ]
+    },
+    "advanced_to_sprint": {
+      "requirements": [
+        "Complete advanced tasks with score >= 0.85",
+        "Consistent code quality",
+        "Good team collaboration"
+      ]
+    },
+    "sprint_to_hire": {
+      "requirements": [
+        "Complete sprint tasks with score >= 0.9",
+        "Excellent performance record",
+        "Cultural fit demonstrated",
+        "Long-term potential identified"
+      ]
+    }
+  },
+  "task_assignment_rules": {
+    "assessment": {
+      "max_concurrent": 10,
+      "time_limit_days": 7,
+      "retry_allowed": false
+    },
+    "trial": {
+      "max_concurrent": 4,
+      "time_limit_days": 3,
+      "retry_allowed": true,
+      "max_retries": 1
+    },
+    "advanced": {
+      "max_concurrent": 3,
+      "time_limit_days": 5,
+      "retry_allowed": true,
+      "max_retries": 1
+    },
+    "sprint": {
+      "max_concurrent": 2,
+      "time_limit_days": 10,
+      "retry_allowed": false
+    }
+  }
+}

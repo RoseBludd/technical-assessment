@@ -111,11 +111,14 @@ git commit -m "Assessment submission: <your-name>"
 
 ## Notes
 
-- You have 48 hours to complete the assessment
+- Take the time you need to complete the assessment thoroughly
+- While we suggest 2-4 hours per task as a guideline, there is no strict deadline
 - Use AI tools (like GitHub Copilot, ChatGPT, Claude) as you would in real work
 - Document your AI usage in comments or commit messages
-- Focus on quality over quantity
+- Focus on quality, clear documentation, and best practices
 - Ask questions if anything is unclear
+- Feel free to work on it over multiple sessions
+- Document your progress and time spent on each component
 
 ## Evaluation Process
 

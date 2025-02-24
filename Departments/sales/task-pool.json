@@ -1,0 +1,62 @@
+{
+  "department": "Sales",
+  "department_id": "sales",
+  "active_tasks": [
+    {
+      "task_id": "sales-001",
+      "title": "Build Internal Messaging UI",
+      "category": "NEW_FEATURE",
+      "priority": "High",
+      "assigned_to": "dev-123",
+      "status": "IN_PROGRESS",
+      "description": "Implement an internal messaging system UI for sales team communication",
+      "requirements": [
+        "Real-time message updates",
+        "File attachment support",
+        "Message threading",
+        "Read receipts"
+      ],
+      "acceptance_criteria": [
+        "UI matches provided design specs",
+        "All real-time features working",
+        "Responsive on all devices",
+        "Passes accessibility tests"
+      ],
+      "estimated_hours": 20,
+      "due_date": "2024-03-15",
+      "created_at": "2024-02-23",
+      "updated_at": "2024-02-23"
+    },
+    {
+      "task_id": "sales-002",
+      "title": "Fix Calendar Sync Bug",
+      "category": "BUG_FIX",
+      "priority": "Medium",
+      "assigned_to": null,
+      "status": "OPEN",
+      "description": "Fix synchronization issues between sales calendar and external meeting schedulers",
+      "requirements": [
+        "Identify sync failure points",
+        "Implement proper error handling",
+        "Add sync status monitoring"
+      ],
+      "acceptance_criteria": [
+        "No sync failures for 48 hours",
+        "Error logs properly captured",
+        "Monitoring dashboard updated"
+      ],
+      "estimated_hours": 8,
+      "due_date": "2024-03-01",
+      "created_at": "2024-02-23",
+      "updated_at": "2024-02-23"
+    }
+  ],
+  "completed_tasks": [],
+  "department_metrics": {
+    "total_tasks": 2,
+    "completed_tasks": 0,
+    "in_progress": 1,
+    "blocked": 0,
+    "average_completion_time": null
+  }
+}

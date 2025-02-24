@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "taskCategories": {
+    "BUG_FIX": {
+      "id": "bug_fix",
+      "label": "Bug Fixes",
+      "description": "Tasks related to fixing existing errors and issues",
+      "priority_levels": ["critical", "high", "medium", "low"]
+    },
+    "NEW_FEATURE": {
+      "id": "new_feature",
+      "label": "New Features",
+      "description": "Tasks for building new components and integrations",
+      "priority_levels": ["high", "medium", "low"]
+    },
+    "OPTIMIZATION": {
+      "id": "optimization",
+      "label": "Optimizations",
+      "description": "Tasks focused on improving system efficiency and UI",
+      "priority_levels": ["high", "medium", "low"]
+    },
+    "AUTOMATION": {
+      "id": "automation",
+      "label": "Automation & AI Enhancements",
+      "description": "Tasks for converting manual processes into automated functions",
+      "priority_levels": ["high", "medium", "low"]
+    }
+  },
+  "taskStatus": {
+    "OPEN": "Open",
+    "ASSIGNED": "Assigned",
+    "IN_PROGRESS": "In Progress",
+    "IN_REVIEW": "In Review",
+    "COMPLETED": "Completed",
+    "BLOCKED": "Blocked"
+  },
+  "evaluationMetrics": {
+    "codeQuality": {
+      "weight": 0.3,
+      "metrics": ["cleanCode", "testCoverage", "documentation"]
+    },
+    "taskCompletion": {
+      "weight": 0.4,
+      "metrics": ["accuracy", "timeliness", "requirements"]
+    },
+    "communication": {
+      "weight": 0.3,
+      "metrics": ["responsiveness", "clarity", "collaboration"]
+    }
+  }
+}

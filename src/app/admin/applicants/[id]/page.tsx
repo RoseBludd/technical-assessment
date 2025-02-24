@@ -12,53 +12,48 @@ interface ApplicantDetail {
   status: string;
   submittedAt: string;
   score: number | null;
-  prUrl: string | null;
   testResults: {
-    passed: number;
-    failed: number;
-    details: Array<{
-      name: string;
-      status: "passed" | "failed";
-      message?: string;
-      githubUrl?: string;
-      prUrl?: string;
-      timeSpent?: string;
-    }>;
+    status: string;
+    startedAt: string;
+    completedAt: string;
+    details: any[];
   } | null;
   codeReview: {
-    summary: string;
-    strengths: string[];
-    improvements: string[];
-    score: number;
-    technicalAssessment?: {
-      architecture?: {
+    finalScore: number;
+    overallFeedback: string;
+    recommendedAction: string;
+    technicalAssessment: {
+      testing: {
         score: number;
         feedback: string;
       };
-      codeQuality?: {
+      codeQuality: {
         score: number;
         feedback: string;
       };
-      testing?: {
+      implementation: {
         score: number;
         feedback: string;
       };
-      performance?: {
+      problemSolving: {
         score: number;
         feedback: string;
       };
-    };
-    productionReadiness?: {
-      security: number;
-      reliability: number;
-      maintainability: number;
-      scalability: number;
     };
   } | null;
   timeSpent: string;
   whatsappNumber: string | null;
   applicationStatus: string;
   applicationDate: string | null;
+  github_submission: {
+    status: string;
+    pr_number: number;
+    last_updated: string;
+  } | null;
+  meetingNotes?: string;
+  interestLevel?: "interested" | "not_interested" | "undecided";
+  lastMeetingDate?: string;
+  nextMeetingDate?: string;
   portfolioUrl?: string;
 }
 
@@ -68,9 +63,27 @@ export default function ApplicantDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [editingNotes, setEditingNotes] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [interestLevel, setInterestLevel] = useState<
+    "interested" | "not_interested" | "undecided"
+  >("undecided");
+  const [lastMeetingDate, setLastMeetingDate] = useState("");
+  const [nextMeetingDate, setNextMeetingDate] = useState("");
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     fetchApplicantDetail();
   }, [params.id]);
+
+  useEffect(() => {
+    if (applicant) {
+      setNotes(applicant.meetingNotes || "");
+      setInterestLevel(applicant.interestLevel || "undecided");
+      setLastMeetingDate(applicant.lastMeetingDate || "");
+      setNextMeetingDate(applicant.nextMeetingDate || "");
+    }
+  }, [applicant]);
 
   async function fetchApplicantDetail() {
     try {
@@ -79,11 +92,41 @@ export default function ApplicantDetail() {
         throw new Error("Failed to fetch applicant details");
       }
       const data = await response.json();
+
       setApplicant(data);
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleSaveNotes() {
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/admin/applications/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          meetingNotes: notes,
+          interestLevel,
+          lastMeetingDate,
+          nextMeetingDate,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save notes");
+      }
+
+      setEditingNotes(false);
+      await fetchApplicantDetail();
+    } catch (error) {
+      console.error("Failed to save notes:", error);
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -204,20 +247,21 @@ export default function ApplicantDetail() {
               </dd>
             </div>
 
-            {applicant.prUrl && (
+            {applicant.github_submission && (
               <div>
                 <dt className="text-sm font-medium text-gray-400">
                   Pull Request
                 </dt>
                 <dd className="mt-1 text-sm text-white">
-                  <a
-                    href={applicant.prUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-400 hover:text-indigo-300"
+                  <span
+                    className={`px-2 py-1 rounded-full text-sm ${
+                      applicant.github_submission.status === "passed"
+                        ? "bg-green-900 text-green-200"
+                        : "bg-yellow-900 text-yellow-200"
+                    }`}
                   >
-                    View on GitHub →
-                  </a>
+                    PR #{applicant.github_submission.pr_number}
+                  </span>
                 </dd>
               </div>
             )}
@@ -226,118 +270,38 @@ export default function ApplicantDetail() {
 
         {/* Test Results */}
         <div className="lg:col-span-2">
-          {applicant.testResults ? (
+          {applicant.testResults && (
             <div className="bg-gray-800 rounded-lg p-6">
               <h2 className="text-xl font-semibold text-white mb-4">
                 Test Results
               </h2>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="bg-green-900/50 rounded-lg p-4">
-                  <p className="text-green-200 text-sm">Passed</p>
+                  <p className="text-green-200 text-sm">Status</p>
                   <p className="text-2xl font-bold text-white">
-                    {applicant.testResults.passed}
+                    {applicant.testResults.status}
                   </p>
                 </div>
-                <div className="bg-red-900/50 rounded-lg p-4">
-                  <p className="text-red-200 text-sm">Failed</p>
+                <div className="bg-blue-900/50 rounded-lg p-4">
+                  <p className="text-blue-200 text-sm">Score</p>
                   <p className="text-2xl font-bold text-white">
-                    {applicant.testResults.failed}
+                    {applicant.score || "N/A"}
                   </p>
                 </div>
               </div>
-              <div className="space-y-4">
-                {Array.isArray(applicant.testResults?.details) ? (
-                  applicant.testResults.details.map((test, index) => {
-                    // Check if this is a project submission
-                    const isProjectSubmission =
-                      test.message &&
-                      test.message.includes("Project submission");
-
-                    return (
-                      <div
-                        key={index}
-                        className={`p-4 rounded-lg ${
-                          test.status === "passed"
-                            ? "bg-green-900/20"
-                            : "bg-red-900/20"
-                        }`}
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="text-white font-medium">
-                            {test.name}
-                          </h3>
-                          <span
-                            className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                              test.status === "passed"
-                                ? "bg-green-900 text-green-200"
-                                : "bg-red-900 text-red-200"
-                            }`}
-                          >
-                            {test.status}
-                          </span>
-                        </div>
-                        {isProjectSubmission ? (
-                          <div className="mt-4 space-y-4">
-                            <div className="bg-gray-700/50 p-4 rounded-lg">
-                              <h4 className="text-indigo-300 mb-2">
-                                Project Implementation
-                              </h4>
-                              <div className="space-y-2">
-                                <div>
-                                  <span className="text-gray-400">
-                                    GitHub Repository:
-                                  </span>
-                                  <a
-                                    href={test.githubUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="ml-2 text-indigo-400 hover:text-indigo-300"
-                                  >
-                                    View Code →
-                                  </a>
-                                </div>
-                                <div>
-                                  <span className="text-gray-400">
-                                    Pull Request:
-                                  </span>
-                                  <a
-                                    href={test.prUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="ml-2 text-indigo-400 hover:text-indigo-300"
-                                  >
-                                    View Changes →
-                                  </a>
-                                </div>
-                                <div>
-                                  <span className="text-gray-400">
-                                    Time Spent:
-                                  </span>
-                                  <span className="ml-2 text-white">
-                                    {test.timeSpent}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          test.message && (
-                            <p className="text-sm text-gray-300">
-                              {test.message}
-                            </p>
-                          )
-                        )}
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div className="text-gray-400">No test details available</div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="bg-gray-800 rounded-lg p-6">
-              <p className="text-gray-400">No test results available</p>
+              {applicant.testResults.details.length > 0 ? (
+                <div className="space-y-4">
+                  {applicant.testResults.details.map((detail, index) => (
+                    <div key={index} className="bg-gray-700/50 p-4 rounded-lg">
+                      <pre className="whitespace-pre-wrap text-sm text-gray-300">
+                        {JSON.stringify(detail, null, 2)}
+                      </pre>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-gray-400">No test details available</div>
+              )}
             </div>
           )}
 
@@ -349,14 +313,16 @@ export default function ApplicantDetail() {
                   Code Review
                 </h2>
                 <span className="text-white font-semibold">
-                  Score: {applicant.codeReview?.score || 0}%
+                  Score: {applicant.codeReview.finalScore}%
                 </span>
               </div>
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-white font-medium mb-2">Summary</h3>
+                  <h3 className="text-white font-medium mb-2">
+                    Overall Feedback
+                  </h3>
                   <p className="text-gray-300">
-                    {applicant.codeReview?.summary || "No summary available"}
+                    {applicant.codeReview.overallFeedback}
                   </p>
                 </div>
 
@@ -367,33 +333,22 @@ export default function ApplicantDetail() {
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-gray-700/50 p-4 rounded-lg">
-                      <h4 className="text-indigo-300 mb-2">Architecture</h4>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300">Score:</span>
-                        <span className="text-white font-medium">
-                          {applicant.codeReview?.technicalAssessment
-                            ?.architecture?.score || 0}
-                          /5
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-400 mt-2">
-                        {applicant.codeReview?.technicalAssessment?.architecture
-                          ?.feedback || "No feedback available"}
-                      </p>
-                    </div>
-                    <div className="bg-gray-700/50 p-4 rounded-lg">
                       <h4 className="text-indigo-300 mb-2">Code Quality</h4>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-300">Score:</span>
                         <span className="text-white font-medium">
-                          {applicant.codeReview?.technicalAssessment
-                            ?.codeQuality?.score || 0}
-                          /5
+                          {
+                            applicant.codeReview.technicalAssessment.codeQuality
+                              .score
+                          }
+                          %
                         </span>
                       </div>
                       <p className="text-sm text-gray-400 mt-2">
-                        {applicant.codeReview?.technicalAssessment?.codeQuality
-                          ?.feedback || "No feedback available"}
+                        {
+                          applicant.codeReview.technicalAssessment.codeQuality
+                            .feedback
+                        }
                       </p>
                     </div>
                     <div className="bg-gray-700/50 p-4 rounded-lg">
@@ -401,106 +356,194 @@ export default function ApplicantDetail() {
                       <div className="flex justify-between items-center">
                         <span className="text-gray-300">Score:</span>
                         <span className="text-white font-medium">
-                          {applicant.codeReview?.technicalAssessment?.testing
-                            ?.score || 0}
-                          /5
+                          {
+                            applicant.codeReview.technicalAssessment.testing
+                              .score
+                          }
+                          %
                         </span>
                       </div>
                       <p className="text-sm text-gray-400 mt-2">
-                        {applicant.codeReview?.technicalAssessment?.testing
-                          ?.feedback || "No feedback available"}
+                        {
+                          applicant.codeReview.technicalAssessment.testing
+                            .feedback
+                        }
                       </p>
                     </div>
                     <div className="bg-gray-700/50 p-4 rounded-lg">
-                      <h4 className="text-indigo-300 mb-2">Performance</h4>
+                      <h4 className="text-indigo-300 mb-2">Implementation</h4>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-300">Score:</span>
                         <span className="text-white font-medium">
-                          {applicant.codeReview?.technicalAssessment
-                            ?.performance?.score || 0}
-                          /5
+                          {
+                            applicant.codeReview.technicalAssessment
+                              .implementation.score
+                          }
+                          %
                         </span>
                       </div>
                       <p className="text-sm text-gray-400 mt-2">
-                        {applicant.codeReview?.technicalAssessment?.performance
-                          ?.feedback || "No feedback available"}
+                        {
+                          applicant.codeReview.technicalAssessment
+                            .implementation.feedback
+                        }
+                      </p>
+                    </div>
+                    <div className="bg-gray-700/50 p-4 rounded-lg">
+                      <h4 className="text-indigo-300 mb-2">Problem Solving</h4>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-300">Score:</span>
+                        <span className="text-white font-medium">
+                          {
+                            applicant.codeReview.technicalAssessment
+                              .problemSolving.score
+                          }
+                          %
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-400 mt-2">
+                        {
+                          applicant.codeReview.technicalAssessment
+                            .problemSolving.feedback
+                        }
                       </p>
                     </div>
                   </div>
-                </div>
-
-                {/* Production Readiness */}
-                <div>
-                  <h3 className="text-white font-medium mb-3">
-                    Production Readiness
-                  </h3>
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="bg-gray-700/50 p-4 rounded-lg text-center">
-                      <h4 className="text-indigo-300 mb-2">Security</h4>
-                      <span className="text-2xl font-bold text-white">
-                        {applicant.codeReview?.productionReadiness?.security ||
-                          0}
-                        /5
-                      </span>
-                    </div>
-                    <div className="bg-gray-700/50 p-4 rounded-lg text-center">
-                      <h4 className="text-indigo-300 mb-2">Reliability</h4>
-                      <span className="text-2xl font-bold text-white">
-                        {applicant.codeReview?.productionReadiness
-                          ?.reliability || 0}
-                        /5
-                      </span>
-                    </div>
-                    <div className="bg-gray-700/50 p-4 rounded-lg text-center">
-                      <h4 className="text-indigo-300 mb-2">Maintainability</h4>
-                      <span className="text-2xl font-bold text-white">
-                        {applicant.codeReview?.productionReadiness
-                          ?.maintainability || 0}
-                        /5
-                      </span>
-                    </div>
-                    <div className="bg-gray-700/50 p-4 rounded-lg text-center">
-                      <h4 className="text-indigo-300 mb-2">Scalability</h4>
-                      <span className="text-2xl font-bold text-white">
-                        {applicant.codeReview?.productionReadiness
-                          ?.scalability || 0}
-                        /5
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-white font-medium mb-2">Strengths</h3>
-                  <ul className="list-disc list-inside space-y-1">
-                    {applicant.codeReview?.strengths?.map((strength, index) => (
-                      <li key={index} className="text-gray-300">
-                        {strength}
-                      </li>
-                    )) || (
-                      <li className="text-gray-400">No strengths listed</li>
-                    )}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-white font-medium mb-2">
-                    Areas for Improvement
-                  </h3>
-                  <ul className="list-disc list-inside space-y-1">
-                    {applicant.codeReview?.improvements?.map(
-                      (improvement, index) => (
-                        <li key={index} className="text-gray-300">
-                          {improvement}
-                        </li>
-                      )
-                    ) || (
-                      <li className="text-gray-400">No improvements listed</li>
-                    )}
-                  </ul>
                 </div>
               </div>
             </div>
           )}
+
+          {/* Meeting Notes */}
+          <div className="bg-gray-800 rounded-lg p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-white">
+                Meeting Notes
+              </h2>
+              <button
+                onClick={() => setEditingNotes(!editingNotes)}
+                className="text-indigo-400 hover:text-indigo-300"
+              >
+                {editingNotes ? "Cancel" : "Edit"}
+              </button>
+            </div>
+
+            {editingNotes ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Interest Level
+                  </label>
+                  <select
+                    value={interestLevel}
+                    onChange={(e) => setInterestLevel(e.target.value as any)}
+                    className="w-full rounded-lg bg-gray-700 border-gray-600 text-white"
+                  >
+                    <option value="undecided">Undecided</option>
+                    <option value="interested">Interested</option>
+                    <option value="not_interested">Not Interested</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Last Meeting Date
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={lastMeetingDate}
+                    onChange={(e) => setLastMeetingDate(e.target.value)}
+                    className="w-full rounded-lg bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Next Meeting Date
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={nextMeetingDate}
+                    onChange={(e) => setNextMeetingDate(e.target.value)}
+                    className="w-full rounded-lg bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">
+                    Notes
+                  </label>
+                  <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows={4}
+                    className="w-full rounded-lg bg-gray-700 border-gray-600 text-white"
+                    placeholder="Enter meeting notes..."
+                  />
+                </div>
+
+                <button
+                  onClick={handleSaveNotes}
+                  disabled={saving}
+                  className="w-full py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg disabled:opacity-50"
+                >
+                  {saving ? "Saving..." : "Save Notes"}
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <span className="text-sm font-medium text-gray-400">
+                    Interest Level:
+                  </span>
+                  <span
+                    className={`ml-2 px-2 py-1 rounded-full text-sm ${
+                      applicant.interestLevel === "interested"
+                        ? "bg-green-900 text-green-200"
+                        : applicant.interestLevel === "not_interested"
+                        ? "bg-red-900 text-red-200"
+                        : "bg-gray-900 text-gray-200"
+                    }`}
+                  >
+                    {applicant.interestLevel
+                      ? applicant.interestLevel.replace("_", " ")
+                      : "Undecided"}
+                  </span>
+                </div>
+
+                {applicant.lastMeetingDate && (
+                  <div>
+                    <span className="text-sm font-medium text-gray-400">
+                      Last Meeting:
+                    </span>
+                    <span className="ml-2 text-white">
+                      {new Date(applicant.lastMeetingDate).toLocaleString()}
+                    </span>
+                  </div>
+                )}
+
+                {applicant.nextMeetingDate && (
+                  <div>
+                    <span className="text-sm font-medium text-gray-400">
+                      Next Meeting:
+                    </span>
+                    <span className="ml-2 text-white">
+                      {new Date(applicant.nextMeetingDate).toLocaleString()}
+                    </span>
+                  </div>
+                )}
+
+                <div>
+                  <span className="block text-sm font-medium text-gray-400 mb-2">
+                    Notes:
+                  </span>
+                  <p className="text-white whitespace-pre-wrap">
+                    {applicant.meetingNotes || "No meeting notes yet."}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -8,15 +8,19 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const developer = await prisma.developers.findUnique({
+    const application = await prisma.developer_applications.findUnique({
       where: { id: params.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        created_at: true,
-        portfolio_url: true,
+      include: {
+        developers: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            created_at: true,
+            portfolio_url: true,
+          },
+        },
         test_submissions: {
           orderBy: {
             created_at: "desc",
@@ -31,29 +35,17 @@ export async function GET(
             answers: true,
           },
         },
-        developer_applications: {
-          orderBy: {
-            created_at: "desc",
-          },
-          take: 1,
-          select: {
-            status: true,
-            whatsapp_number: true,
-            created_at: true,
-          },
-        },
       },
     });
 
-    if (!developer) {
+    if (!application) {
       return NextResponse.json(
-        { error: "Applicant not found" },
+        { error: "Application not found" },
         { status: 404 }
       );
     }
 
-    const submission = developer.test_submissions[0];
-    const application = developer.developer_applications[0];
+    const submission = application.test_submissions[0];
 
     // Calculate time spent if test is completed
     const timeSpent =
@@ -67,71 +59,27 @@ export async function GET(
         : null;
 
     const applicantDetail = {
-      id: developer.id,
-      name: developer.name,
-      email: developer.email,
-      role: developer.role,
-      status: submission?.status || "pending",
-      submittedAt: developer.created_at
-        ? developer.created_at.toISOString()
-        : new Date().toISOString(),
-      score: submission?.score || null,
-      portfolioUrl: developer.portfolio_url,
-      prUrl: null,
+      id: application.id,
+      name: application.developers?.name,
+      email: application.developers?.email,
+      role: application.developers?.role,
+      status: application.status,
+      submittedAt: application.created_at?.toISOString(),
+      score: submission?.score,
       testResults: submission
         ? {
-            passed: (submission.score || 0) >= 70 ? 1 : 0,
-            failed: (submission.score || 0) >= 70 ? 0 : 1,
-            details: submission.answers
-              ? Object.entries(
-                  JSON.parse(JSON.stringify(submission.answers))
-                ).map(([key, value]) => ({
-                  name: `Test ${key}`,
-                  status: typeof value === "object" ? "passed" : "passed", // Simplified logic to avoid type issues
-                  message:
-                    typeof value === "object"
-                      ? "Project submission completed"
-                      : String(value),
-                }))
-              : [],
+            status: submission.status,
+            startedAt: submission.started_at?.toISOString(),
+            completedAt: submission.completed_at?.toISOString(),
+            details: submission.answers,
           }
         : null,
-      codeReview: submission?.ai_feedback
-        ? {
-            ...JSON.parse(JSON.stringify(submission.ai_feedback)),
-            technicalAssessment: {
-              architecture: {
-                score: 4,
-                feedback:
-                  "Well-structured components with clear separation of concerns",
-              },
-              codeQuality: {
-                score: 4,
-                feedback: "Clean, maintainable code with good TypeScript usage",
-              },
-              testing: {
-                score: 3,
-                feedback: "Good test coverage but could use more edge cases",
-              },
-              performance: {
-                score: 4,
-                feedback: "Efficient implementation with proper optimizations",
-              },
-            },
-            productionReadiness: {
-              security: 4,
-              reliability: 4,
-              maintainability: 5,
-              scalability: 4,
-            },
-          }
-        : null,
+      codeReview: submission?.ai_feedback,
       timeSpent: timeSpent ? `${timeSpent} minutes` : "Not completed",
-      whatsappNumber: application?.whatsapp_number || null,
-      applicationStatus: application?.status || "pending",
-      applicationDate: application?.created_at
-        ? application.created_at.toISOString()
-        : null,
+      whatsappNumber: application.whatsapp_number,
+      applicationStatus: application.status,
+      applicationDate: application.created_at?.toISOString(),
+      github_submission: application.github_submission,
     };
 
     return NextResponse.json(applicantDetail);

@@ -10,53 +10,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum SkillTestSubmissionStatus {
-  pending
-  in_progress
-  completed
-  failed
+model Task {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  department   String
+  complexity   String
+  priority     String   @default("medium")
+  compensation Int
+  requirements String[]
+  status       String   @default("available")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
-enum SkillTestDeveloperRole {
-  frontend_specialist
-  backend_specialist
-  integration_specialist
-  devops_engineer
-  fullstack_developer
-  technical_lead
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SkillTestDefinition {
-  id            String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title         String                  @db.VarChar(255)
-  description   String?
-  role          SkillTestDeveloperRole
-  questions     Json
-  passingScore  Int                    @map("passing_score")
-  timeLimit     Int                    @map("time_limit")
-  createdAt     DateTime               @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime               @default(now()) @map("updated_at") @db.Timestamptz
-  submissions   test_submissions[]      @relation("TestToSubmissions")
+  id           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String                 @db.VarChar(255)
+  description  String?
+  role         SkillTestDeveloperRole
+  questions    Json
+  passingScore Int                    @map("passing_score")
+  timeLimit    Int                    @map("time_limit")
+  createdAt    DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime               @default(now()) @map("updated_at") @db.Timestamptz(6)
+  submissions  test_submissions[]     @relation("TestToSubmissions")
 
   @@map("skill_test_definitions")
 }
 
 model test_submissions {
-  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  test_id           String              @db.Uuid
-  developer_id      String              @db.Uuid
-  application_id    String              @db.Uuid
-  answers           Json                @default("[]")
-  score             Int?
-  ai_feedback       Json?               @default("{}")
-  started_at        DateTime            @default(now()) @db.Timestamptz(6)
-  completed_at      DateTime?           @db.Timestamptz(6)
-  status            SkillTestSubmissionStatus   @default(pending)
-  created_at        DateTime            @default(now()) @db.Timestamptz(6)
-  updated_at        DateTime            @default(now()) @db.Timestamptz(6)
-  skill_test        SkillTestDefinition @relation("TestToSubmissions", fields: [test_id], references: [id])
-  developer         developers          @relation(fields: [developer_id], references: [id])
-  application       developer_applications @relation(fields: [application_id], references: [id])
+  id             String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  developer_id   String                    @db.Uuid
+  created_at     DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime                  @default(now()) @db.Timestamptz(6)
+  ai_feedback    Json?                     @default("{}")
+  answers        Json                      @default("[]")
+  application_id String                    @db.Uuid
+  completed_at   DateTime?                 @db.Timestamptz(6)
+  score          Int?
+  started_at     DateTime                  @default(now()) @db.Timestamptz(6)
+  test_id        String                    @db.Uuid
+  status         SkillTestSubmissionStatus @default(pending)
+  application    developer_applications    @relation(fields: [application_id], references: [id])
+  developer      developers                @relation(fields: [developer_id], references: [id])
+  skill_test     SkillTestDefinition       @relation("TestToSubmissions", fields: [test_id], references: [id])
 
   @@index([test_id])
   @@index([developer_id])
@@ -264,25 +271,30 @@ model damage_assessments {
 }
 
 model developer_applications {
-  id                             String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  developer_id                   String?     @db.Uuid
-  position                       String      @db.VarChar(255)
+  id                             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  developer_id                   String?            @db.Uuid
+  position                       String             @db.VarChar(255)
   cover_letter                   String?
-  status                         String?     @default("pending") @db.VarChar(50)
-  expected_salary                Decimal?    @db.Decimal(10, 2)
-  availability_start_date        DateTime?   @db.Date
-  reviewer_id                    String?     @db.Uuid
+  status                         String?            @default("pending") @db.VarChar(50)
+  expected_salary                Decimal?           @db.Decimal(10, 2)
+  availability_start_date        DateTime?          @db.Date
+  reviewer_id                    String?            @db.Uuid
   review_notes                   String?
-  reviewed_at                    DateTime?   @db.Timestamptz(6)
+  reviewed_at                    DateTime?          @db.Timestamptz(6)
   technical_assessment_score     Int?
   communication_assessment_score Int?
-  created_at                     DateTime?   @default(now()) @db.Timestamptz(6)
-  updated_at                     DateTime?   @default(now()) @db.Timestamptz(6)
-  start_date                     String?     @db.VarChar(255)
-  will_do_test_task              Boolean     @default(false)
-  test_submitted_at              DateTime?   @db.Timestamptz(6)
-  whatsapp_number                String?     @db.VarChar(20)
-  developers                     developers? @relation(fields: [developer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  created_at                     DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at                     DateTime?          @default(now()) @db.Timestamptz(6)
+  start_date                     String?            @db.VarChar(255)
+  will_do_test_task              Boolean            @default(false)
+  test_submitted_at              DateTime?          @db.Timestamptz(6)
+  whatsapp_number                String?            @db.VarChar(20)
+  meeting_notes                  String?
+  interest_level                 interest_level?    @default(undecided)
+  last_meeting_date              DateTime?          @db.Timestamptz(6)
+  next_meeting_date              DateTime?          @db.Timestamptz(6)
+  github_submission              Json?
+  developers                     developers?        @relation(fields: [developer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   test_submissions               test_submissions[]
 
   @@index([developer_id], map: "idx_applications_developer")
@@ -290,30 +302,32 @@ model developer_applications {
 }
 
 model developers {
-  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  cognito_id             String?                  @unique @db.VarChar(255)
-  email                  String                   @unique @db.VarChar(255)
-  paypal_email           String                   @db.VarChar(255)
-  name                   String                   @db.VarChar(255)
-  profile_picture_url    String?                  @db.VarChar(255)
-  role                   developer_role
-  status                 developer_status?        @default(pending)
-  phone                  String?                  @db.VarChar(20)
-  github_url             String?                  @db.VarChar(255)
-  portfolio_url          String?                  @db.VarChar(255)
-  resume_url             String?                  @db.VarChar(255)
-  years_experience       Int?
-  skills                 Json?                    @default("[]")
-  preferred_technologies Json?                    @default("[]")
-  hourly_rate            Decimal?                 @db.Decimal(10, 2)
-  availability_hours     Int?
-  timezone               String?                  @db.VarChar(50)
-  english_proficiency    String?                  @db.VarChar(20)
-  education              String?
-  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  preferred_timezone     String?                  @default("PHT") @db.VarChar(50)
-  password_hash          String                   @db.VarChar(255)
+  id                     String            @id @default(uuid())
+  cognito_id            String?           @unique
+  email                 String            @unique
+  paypal_email          String            @default("")
+  name                  String
+  profile_picture_url   String?
+  role                  developer_role    @default(fullstack_developer)
+  status               developer_status   @default(active)
+  phone                String?
+  github_url           String?
+  portfolio_url        String?
+  resume_url           String?
+  years_experience     Int?
+  skills               String[]          @default([])
+  preferred_technologies String[]        @default([])
+  hourly_rate          Float?
+  availability_hours   Int?
+  timezone            String?
+  english_proficiency  String?
+  education           String?
+  password_hash       String
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+
+  // Relations
+  task_assignments    task_assignments[]
   developer_applications developer_applications[]
   test_submissions       test_submissions[]
 
@@ -1073,15 +1087,15 @@ model team_members {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model test_tasks {
-  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title             String             @db.VarChar(255)
-  description       String
-  requirements      String[]
-  difficulty        String             @db.VarChar(50)
-  estimated_hours   Int?
-  repository_url    String?            @db.VarChar(255)
-  created_at        DateTime?          @default(now()) @db.Timestamptz(6)
-  updated_at        DateTime?          @default(now()) @db.Timestamptz(6)
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title           String    @db.VarChar(255)
+  description     String
+  requirements    String[]
+  difficulty      String    @db.VarChar(50)
+  estimated_hours Int?
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+  repository_url  String?   @db.VarChar(255)
 }
 
 model timeline_events {
@@ -1193,6 +1207,37 @@ model users {
   @@index([email], map: "idx_users_email")
   @@index([monday_id], map: "idx_users_monday_id")
   @@index([role], map: "idx_users_role")
+}
+
+model task_assignments {
+  id           String     @id @default(uuid())
+  task_id      String
+  developer_id String     @db.Uuid
+  status       String     @default("assigned")
+  notes        String?
+  start_date   DateTime   @default(now())
+  due_date     DateTime?
+  completed_at DateTime?
+  developer    developers @relation(fields: [developer_id], references: [id])
+
+  @@index([developer_id])
+  @@index([task_id])
+}
+
+enum SkillTestSubmissionStatus {
+  pending
+  in_progress
+  completed
+  failed
+}
+
+enum SkillTestDeveloperRole {
+  frontend_specialist
+  backend_specialist
+  integration_specialist
+  devops_engineer
+  fullstack_developer
+  technical_lead
 }
 
 enum call_outcome {
@@ -1362,4 +1407,10 @@ enum user_status {
   active
   inactive
   pending
+}
+
+enum interest_level {
+  interested
+  not_interested
+  undecided
 }

@@ -1,12 +1,12 @@
 import "./globals.css";
+import { Providers } from "./providers";
 import { Inter } from "next/font/google";
-import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Long Term Developers",
-  description: "Apply for long-term developer positions at RestoreMasters",
+export const metadata = {
+  title: "Developer Portal",
+  description: "Task management and assessment platform for developers",
 };
 
 export default function RootLayout({
@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.className}>
-      <body className="min-h-screen bg-gray-900">{children}</body>
+      <body className="min-h-screen bg-gray-50">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
