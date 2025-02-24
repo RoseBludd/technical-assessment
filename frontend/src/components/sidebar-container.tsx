@@ -5,17 +5,13 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
+import { SidebarLinks } from '@/components/sidebar-links';
 import AcmeLogo from '@/components/acme-logo';
-import Link from 'next/link';
-import { routes } from '@/lib/utils';
 
-export const AppSidebar = () => {
+export const SidebarContainer = () => {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -26,18 +22,7 @@ export const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Quick links</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {routes.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarLinks />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

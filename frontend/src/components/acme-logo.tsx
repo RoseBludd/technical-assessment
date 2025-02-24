@@ -1,5 +1,5 @@
 import { Building2 } from 'lucide-react';
-import { SidebarMenuButton } from './ui/sidebar';
+import { SidebarMenuButton } from '@/components/ui/sidebar';
 
 export default function AcmeLogo() {
   return (

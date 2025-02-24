@@ -11,7 +11,7 @@ import {
   BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbPage,
-} from './ui/breadcrumb';
+} from '@/components/ui/breadcrumb';
 import { routes } from '@/lib/utils';
 
 export const Breadcrumbs = () => {
