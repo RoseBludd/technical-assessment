@@ -1,12 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "prisma generate && next build",
-  "devCommand": "next dev",
-  "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["sin1"],
-  "public": true,
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://${VERCEL_URL}"
-  }
+  "public": true
 }
