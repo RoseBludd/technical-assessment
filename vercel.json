@@ -1,9 +1,10 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": null,
+  "buildCommand": "echo 'Skipping build step'",
   "devCommand": null,
   "installCommand": null,
+  "outputDirectory": ".",
   "public": true,
   "regions": ["sin1"]
 }
