@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "framework": false,
-  "buildCommand": false,
-  "devCommand": false,
-  "installCommand": false,
+  "framework": null,
+  "buildCommand": null,
+  "devCommand": null,
+  "installCommand": null,
   "public": true,
   "regions": ["sin1"]
 }
