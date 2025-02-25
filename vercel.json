@@ -3,8 +3,12 @@
   "framework": "nextjs",
   "builds": [
     {
-      "src": "next.config.js",
-      "use": "@vercel/next"
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "installCommand": "npm install",
+        "buildCommand": "prisma generate && next build"
+      }
     }
   ],
   "routes": [
@@ -14,6 +18,7 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://${VERCEL_URL}"
+    "NEXT_PUBLIC_API_URL": "https://${VERCEL_URL}",
+    "PRISMA_GENERATE_DATAPROXY": "true"
   }
 }
