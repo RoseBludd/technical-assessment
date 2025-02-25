@@ -1,5 +1,8 @@
 import type { Config } from "tailwindcss";
 import formsPlugin from "@tailwindcss/forms";
+import typographyPlugin from "@tailwindcss/typography";
+import aspectRatioPlugin from "@tailwindcss/aspect-ratio";
+import containerQueriesPlugin from "@tailwindcss/container-queries";
 
 const config: Config = {
   content: [
@@ -34,6 +37,9 @@ const config: Config = {
     formsPlugin({
       strategy: "class",
     }),
+    typographyPlugin,
+    aspectRatioPlugin,
+    containerQueriesPlugin,
   ],
   darkMode: "class",
 };

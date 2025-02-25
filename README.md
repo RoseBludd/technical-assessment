@@ -99,3 +99,77 @@ All environment variables are included in the `.env` file. For this private repo
 ## License
 
 MIT License - see LICENSE file for details
+
+## Database Migrations
+
+Database changes are managed through SQL migration files in the `migrations/` directory. Each migration is tracked in the `CHANGELOG.md` file.
+
+### Prerequisites
+- PostgreSQL client (`psql`) installed and available in your PATH
+- Access to the Neon database (DATABASE_URL in .env file)
+
+### Applying Migrations
+1. Ensure your `.env` file contains the correct `DATABASE_URL`
+2. Navigate to the migrations directory:
+   ```powershell
+   cd migrations
+   ```
+3. Run the migration script:
+   ```powershell
+   .\apply_migration.ps1
+   ```
+
+### Creating New Migrations
+1. Create a new SQL file in the `migrations/` directory with a descriptive name
+2. Add the SQL commands for your database changes
+3. Update the `CHANGELOG.md` file with details about your changes
+4. Test the migration locally before applying to production
+
+# Workspace Environment Setup
+
+This package provides everything needed to connect to development workspaces.
+
+## One-Click Installation
+
+1. Right-click `scripts/setup-workspace-environment.ps1` and select "Run with PowerShell as Administrator"
+2. Wait for the installation to complete
+
+## What Gets Installed
+
+- OpenVPN (if not already installed)
+- Workspace connection protocol handler
+- VPN configuration
+- RDP certificate trust settings
+
+## Manual Installation Steps (if needed)
+
+1. Install OpenVPN from https://openvpn.net/community-downloads/
+2. Copy the VPN configuration from `config/base.ovpn` to your OpenVPN config directory
+3. Run `scripts/setup-workspace-environment.ps1` to configure the protocol handler
+
+## Usage
+
+Once installed, simply click the "Connect to Workspace" button in the application. This will:
+
+1. Start OpenVPN if not running
+2. Connect to the VPN
+3. Launch Remote Desktop with the correct settings
+4. Connect you to an available workspace
+
+## Troubleshooting
+
+1. If the connection fails:
+   - Check that OpenVPN is installed and running
+   - Ensure you're logged into the application
+   - Try disconnecting and reconnecting to the VPN
+
+2. If you can't connect to RDP:
+   - Wait a few seconds after the VPN connects
+   - Check that you have network connectivity
+   - Try restarting the OpenVPN service
+
+## Security Notes
+
+- Your workspace credentials are managed securely by the application
+- All connections are encrypted using OpenVPN
+- RDP uses standard Windows security

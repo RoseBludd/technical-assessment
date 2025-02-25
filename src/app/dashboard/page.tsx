@@ -2,10 +2,18 @@
 
 import { DeveloperDashboard } from "@/app/components/dashboard/DeveloperDashboard";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/auth/signin");
+    }
+  }, [status, router]);
 
   if (status === "loading") {
     return (
@@ -15,8 +23,8 @@ export default function DashboardPage() {
     );
   }
 
-  if (status === "unauthenticated") {
-    redirect("/auth/signin");
+  if (!session) {
+    return null; // This prevents flash of content while redirecting
   }
 
   return <DeveloperDashboard />;

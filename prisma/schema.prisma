@@ -10,27 +10,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Task {
-  id           String   @id @default(cuid())
-  title        String
-  description  String
-  department   String
-  complexity   String
-  priority     String   @default("medium")
-  compensation Int
-  requirements String[]
-  status       String   @default("available")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model Developer {
+  id          String           @id @default(uuid())
+  name        String
+  email       String           @unique
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  assignments TaskAssignment[]
+  attachments TaskAttachment[]
 }
 
-model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model DeveloperTask {
+  id             String             @id @default(uuid())
+  title          String
+  description    String?
+  status         String             @default("open")
+  priority       String             @default("medium")
+  created_at     DateTime           @default(now())
+  updated_at     DateTime           @updatedAt
+  start_date     DateTime?
+  due_date       DateTime?
+  notes          String[]
+  attachments    TaskAttachment[]
+  assignments    task_assignments[]
+  TaskAssignment TaskAssignment[]
+
+  @@map("developer_tasks")
+}
+
+model TaskAttachment {
+  id          String        @id @default(uuid())
+  task_id     String
+  type        String // "screenshot" or "recording"
+  url         String
+  title       String
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  task        DeveloperTask @relation(fields: [task_id], references: [id])
+  Developer   Developer?    @relation(fields: [developerId], references: [id])
+  developerId String?
+
+  @@map("task_attachments")
+}
+
+model TaskAssignment {
+  id          String        @id @default(uuid())
+  taskId      String
+  developerId String
+  assignedAt  DateTime      @default(now())
+  status      String        @default("assigned")
+  task        DeveloperTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  developer   Developer     @relation(fields: [developerId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, developerId])
 }
 
 model SkillTestDefinition {
@@ -92,14 +124,12 @@ model available_positions {
 }
 
 model call_events {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  call_id    String?   @db.Uuid
-  event_type String    @db.VarChar(50)
-  event_time DateTime  @db.Timestamptz(6)
-  details    Json?
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@index([call_id], map: "idx_call_events_call")
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  call_id     String?   @db.Uuid
+  event_type  String    @db.VarChar(50)
+  event_data  Json
+  occurred_at DateTime? @default(now()) @db.Timestamptz(6)
+  calls       calls?    @relation(fields: [call_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model call_lists {
@@ -136,40 +166,47 @@ model call_metrics {
 }
 
 model call_queue {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  customer_id  String?   @db.Uuid
-  lead_id      String?   @db.Uuid
-  priority     Int?      @default(1)
-  status       String    @default("queued") @db.VarChar(50)
-  from_number  String    @db.VarChar(20)
-  to_number    String    @db.VarChar(20)
-  attempts     Int?      @default(0)
-  max_attempts Int?      @default(3)
-  next_attempt DateTime? @db.Timestamptz(6)
-  last_attempt DateTime? @db.Timestamptz(6)
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id  String?    @db.Uuid
+  lead_id      String?    @db.Uuid
+  priority     Int?       @default(1)
+  status       String     @default("queued") @db.VarChar(50)
+  from_number  String     @db.VarChar(20)
+  to_number    String     @db.VarChar(20)
+  attempts     Int?       @default(0)
+  max_attempts Int?       @default(3)
+  next_attempt DateTime?  @db.Timestamptz(6)
+  last_attempt DateTime?  @db.Timestamptz(6)
   notes        String?
-  active       Boolean?  @default(true)
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  active       Boolean?   @default(true)
+  created_at   DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?  @default(now()) @db.Timestamptz(6)
+  customers    customers? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads        leads?     @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([status], map: "idx_call_queue_status")
 }
 
 model calls {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  phone_number String    @db.VarChar(50)
-  status       String    @default("pending") @db.VarChar(50)
-  outcome      String?   @db.VarChar(50)
-  duration     Int?      @default(0)
-  started_at   DateTime? @db.Timestamptz(6)
-  ended_at     DateTime? @db.Timestamptz(6)
-  notes        String?
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id   String?       @db.Uuid
+  lead_id       String?       @db.Uuid
+  direction     String        @db.VarChar(20)
+  status        String        @default("queued") @db.VarChar(50)
+  outcome       String?       @db.VarChar(50)
+  from_number   String        @db.VarChar(20)
+  to_number     String        @db.VarChar(20)
+  duration      Int?
+  recording_url String?
+  notes         String?
+  created_at    DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?     @default(now()) @db.Timestamptz(6)
+  call_events   call_events[]
+  customers     customers?    @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads         leads?        @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([created_at], map: "idx_calls_created_at")
-  @@index([phone_number], map: "idx_calls_phone_number")
-  @@index([status], map: "idx_calls_status")
+  @@index([customer_id], map: "idx_calls_customer_id")
+  @@index([lead_id], map: "idx_calls_lead_id")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -191,6 +228,7 @@ model candidates {
   created_at      DateTime?         @default(now()) @db.Timestamptz(6)
   updated_at      DateTime?         @default(now()) @db.Timestamptz(6)
   interviews      interviews[]
+  test_tasks      test_tasks[]
   timeline_events timeline_events[]
 
   @@index([position], map: "idx_candidates_position")
@@ -199,56 +237,40 @@ model candidates {
 }
 
 model communications {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  customer_id  String?   @db.Uuid
-  user_id      String?   @db.Uuid
-  type         String    @db.VarChar(50)
-  direction    String    @db.VarChar(20)
-  content      String?
-  status       String?   @db.VarChar(50)
-  sent_at      DateTime? @db.Timestamptz(6)
-  delivered_at DateTime? @db.Timestamptz(6)
-  read_at      DateTime? @db.Timestamptz(6)
-  metadata     Json?     @default("{}")
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
-
-  @@index([customer_id], map: "idx_communications_customer")
-  @@index([type], map: "idx_communications_type")
-  @@index([user_id], map: "idx_communications_user")
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id String?    @db.Uuid
+  lead_id     String?    @db.Uuid
+  type        String     @db.VarChar(50)
+  direction   String     @db.VarChar(20)
+  status      String     @db.VarChar(50)
+  duration    Int?
+  notes       String?
+  metadata    Json?
+  created_at  DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?  @default(now()) @db.Timestamptz(6)
+  customers   customers? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads       leads?     @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model customers {
-  id                    String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  lead_id               String?      @db.Uuid
-  name                  String       @db.VarChar(255)
-  company_name          String?      @db.VarChar(255)
-  email                 String?      @db.VarChar(255)
-  phone                 String?      @db.VarChar(20)
-  billing_address       String?
-  billing_city          String?      @db.VarChar(100)
-  billing_state         String?      @db.VarChar(2)
-  billing_zip           String?      @db.VarChar(10)
-  primary_contact_name  String?      @db.VarChar(255)
-  primary_contact_phone String?      @db.VarChar(20)
-  primary_contact_email String?      @db.VarChar(255)
-  customer_since        DateTime?    @default(now()) @db.Timestamptz(6)
-  status                String?      @default("active") @db.VarChar(50)
-  total_projects        Int?         @default(0)
-  total_value           Decimal?     @default(0) @db.Decimal(12, 2)
-  notes                 String?
-  created_at            DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at            DateTime?    @default(now()) @db.Timestamptz(6)
-  monday_item_id        String?      @db.VarChar(255)
-  leads                 leads?       @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  jobs                  jobs[]
-  properties            properties[]
-
-  @@index([lead_id], map: "idx_customers_lead")
-  @@index([lead_id], map: "idx_customers_lead_id")
-  @@index([monday_item_id], map: "idx_customers_monday_item_id")
-  @@index([status], map: "idx_customers_status")
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String           @db.VarChar(255)
+  email          String?          @unique @db.VarChar(255)
+  phone          String?          @db.VarChar(20)
+  company_name   String?          @db.VarChar(255)
+  type           String?          @default("residential") @db.VarChar(50)
+  source         String?          @db.VarChar(100)
+  status         String?          @default("active") @db.VarChar(50)
+  notes          String?
+  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  call_queue     call_queue[]
+  calls          calls[]
+  communications communications[]
+  events         events[]
+  leads          leads[]
+  properties     properties[]
 }
 
 model damage_assessments {
@@ -302,33 +324,32 @@ model developer_applications {
 }
 
 model developers {
-  id                     String            @id @default(uuid())
-  cognito_id            String?           @unique
-  email                 String            @unique
-  paypal_email          String            @default("")
-  name                  String
-  profile_picture_url   String?
-  role                  developer_role    @default(fullstack_developer)
-  status               developer_status   @default(active)
-  phone                String?
-  github_url           String?
-  portfolio_url        String?
-  resume_url           String?
-  years_experience     Int?
-  skills               String[]          @default([])
-  preferred_technologies String[]        @default([])
-  hourly_rate          Float?
-  availability_hours   Int?
-  timezone            String?
-  english_proficiency  String?
-  education           String?
-  password_hash       String
-  created_at          DateTime          @default(now())
-  updated_at          DateTime          @updatedAt
-
-  // Relations
-  task_assignments    task_assignments[]
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cognito_id             String?                  @unique @db.VarChar(255)
+  email                  String                   @unique @db.VarChar(255)
+  paypal_email           String                   @db.VarChar(255)
+  name                   String                   @db.VarChar(255)
+  profile_picture_url    String?                  @db.VarChar(255)
+  role                   developer_role
+  status                 developer_status?        @default(pending)
+  phone                  String?                  @db.VarChar(20)
+  github_url             String?                  @db.VarChar(255)
+  portfolio_url          String?                  @db.VarChar(255)
+  resume_url             String?                  @db.VarChar(255)
+  years_experience       Int?
+  skills                 Json?                    @default("[]")
+  preferred_technologies Json?                    @default("[]")
+  hourly_rate            Decimal?                 @db.Decimal(10, 2)
+  availability_hours     Int?
+  timezone               String?                  @db.VarChar(50)
+  english_proficiency    String?                  @db.VarChar(20)
+  education              String?
+  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?                @default(now()) @updatedAt @db.Timestamptz(6)
+  preferred_timezone     String?                  @default("PHT") @db.VarChar(50)
+  password_hash          String                   @db.VarChar(255)
   developer_applications developer_applications[]
+  task_assignments       task_assignments[]
   test_submissions       test_submissions[]
 
   @@index([cognito_id], map: "idx_developers_cognito")
@@ -367,18 +388,25 @@ model documents {
 }
 
 model events {
-  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  project_id  String    @db.Uuid
-  type        String    @db.VarChar(50)
-  title       String    @db.VarChar(255)
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_id     String?     @db.Uuid
+  customer_id String?     @db.Uuid
+  property_id String?     @db.Uuid
+  type        String      @db.VarChar(50)
+  title       String      @db.VarChar(255)
   description String?
-  metadata    Json?
-  created_by  String?   @db.Uuid
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
-  projects    projects  @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  start_time  DateTime    @db.Timestamptz(6)
+  end_time    DateTime?   @db.Timestamptz(6)
+  status      String?     @default("scheduled") @db.VarChar(50)
+  location    String?     @db.VarChar(255)
+  notes       String?
+  created_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  customers   customers?  @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads       leads?      @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  properties  properties? @relation(fields: [property_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([project_id], map: "idx_events_project_id")
+  @@index([lead_id], map: "idx_events_lead_id")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -515,7 +543,6 @@ model jobs {
   monday_item_id String?   @db.VarChar(255)
   created_at     DateTime? @default(now()) @db.Timestamptz(6)
   updated_at     DateTime? @default(now()) @db.Timestamptz(6)
-  customers      customers @relation(fields: [customer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([customer_id], map: "idx_jobs_customer_id")
   @@index([monday_item_id], map: "idx_jobs_monday_item_id")
@@ -532,35 +559,33 @@ model lead_lists {
   metadata        Json?     @default("{}")
   created_at      DateTime? @default(now()) @db.Timestamptz(6)
   updated_at      DateTime? @default(now()) @db.Timestamptz(6)
-  leads           leads[]
 }
 
 model leads {
-  id                       String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  list_id                  String?     @db.Uuid
-  name                     String      @db.VarChar(255)
-  email                    String?     @db.VarChar(255)
-  phone                    String?     @db.VarChar(20)
-  address                  String?
-  city                     String?     @db.VarChar(100)
-  state                    String?     @db.VarChar(2)
-  zip                      String?     @db.VarChar(10)
-  status                   String?     @default("new") @db.VarChar(50)
-  assigned_to              String?     @db.Uuid
-  source                   String?     @db.VarChar(100)
-  source_details           Json?
-  last_contacted_at        DateTime?   @db.Timestamptz(6)
-  converted_to_customer_at DateTime?   @db.Timestamptz(6)
-  notes                    String?
-  created_at               DateTime?   @default(now()) @db.Timestamptz(6)
-  updated_at               DateTime?   @default(now()) @db.Timestamptz(6)
-  customers                customers[]
-  lead_lists               lead_lists? @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id       String?          @db.Uuid
+  property_id       String?          @db.Uuid
+  assigned_to       String?          @db.Uuid
+  source            String?          @db.VarChar(100)
+  status            String           @db.VarChar(50)
+  priority          String?          @default("medium") @db.VarChar(20)
+  storm_info        String?          @db.VarChar(50)
+  damage_type       String?          @db.VarChar(100)
+  estimated_value   Decimal?         @db.Decimal(10, 2)
+  probability       Int?
+  notes             String?
+  created_at        DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime?        @default(now()) @db.Timestamptz(6)
+  last_contacted_at DateTime?        @db.Timestamptz(6)
+  call_queue        call_queue[]
+  calls             calls[]
+  communications    communications[]
+  events            events[]
+  customers         customers?       @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  properties        properties?      @relation(fields: [property_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tasks             tasks[]
 
-  @@index([assigned_to], map: "idx_leads_assigned")
   @@index([assigned_to], map: "idx_leads_assigned_to")
-  @@index([list_id], map: "idx_leads_list")
-  @@index([list_id], map: "idx_leads_list_id")
   @@index([status], map: "idx_leads_status")
 }
 
@@ -789,10 +814,8 @@ model projects {
   sync_error        String?
   sync_direction    String?            @db.VarChar(50)
   sync_version      Int?               @default(0)
-  events            events[]
   insurance_claims  insurance_claims[]
   payments          payments[]
-  properties        properties         @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   team_members      team_members[]
 
   @@index([property_id], map: "idx_projects_property_id")
@@ -800,27 +823,25 @@ model projects {
 
 /// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model properties {
-  id                   String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  customer_id          String?    @db.Uuid
-  name                 String?    @db.VarChar(255)
-  address              String
-  city                 String     @db.VarChar(100)
-  state                String     @db.VarChar(2)
-  zip                  String     @db.VarChar(10)
-  property_type        String?    @db.VarChar(50)
-  square_footage       Int?
-  year_built           Int?
-  total_projects       Int?       @default(0)
-  active_projects      Int?       @default(0)
-  last_inspection_date DateTime?  @db.Timestamptz(6)
-  metadata             Json?      @default("{}")
-  created_at           DateTime?  @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime?  @default(now()) @db.Timestamptz(6)
-  projects             projects[]
-  customers            customers? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([customer_id], map: "idx_properties_customer")
-  @@index([customer_id], map: "idx_properties_customer_id")
+  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id     String?    @db.Uuid
+  street          String     @db.VarChar(255)
+  city            String     @db.VarChar(100)
+  state           String     @db.VarChar(2)
+  zip             String     @db.VarChar(10)
+  type            String?    @db.VarChar(50)
+  square_footage  Int?
+  year_built      Int?
+  roof_type       String?    @db.VarChar(100)
+  last_inspection DateTime?  @db.Timestamptz(6)
+  status          String?    @default("active") @db.VarChar(50)
+  notes           String?
+  damage_info     Json?
+  created_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime?  @default(now()) @db.Timestamptz(6)
+  events          events[]
+  leads           leads[]
+  customers       customers? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model renommy_lists {
@@ -892,7 +913,6 @@ model route_tasks {
   created_at         DateTime? @default(now()) @db.Timestamptz(6)
   updated_at         DateTime? @default(now()) @db.Timestamptz(6)
   routes             routes    @relation(fields: [route_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  tasks              tasks     @relation(fields: [task_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([route_id, stop_order])
   @@unique([route_id, task_id])
@@ -939,28 +959,32 @@ model sales_scripts {
 }
 
 model sales_team_members {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  team_id    String?   @db.Uuid
-  user_id    String    @db.Uuid
-  role       String    @db.VarChar(50)
-  status     String?   @default("active") @db.VarChar(50)
-  start_date DateTime? @default(now()) @db.Timestamptz(6)
-  end_date   DateTime? @db.Timestamptz(6)
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  team_id     String?      @db.Uuid
+  user_id     String       @db.Uuid
+  role        String       @db.VarChar(50)
+  status      String?      @default("active") @db.VarChar(50)
+  start_date  DateTime?    @default(now()) @db.Timestamptz(6)
+  end_date    DateTime?    @db.Timestamptz(6)
+  created_at  DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?    @default(now()) @db.Timestamptz(6)
+  sales_teams sales_teams? @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([team_id], map: "idx_sales_team_members_team")
   @@index([user_id], map: "idx_sales_team_members_user")
 }
 
 model sales_teams {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String    @db.VarChar(255)
-  manager_id  String?   @db.Uuid
-  description String?
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
-  metadata    Json?     @default("{}")
+  id                 String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String               @db.VarChar(255)
+  manager_id         String               @db.Uuid
+  region             String?              @db.VarChar(100)
+  goals              Json?
+  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  sales_team_members sales_team_members[]
+
+  @@index([manager_id], map: "idx_sales_teams_manager")
 }
 
 model storm_affected_properties {
@@ -1050,25 +1074,21 @@ model sync_queue {
 }
 
 model tasks {
-  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  assigned_to  String?       @db.Uuid
-  assigned_by  String?       @db.Uuid
-  customer_id  String?       @db.Uuid
-  property_id  String?       @db.Uuid
-  title        String        @db.VarChar(255)
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_id      String?   @db.Uuid
+  assigned_to  String?   @db.Uuid
+  title        String    @db.VarChar(255)
   description  String?
-  due_date     DateTime?     @db.Timestamptz(6)
-  priority     String?       @db.VarChar(20)
-  status       String?       @default("pending") @db.VarChar(50)
-  completed_at DateTime?     @db.Timestamptz(6)
-  created_at   DateTime?     @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime?     @default(now()) @db.Timestamptz(6)
-  route_tasks  route_tasks[]
+  due_date     DateTime? @db.Timestamptz(6)
+  priority     String?   @default("medium") @db.VarChar(20)
+  status       String?   @default("pending") @db.VarChar(50)
+  completed    Boolean?  @default(false)
+  completed_at DateTime? @db.Timestamptz(6)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  leads        leads?    @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([assigned_to], map: "idx_tasks_assigned_to")
-  @@index([customer_id], map: "idx_tasks_customer")
-  @@index([due_date], map: "idx_tasks_due_date")
-  @@index([status], map: "idx_tasks_status")
+  @@index([lead_id], map: "idx_tasks_lead_id")
 }
 
 model team_members {
@@ -1087,15 +1107,16 @@ model team_members {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model test_tasks {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title           String    @db.VarChar(255)
-  description     String
-  requirements    String[]
-  difficulty      String    @db.VarChar(50)
-  estimated_hours Int?
-  created_at      DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
-  repository_url  String?   @db.VarChar(255)
+  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  candidate_id String?     @db.Uuid
+  assigned     Boolean?    @default(false)
+  started_at   DateTime?   @db.Timestamptz(6)
+  completed_at DateTime?   @db.Timestamptz(6)
+  score        Decimal?    @db.Decimal(5, 2)
+  feedback     String?
+  created_at   DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime?   @default(now()) @db.Timestamptz(6)
+  candidates   candidates? @relation(fields: [candidate_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model timeline_events {
@@ -1210,15 +1231,16 @@ model users {
 }
 
 model task_assignments {
-  id           String     @id @default(uuid())
+  id           String        @id @default(uuid())
   task_id      String
-  developer_id String     @db.Uuid
-  status       String     @default("assigned")
+  developer_id String        @db.Uuid
+  status       String        @default("assigned")
   notes        String?
-  start_date   DateTime   @default(now())
+  start_date   DateTime      @default(now())
   due_date     DateTime?
   completed_at DateTime?
-  developer    developers @relation(fields: [developer_id], references: [id])
+  developer    developers    @relation(fields: [developer_id], references: [id])
+  task         DeveloperTask @relation(fields: [task_id], references: [id])
 
   @@index([developer_id])
   @@index([task_id])

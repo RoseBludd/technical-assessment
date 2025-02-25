@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { DefaultSession } from "next-auth";
-import prisma from "./prisma";
+import { prisma } from "./prisma";
 import { developer_role, developer_status } from "@prisma/client";
 
 // Extend the built-in session types
@@ -13,7 +13,7 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null;
-      role: developer_role;
+      role?: developer_role;
     };
   }
 
@@ -22,14 +22,14 @@ declare module "next-auth" {
     name?: string | null;
     email?: string | null;
     image?: string | null;
-    role: developer_role;
+    role?: developer_role;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: string;
-    role: developer_role;
+    id?: string;
+    role?: developer_role;
   }
 }
 
@@ -82,9 +82,9 @@ export const authConfig: NextAuthOptions = {
               throw new Error("Developer not found");
             }
 
-            if (developer.status === developer_status.blocked) {
-              console.error("Developer account is blocked");
-              throw new Error("Account is blocked");
+            if (developer.status === developer_status.inactive) {
+              console.error("Developer account is inactive");
+              throw new Error("Account is inactive");
             }
 
             const user = {
@@ -118,7 +118,7 @@ export const authConfig: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
+      if (user?.id && user?.role) {
         console.log("Creating JWT token for user:", {
           id: user.id,
           role: user.role,
@@ -129,7 +129,7 @@ export const authConfig: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token.id && token.role) {
         console.log("Creating session for user:", {
           id: token.id,
           role: token.role,

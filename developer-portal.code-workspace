@@ -1,0 +1,102 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "name": "Developer Portal"
+        }
+    ],
+    "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": "explicit"
+        },
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "files.exclude": {
+            "**/.git": true,
+            "**/.DS_Store": true,
+            "**/node_modules": true,
+            "**/.next": true,
+            "**/dist": true,
+            "**/build": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/.next": true,
+            "**/dist": true,
+            "**/build": true
+        },
+        "files.associations": {
+            "*.css": "tailwindcss"
+        },
+        "emmet.includeLanguages": {
+            "javascript": "javascriptreact",
+            "typescript": "typescriptreact"
+        },
+        "[typescript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescriptreact]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[javascriptreact]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[sql]": {
+            "editor.formatOnSave": true
+        },
+        "prettier.configPath": ".prettierrc",
+        "eslint.workingDirectories": [
+            "."
+        ],
+        "tailwindCSS.includeLanguages": {
+            "typescript": "javascript",
+            "typescriptreact": "javascript"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "bradlc.vscode-tailwindcss",
+            "prisma.prisma",
+            "ms-vscode.powershell",
+            "github.copilot",
+            "github.vscode-pull-request-github",
+            "eamodio.gitlens",
+            "ms-azuretools.vscode-docker",
+            "mikestead.dotenv",
+            "yoavbls.pretty-ts-errors"
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Next.js Development",
+                "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
+                "args": ["dev"],
+                "cwd": "${workspaceFolder}",
+                "console": "integratedTerminal"
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Jest Tests",
+                "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+                "args": ["--runInBand"],
+                "cwd": "${workspaceFolder}",
+                "console": "integratedTerminal"
+            }
+        ]
+    }
+} 

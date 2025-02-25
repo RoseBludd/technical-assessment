@@ -1,0 +1,10 @@
+{
+  "test_users": [
+    {
+      "username": "test_user_8ac01fa9-ca7f-4769-8998-2d821840da8a_01",
+      "password": "Test@8ac01fa9-ca7f-4769-8998-2d821840da8a123",
+      "role": "User",
+      "task_scenario": "Default test scenario"
+    }
+  ]
+}

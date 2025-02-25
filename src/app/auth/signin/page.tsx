@@ -44,7 +44,7 @@ export default function SignIn() {
         console.error("Authentication failed:", result.error);
       } else if (result.ok) {
         console.log("Authentication successful, redirecting...");
-        router.push("/tasks");
+        router.push("/dashboard");
       } else {
         throw new Error("Unexpected authentication response");
       }
@@ -114,7 +114,7 @@ export default function SignIn() {
                 placeholder="Enter your password"
               />
               <p className="mt-1 text-sm text-gray-400">
-                Default password: DevPortal2024!
+                Default password: {process.env.DEFAULT_DEV_PASSWORD || 'dev123'}
               </p>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default function SignIn() {
 
           <div className="mt-6">
             <button
-              onClick={() => signIn("github", { callbackUrl: "/tasks" })}
+              onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               <svg

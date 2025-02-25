@@ -1,0 +1,10 @@
+{
+  "test_users": [
+    {
+      "username": "test_user_2ddb871a-5f80-4faa-8887-d0ef1b073102_01",
+      "password": "Test@2ddb871a-5f80-4faa-8887-d0ef1b073102123",
+      "role": "User",
+      "task_scenario": "Default test scenario"
+    }
+  ]
+}
