@@ -7,14 +7,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "prisma:studio": "prisma studio",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "vercel-build": "next build"
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",

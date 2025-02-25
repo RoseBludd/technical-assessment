@@ -1,7 +1,14 @@
 {
   "version": 2,
-  "framework": "nextjs",
-  "regions": ["sin1"],
-  "public": true,
-  "buildCommand": "npm run vercel-build"
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "zeroConfig": true,
+        "buildCommand": "npm run build",
+        "outputDirectory": ".next"
+      }
+    }
+  ]
 }
