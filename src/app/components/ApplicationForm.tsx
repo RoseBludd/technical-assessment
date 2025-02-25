@@ -120,7 +120,7 @@ export default function ApplicationForm() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label htmlFor="firstName" className="form-label">
+            <label htmlFor="firstName" className="block text-sm font-medium text-gray-200">
               First Name
             </label>
             <input
@@ -129,13 +129,13 @@ export default function ApplicationForm() {
               id="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="form-input"
+              className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="lastName" className="form-label">
+            <label htmlFor="lastName" className="block text-sm font-medium text-gray-200">
               Last Name
             </label>
             <input
@@ -144,14 +144,14 @@ export default function ApplicationForm() {
               id="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="form-input"
+              className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               required
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="position" className="form-label">
+          <label htmlFor="position" className="block text-sm font-medium text-gray-200">
             Position
           </label>
           <select
@@ -159,15 +159,13 @@ export default function ApplicationForm() {
             name="position"
             value={formData.position}
             onChange={handleChange}
-            className="form-select"
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             required
           >
             <option value="">Select position</option>
             <option value="frontend_specialist">Frontend Specialist</option>
             <option value="backend_specialist">Backend Specialist</option>
-            <option value="integration_specialist">
-              Integration Specialist
-            </option>
+            <option value="integration_specialist">Integration Specialist</option>
             <option value="devops_engineer">DevOps Engineer</option>
             <option value="fullstack_developer">Fullstack Developer</option>
             <option value="technical_lead">Technical Lead</option>
@@ -175,7 +173,7 @@ export default function ApplicationForm() {
         </div>
 
         <div>
-          <label htmlFor="email" className="form-label">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-200">
             Email Address
           </label>
           <input
@@ -184,13 +182,13 @@ export default function ApplicationForm() {
             id="email"
             value={formData.email}
             onChange={handleChange}
-            className="form-input"
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             required
           />
         </div>
 
         <div>
-          <label htmlFor="whatsapp" className="form-label">
+          <label htmlFor="whatsapp" className="block text-sm font-medium text-gray-200">
             WhatsApp Number
           </label>
           <input
@@ -200,13 +198,13 @@ export default function ApplicationForm() {
             value={formData.whatsapp}
             onChange={handleChange}
             placeholder="+1234567890"
-            className="form-input"
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             required
           />
         </div>
 
         <div>
-          <label htmlFor="portfolioUrl" className="form-label">
+          <label htmlFor="portfolioUrl" className="block text-sm font-medium text-gray-200">
             Portfolio URL
           </label>
           <input
@@ -215,12 +213,12 @@ export default function ApplicationForm() {
             id="portfolioUrl"
             value={formData.portfolioUrl}
             onChange={handleChange}
-            className="form-input"
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
           />
         </div>
 
         <div>
-          <label htmlFor="experience" className="form-label">
+          <label htmlFor="experience" className="block text-sm font-medium text-gray-200">
             Years of Experience
           </label>
           <select
@@ -228,7 +226,7 @@ export default function ApplicationForm() {
             name="experience"
             value={formData.experience}
             onChange={handleChange}
-            className="form-select"
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             required
           >
             <option value="">Select experience</option>
@@ -240,7 +238,7 @@ export default function ApplicationForm() {
         </div>
 
         <div>
-          <label htmlFor="skills" className="form-label">
+          <label htmlFor="skills" className="block text-sm font-medium text-gray-200">
             Skills
           </label>
           <textarea
@@ -249,7 +247,7 @@ export default function ApplicationForm() {
             rows={3}
             value={formData.skills}
             onChange={handleChange}
-            className="form-textarea"
+            className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             placeholder="List your key technical skills (comma-separated)..."
             required
           ></textarea>

@@ -1,12 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = []
-  engineType      = "dataproxy"
+  previewFeatures = ["dataProxy"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model SkillTestDefinition {
+  id           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String                 @db.VarChar(255)
+  description  String?
+  role         SkillTestDeveloperRole
+  questions    Json
+  passingScore Int                    @map("passing_score")
+  timeLimit    Int                    @map("time_limit")
+  createdAt    DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime               @default(now()) @map("updated_at") @db.Timestamptz(6)
+  submissions  test_submissions[]     @relation("TestToSubmissions")
+
+  @@map("skill_test_definitions")
+}
+
+model test_submissions {
+  id             String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  developer_id   String                    @db.Uuid
+  created_at     DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime                  @default(now()) @db.Timestamptz(6)
+  ai_feedback    Json?                     @default("{}")
+  answers        Json                      @default("[]")
+  application_id String                    @db.Uuid
+  completed_at   DateTime?                 @db.Timestamptz(6)
+  score          Int?
+  started_at     DateTime                  @default(now()) @db.Timestamptz(6)
+  test_id        String                    @db.Uuid
+  status         SkillTestSubmissionStatus @default(pending)
+  application    developer_applications    @relation(fields: [application_id], references: [id])
+  developer      developers                @relation(fields: [developer_id], references: [id])
+  skill_test     SkillTestDefinition       @relation("TestToSubmissions", fields: [test_id], references: [id])
+
+  @@index([test_id])
+  @@index([developer_id])
+  @@index([application_id])
 }
 
 model available_positions {
@@ -159,6 +198,7 @@ model communications {
   leads       leads?     @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model customers {
   id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name           String           @db.VarChar(255)
@@ -198,38 +238,6 @@ model damage_assessments {
   @@index([status], map: "idx_damage_assessments_status")
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model developer_applications {
-  id                             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  developer_id                   String?            @db.Uuid
-  position                       String             @db.VarChar(255)
-  cover_letter                   String?
-  status                         String?            @default("pending") @db.VarChar(50)
-  expected_salary                Decimal?           @db.Decimal(10, 2)
-  availability_start_date        DateTime?          @db.Date
-  reviewer_id                    String?            @db.Uuid
-  review_notes                   String?
-  reviewed_at                    DateTime?          @db.Timestamptz(6)
-  technical_assessment_score     Int?
-  communication_assessment_score Int?
-  created_at                     DateTime?          @default(now()) @db.Timestamptz(6)
-  updated_at                     DateTime?          @default(now()) @db.Timestamptz(6)
-  start_date                     String?            @db.VarChar(255)
-  will_do_test_task              Boolean            @default(false)
-  test_submitted_at              DateTime?          @db.Timestamptz(6)
-  whatsapp_number                String?            @db.VarChar(20)
-  meeting_notes                  String?
-  interest_level                 interest_level?    @default(undecided)
-  last_meeting_date              DateTime?          @db.Timestamptz(6)
-  next_meeting_date              DateTime?          @db.Timestamptz(6)
-  github_submission              Json?
-  developers                     developers?        @relation(fields: [developer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  test_submissions               test_submissions[]
-
-  @@index([developer_id], map: "idx_applications_developer")
-  @@index([status], map: "idx_applications_status")
-}
-
 model developers {
   id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   cognito_id             String?                  @unique @db.VarChar(255)
@@ -252,16 +260,47 @@ model developers {
   english_proficiency    String?                  @db.VarChar(20)
   education              String?
   created_at             DateTime?                @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?                @default(now()) @updatedAt @db.Timestamptz(6)
   preferred_timezone     String?                  @default("PHT") @db.VarChar(50)
   password_hash          String                   @db.VarChar(255)
-  developer_applications developer_applications[]
+  applications           developer_applications[]
   task_assignments       task_assignments[]
   test_submissions       test_submissions[]
 
   @@index([cognito_id], map: "idx_developers_cognito")
   @@index([role], map: "idx_developers_role")
   @@index([status], map: "idx_developers_status")
+}
+
+model developer_applications {
+  id                             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  developer_id                   String?            @db.Uuid
+  position                       String             @db.VarChar(255)
+  cover_letter                   String?
+  status                         String?            @default("pending") @db.VarChar(50)
+  expected_salary                Decimal?           @db.Decimal(10, 2)
+  availability_start_date        DateTime?          @db.Date
+  reviewer_id                    String?            @db.Uuid
+  review_notes                   String?
+  reviewed_at                    DateTime?          @db.Timestamptz(6)
+  technical_assessment_score     Int?
+  communication_assessment_score Int?
+  created_at                     DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at                     DateTime?          @default(now()) @updatedAt @db.Timestamptz(6)
+  start_date                     String?            @db.VarChar(255)
+  will_do_test_task              Boolean            @default(false)
+  test_submitted_at              DateTime?          @db.Timestamptz(6)
+  whatsapp_number                String?            @db.VarChar(20)
+  meeting_notes                  String?
+  interest_level                 interest_level?    @default(undecided)
+  last_meeting_date              DateTime?          @db.Timestamptz(6)
+  next_meeting_date              DateTime?          @db.Timestamptz(6)
+  github_submission              Json?
+  developer                      developers?        @relation(fields: [developer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submissions                    test_submissions[]
+
+  @@index([developer_id], map: "idx_applications_developer")
+  @@index([status], map: "idx_applications_status")
 }
 
 model documents {
@@ -728,6 +767,7 @@ model projects {
   @@index([property_id], map: "idx_projects_property_id")
 }
 
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model properties {
   id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   customer_id     String?    @db.Uuid
@@ -893,19 +933,6 @@ model sales_teams {
   @@index([manager_id], map: "idx_sales_teams_manager")
 }
 
-model skill_test_definitions {
-  id               String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title            String                 @db.VarChar(255)
-  description      String?
-  role             SkillTestDeveloperRole
-  questions        Json
-  passing_score    Int
-  time_limit       Int
-  created_at       DateTime               @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime               @default(now()) @db.Timestamptz(6)
-  test_submissions test_submissions[]
-}
-
 model storm_affected_properties {
   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   storm_id     String?   @db.Uuid
@@ -992,22 +1019,6 @@ model sync_queue {
   @@index([status], map: "idx_sync_queue_status")
 }
 
-model task_assignments {
-  id                String              @id
-  task_id           String
-  developer_id      String              @db.Uuid
-  status            String              @default("assigned")
-  notes             String?
-  start_date        DateTime            @default(now())
-  due_date          DateTime?
-  completed_at      DateTime?
-  developers        developers          @relation(fields: [developer_id], references: [id])
-  workspace_servers workspace_servers[]
-
-  @@index([developer_id])
-  @@index([task_id])
-}
-
 model tasks {
   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   lead_id      String?   @db.Uuid
@@ -1038,28 +1049,6 @@ model team_members {
   @@unique([project_id, user_id])
   @@index([project_id], map: "idx_team_members_project_id")
   @@index([user_id], map: "idx_team_members_user_id")
-}
-
-model test_submissions {
-  id                     String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  developer_id           String                    @db.Uuid
-  created_at             DateTime                  @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime                  @default(now()) @db.Timestamptz(6)
-  ai_feedback            Json?                     @default("{}")
-  answers                Json                      @default("[]")
-  application_id         String                    @db.Uuid
-  completed_at           DateTime?                 @db.Timestamptz(6)
-  score                  Int?
-  started_at             DateTime                  @default(now()) @db.Timestamptz(6)
-  test_id                String                    @db.Uuid
-  status                 SkillTestSubmissionStatus @default(pending)
-  developer_applications developer_applications    @relation(fields: [application_id], references: [id])
-  developers             developers                @relation(fields: [developer_id], references: [id])
-  skill_test_definitions skill_test_definitions    @relation(fields: [test_id], references: [id])
-
-  @@index([application_id])
-  @@index([developer_id])
-  @@index([test_id])
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -1187,6 +1176,22 @@ model users {
   @@index([role], map: "idx_users_role")
 }
 
+model task_assignments {
+  id                String              @id @default(uuid())
+  task_id           String
+  developer_id      String              @db.Uuid
+  status            String              @default("assigned")
+  notes             String?
+  start_date        DateTime            @default(now())
+  due_date          DateTime?
+  completed_at      DateTime?
+  developer         developers          @relation(fields: [developer_id], references: [id])
+  workspace_servers workspace_servers[]
+
+  @@index([developer_id])
+  @@index([task_id])
+}
+
 model workspace_servers {
   id               String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   workspace_path   String
@@ -1267,12 +1272,6 @@ enum developer_status {
   active
   inactive
   rejected
-}
-
-enum interest_level {
-  interested
-  not_interested
-  undecided
 }
 
 enum interview_status {
@@ -1391,6 +1390,12 @@ enum user_status {
   active
   inactive
   pending
+}
+
+enum interest_level {
+  interested
+  not_interested
+  undecided
 }
 
 enum workspace_server_status {

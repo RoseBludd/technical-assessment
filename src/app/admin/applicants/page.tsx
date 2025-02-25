@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -35,7 +35,7 @@ interface Applicant {
   } | null;
 }
 
-export default function ApplicantsList() {
+function ApplicantsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [applicants, setApplicants] = useState<Applicant[]>([]);
@@ -43,8 +43,8 @@ export default function ApplicantsList() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState({
-    status: searchParams.get("status") || "all",
-    role: searchParams.get("role") || "all",
+    status: searchParams?.get("status") || "all",
+    role: searchParams?.get("role") || "all",
   });
 
   useEffect(() => {
@@ -298,5 +298,17 @@ export default function ApplicantsList() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ApplicantsList() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    }>
+      <ApplicantsContent />
+    </Suspense>
   );
 }

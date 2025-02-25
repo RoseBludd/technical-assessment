@@ -46,7 +46,23 @@ This changelog tracks:
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
----
+## [2024-01-30] - Styling and Prisma Configuration Update
+
+### Added
+- Dark mode implementation in layout.tsx
+- New application route and components
+
+### Changed
+- Updated Prisma configuration and dependencies to v5.22.0
+- Fixed styling issues across the application
+- Updated vercel.json configuration
+- Modified build settings for better deployment
+- Updated postcss and tailwind configurations
+
+### Fixed
+- Resolved Prisma client generation issues
+- Fixed dark mode implementation
+- Corrected styling inconsistencies in production
 
 ## [1.1.0] - 2024-03-21
 
@@ -495,3 +511,20 @@ All notable changes to this project will be documented in this file.
 ### Security
 - VPN credentials are stored securely in workspace-specific configuration
 - OpenVPN configuration uses secure cipher and authentication methods
+
+## [1.1.1] - 2024-03-22
+
+### Added
+- Successful deployment to Vercel production environment
+- Prisma Data Proxy integration for improved database performance
+- Environment variable configuration for Vercel deployment
+
+### Technical Improvements
+- Updated Vercel configuration for Prisma compatibility
+- Configured build settings for Next.js framework
+- Enhanced database connection handling
+
+### Fixed
+- Resolved Prisma deployment issues
+- Addressed build configuration warnings
+- Optimized route handling in vercel.json

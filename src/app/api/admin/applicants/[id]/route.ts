@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const application = await prisma.developer_applications.findUnique({
-      where: { id: params.id },
+      where: { id: context.params.id },
       include: {
         developers: {
           select: {
