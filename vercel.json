@@ -1,7 +1,7 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "npx prisma generate && next build",
+  "buildCommand": "next build",
   "devCommand": "next dev",
   "installCommand": "npm install",
   "env": {
@@ -12,9 +12,13 @@
     "PRISMA_ENGINE_PROTOCOL": "json",
     "PRISMA_CLIENT_ENGINE_TYPE": "dataproxy",
     "PRISMA_GENERATE_VERCEL_LOGS": "true",
+    "PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK": "true",
+    "PRISMA_SCHEMA_ENGINE_TYPE": "dataproxy",
     "NEXTAUTH_URL": "https://dev-applications.vercel.app",
     "NEXTAUTH_SECRET": "IQlBHdnecNsyfYuZWmwvUCpjrxKJghRG",
     "DEFAULT_DEV_PASSWORD": "dev123",
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "GITHUB_ID": "",
+    "GITHUB_SECRET": ""
   }
 }
