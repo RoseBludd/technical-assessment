@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint .",
     "analyze": "ANALYZE=true next build"
   },
@@ -30,21 +32,22 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^14.2.1",
-    "@types/jest": "^29.5.12",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.1.0",
+    "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "node-mocks-http": "^1.16.2",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }

@@ -25,7 +25,7 @@ interface Props {
 }
 
 const SkeletonChart = () => (
-  <div className="flex flex-col space-y-3 h-[400px]">
+  <div className="flex flex-col space-y-3 h-[400px]" data-testid="skeleton">
     <Skeleton className="h-[300px] w-full rounded-xl" />
     <div className="space-y-2">
       <Skeleton className="h-4 w-[250px]" />
@@ -39,7 +39,6 @@ const host = process.env.NEXT_PUBLIC_API_HOST;
 const fetchMetrics = async (unit: string): Promise<TimeSeriesData[]> => {
   try {
     const res = await fetch(`${host}/api/metrics?metric=${unit}`);
-
     if (res) {
       const data = await res.json();
       return data;

@@ -51,7 +51,6 @@ const formatData = (data: Data, unit: Unit): Data => {
 
 export const ChartArea = ({ data, unit }: Props) => {
   const chartData = formatData(data, unit);
-
   return (
     <ResponsiveContainer height={400} width="100%">
       <ChartContainer config={chartConfig}>

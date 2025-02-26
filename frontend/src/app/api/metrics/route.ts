@@ -9,8 +9,8 @@ export type TimeRange = 'hour' | 'day' | 'week';
 
 export async function GET(req: NextRequest) {
   // Simulate API delay
+  console.log(123, req);
   await new Promise((resolve) => setTimeout(resolve, 2500));
-
   const timeRange =
     (req.nextUrl.searchParams.get('metric') as TimeRange) ?? 'day';
   const now = Date.now();

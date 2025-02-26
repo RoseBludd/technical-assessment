@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Demo app',
-  description: 'Created br Braden',
+  description: 'Created by Braden',
 };
 
 export default function RootLayout({

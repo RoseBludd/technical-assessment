@@ -29,7 +29,11 @@ const getUnitValue = (unit: Units) => {
 const SkeletonLoader = () => (
   <>
     {[...Array(units.length)].map((_, i) => (
-      <div className="col-span-3 lg:col-span-1" key={`key-unit-${units[i]}`}>
+      <div
+        className="col-span-3 lg:col-span-1"
+        key={`key-unit-${units[i]}`}
+        {...(i === 0 ? { 'data-testid': 'skeleton' } : {})}
+      >
         <div className="flex items-center space-x-4 h-[84px] w-full">
           <Skeleton className="h-12 w-12 rounded-full" />
           <div className="space-y-2">
